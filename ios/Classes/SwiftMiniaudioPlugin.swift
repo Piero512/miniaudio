@@ -1,10 +1,10 @@
 import Flutter
 import UIKit
 
-public class SwiftMiniaudioDecoderPlugin: NSObject, FlutterPlugin {
+public class SwiftMiniaudioPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "miniaudio_decoder", binaryMessenger: registrar.messenger())
-    let instance = SwiftMiniaudioDecoderPlugin()
+    let channel = FlutterMethodChannel(name: "miniaudio", binaryMessenger: registrar.messenger())
+    let instance = SwiftMiniaudioPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 

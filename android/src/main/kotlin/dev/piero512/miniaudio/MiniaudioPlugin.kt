@@ -1,4 +1,4 @@
-package com.example.miniaudio_decoder
+package com.example.miniaudio
 
 import androidx.annotation.NonNull
 
@@ -8,8 +8,8 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-/** MiniaudioDecoderPlugin */
-class MiniaudioDecoderPlugin: FlutterPlugin, MethodCallHandler {
+/** MiniaudioPlugin */
+class MiniaudioPlugin: FlutterPlugin, MethodCallHandler {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -17,7 +17,7 @@ class MiniaudioDecoderPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "miniaudio_decoder")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "miniaudio")
     channel.setMethodCallHandler(this)
   }
 

@@ -29,10 +29,14 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.miniaudio_decoder
-        pluginClass: MiniaudioDecoderPlugin
+        package: dev.piero512.miniaudio
+        pluginClass: MiniaudioPlugin
       ios:
-        pluginClass: MiniaudioDecoderPlugin
+        pluginClass: MiniaudioPlugin
+      macos: 
+        pluginClass: MiniaudioPlugin
+      linux:
+        pluginClass: MiniaudioPlugin
 
 ffigen:
   output: 'lib/src/miniaudio_ffi.dart'
