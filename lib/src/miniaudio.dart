@@ -7,7 +7,7 @@ import 'miniaudio_decode.dart';
 import 'miniaudio_ffi.dart';
 
 class MiniAudio {
-  static MiniAudioFfi _ffi = _getMiniAudioDLL();
+  static MiniAudioFfi ffi = _getMiniAudioDLL();
 
   static MiniAudioFfi _getMiniAudioDLL() {
     if (Platform.isAndroid || Platform.isLinux) {
@@ -19,16 +19,16 @@ class MiniAudio {
   }
 
   static MiniAudioDecoder openDecoder(String path) {
-    var ptr = calloc.allocate(sizeOf<ma_decoder>());
+    var ptr = calloc.call<ma_decoder>();
     var pathCString = path.toNativeUtf8();
-    var result = _ffi.ma_decoder_init_file(
-        pathCString.cast<Int8>(), nullptr, ptr as Pointer<ma_decoder>);
+    var result =
+        ffi.ma_decoder_init_file(pathCString.cast<Int8>(), nullptr, ptr);
     if (result == MA_SUCCESS) {
       malloc.free(pathCString);
-      return MiniAudioDecoder(ptr, _ffi);
+      return MiniAudioDecoder(ptr, ffi);
     } else {
       var readableError =
-          _ffi.ma_result_description(result).cast<Utf8>().toDartString();
+          ffi.ma_result_description(result).cast<Utf8>().toDartString();
       print(
           "ma_decode: Error while trying to open file for decoding: $readableError");
       malloc.free(ptr);
