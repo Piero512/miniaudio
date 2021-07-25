@@ -1,4 +1,4 @@
-package com.example.miniaudio
+package dev.piero512.miniaudio
 
 import androidx.annotation.NonNull
 
