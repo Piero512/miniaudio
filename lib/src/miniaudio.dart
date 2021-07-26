@@ -14,6 +14,9 @@ class MiniAudio {
       return MiniAudioFfi(DynamicLibrary.open('libminiaudio.so'));
     } else if (Platform.isMacOS) {
       return MiniAudioFfi(DynamicLibrary.open('libminiaudio.dylib'));
+    } else if (Platform.isIOS) {
+      var lib = DynamicLibrary.open('miniaudio.framework/miniaudio');
+      return MiniAudioFfi(lib);
     }
     return MiniAudioFfi(DynamicLibrary.executable());
   }
