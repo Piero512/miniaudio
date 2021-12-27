@@ -1,5 +1,5 @@
 name: miniaudio
-description: A new flutter plugin project.
+description: Flutter bindings for Miniaudio Library.
 version: 0.0.1
 homepage: https://github.com/Piero512/miniaudio_decoder
 
