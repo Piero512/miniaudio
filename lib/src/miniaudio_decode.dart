@@ -1,5 +1,7 @@
 import 'dart:ffi';
 
+import 'package:ffi/ffi.dart';
+
 import 'miniaudio_ffi.dart';
 
 class MiniAudioDecoder {
@@ -7,7 +9,27 @@ class MiniAudioDecoder {
   final Pointer<ma_decoder> decoder;
   bool finalized = false;
   static const _finalizedMessage = 'This instance is already finalized';
-  MiniAudioDecoder(this.decoder, this.ffi) : assert(decoder != nullptr);
+  MiniAudioDecoder._(
+    this.ffi,
+    this.decoder,
+  ) : assert(decoder != nullptr);
+
+  factory MiniAudioDecoder.openPath(MiniAudioFfi ffi, String path) {
+    return using((alloc) {
+      var decoder = calloc.call<ma_decoder>();
+      var pathCString = path.toNativeUtf8(allocator: alloc);
+      var result =
+          ffi.ma_decoder_init_file(pathCString.cast<Int8>(), nullptr, decoder);
+      if (result == MA_SUCCESS) {
+        return MiniAudioDecoder._(ffi, decoder);
+      } else {
+        var readableError =
+            ffi.ma_result_description(result).cast<Utf8>().toDartString();
+        malloc.free(decoder);
+        throw ArgumentError.value(path, 'path', readableError);
+      }
+    });
+  }
 
   void closeDecoder() {
     if (!finalized) {

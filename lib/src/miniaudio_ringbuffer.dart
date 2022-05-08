@@ -116,7 +116,7 @@ class MiniAudioPCMRingBuffer {
             _ptr, pSizeInFrames.value, pBufferIn.cast<Void>());
         return readSamples;
       } else {
-        throw OutOfMemoryError();
+        throw const OutOfMemoryError();
       }
     });
   }

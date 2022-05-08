@@ -1,6 +1,6 @@
 name: miniaudio
 description: Flutter bindings for Miniaudio Library.
-version: 0.0.1
+version: "0.0.5"
 homepage: https://github.com/Piero512/miniaudio_decoder
 
 environment:
@@ -16,7 +16,7 @@ dev_dependencies:
   ffigen: ^4.1.3
   flutter_test:
     sdk: flutter
-
+  flutter_lints: 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -48,7 +48,7 @@ ffigen:
     include-directives:
       - '**miniaudio.h'
   name: 'MiniAudioFfi'
-  preamble: '// ignore_for_file: camel_case_types, non_constant_identifier_names'
+  preamble: '// ignore_for_file: camel_case_types, non_constant_identifier_names, constant_identifier_names, unused_field'
   unions:
     dependency-only: opaque
   description: 'FFI bindings to miniaudio library'

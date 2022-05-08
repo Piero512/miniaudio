@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyHomePage extends StatelessWidget {
@@ -11,7 +11,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Example of miniaudio'),
+        title: const Text('Example of miniaudio'),
       ),
     );
   }
@@ -22,6 +22,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: MyHomePage());
+    return const MaterialApp(home: MyHomePage());
   }
 }
