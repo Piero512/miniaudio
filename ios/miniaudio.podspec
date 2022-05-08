@@ -16,8 +16,9 @@ A new flutter plugin project.
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
   s.platform = :ios, '8.0'
-
+  s.frameworks = 'AudioUnit','CoreAudio','CoreFoundation'
+  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' ,}
   # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386', 'OTHER_CFLAGS' => "$(inherited) -DMA_ENABLE_ONLY_SPECIFIC_BACKENDS -DMA_NO_ENCODING -DMA_NO_DEVICE_IO -DMA_NO_GENERATION -DMA_NO_THREADING -DMA_API='extern __attribute__((visibility(\"default\"))) __attribute__((used))'"}
+  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386', 'OTHER_CFLAGS' => "$(inherited) -DMA_NO_EXTERNAL_LINKING -DMA_API='extern __attribute__((visibility(\"default\"))) __attribute__((used))'"}
   s.swift_version = '5.0'
 end

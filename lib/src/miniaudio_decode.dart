@@ -18,19 +18,7 @@ class MiniAudioDecoder {
 
   int get sampleSize {
     assert(finalized != true, _finalizedMessage);
-    switch (decoder.ref.outputFormat) {
-      case ma_format.ma_format_u8:
-        return 1;
-      case ma_format.ma_format_s16:
-        return 2;
-      case ma_format.ma_format_s24:
-        return 3;
-      case ma_format.ma_format_s32:
-      case ma_format.ma_format_f32:
-        return 4;
-      default:
-        return -1;
-    }
+    return ffi.ma_get_bytes_per_sample(decoder.ref.outputFormat);
   }
 
   int get frameSize => sampleSize * channelCount;

@@ -4,7 +4,7 @@ version: 0.0.1
 homepage: https://github.com/Piero512/miniaudio_decoder
 
 environment:
-  sdk: ">=2.13.0 <3.0.0"
+  sdk: ">=2.16.0 <3.0.0"
   flutter: ">=1.20.0"
 
 dependencies:
@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
-  ffigen: ^3.1.0-dev.1
+  ffigen: ^4.1.3
   flutter_test:
     sdk: flutter
 
@@ -37,6 +37,8 @@ flutter:
         pluginClass: MiniaudioPlugin
       linux:
         pluginClass: MiniaudioPlugin
+      windows:
+        pluginClass: MiniaudioPlugin
 
 ffigen:
   output: 'lib/src/miniaudio_ffi.dart'
@@ -50,4 +52,3 @@ ffigen:
   unions:
     dependency-only: opaque
   description: 'FFI bindings to miniaudio library'
-  compiler-opts: '-DMA_ENABLE_ONLY_SPECIFIC_BACKENDS -DMA_NO_ENCODING -DMA_NO_DEVICE_IO -DMA_NO_GENERATION -DMA_NO_THREADING'
