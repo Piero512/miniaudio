@@ -1,3 +1,4 @@
+#define MINIAUDIO_IMPLEMENTATION
 #include "include/miniaudio/miniaudio_plugin.h"
 
 // This must be included before many other Windows headers.
@@ -74,6 +75,16 @@ void MiniaudioPlugin::HandleMethodCall(
 }
 
 }  // namespace
+void MiniAudioReadDecoderDataCallback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount){
+    ma_decoder* pDecoder = (ma_decoder*)pDevice->pUserData;
+    if (pDecoder == NULL) {
+        return;
+    }
+
+    ma_decoder_read_pcm_frames(pDecoder, pOutput, frameCount, NULL);
+
+    (void)pInput;
+}
 
 void MiniaudioPluginRegisterWithRegistrar(
     FlutterDesktopPluginRegistrarRef registrar) {

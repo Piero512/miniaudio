@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 set(PROJECT_NAME "miniaudio")
-project(${PROJECT_NAME} LANGUAGES CXX)
+project(${PROJECT_NAME} LANGUAGES C CXX)
 
 # This value is used when generating builds using this plugin, so it must
 # not be changed
@@ -8,7 +8,6 @@ set(PLUGIN_NAME "miniaudio_plugin")
 
 add_library(${PLUGIN_NAME} SHARED
   "miniaudio_plugin.cpp"
-  "src/miniaudio.c"
 )
 apply_standard_settings(${PLUGIN_NAME})
 set_target_properties(${PLUGIN_NAME} PROPERTIES

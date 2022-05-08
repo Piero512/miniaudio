@@ -6,6 +6,7 @@
 
 #include <cstring>
 
+
 #define MINIAUDIO_PLUGIN(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST((obj), miniaudio_plugin_get_type(), \
                               MiniaudioPlugin))
