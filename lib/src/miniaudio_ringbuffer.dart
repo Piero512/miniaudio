@@ -5,8 +5,12 @@ import 'package:ffi/ffi.dart';
 
 import 'miniaudio_ffi.dart';
 
-class MiniAudioPCMRingBuffer {
+class MiniAudioPCMRingBuffer implements Finalizable {
+  static NativeFinalizer? _finalizer;
+  static final Finalizer<Pointer<ma_pcm_rb>> _allocFinalizer =
+      Finalizer((ptr) => malloc.free(ptr));
   final MiniAudioFfi ffi;
+  bool finalized = false;
   final Pointer<ma_pcm_rb> _ptr;
 
   MiniAudioPCMRingBuffer._(this.ffi, this._ptr);
@@ -17,10 +21,21 @@ class MiniAudioPCMRingBuffer {
     required int frameCount,
     required int channels,
   }) {
+    _finalizer ??= NativeFinalizer(ffi.addresses.ma_pcm_rb_uninit.cast());
     final pcmRingBuffer = malloc.call<ma_pcm_rb>();
     ffi.ma_pcm_rb_init(
         format, channels, frameCount, nullptr, nullptr, pcmRingBuffer);
-    return MiniAudioPCMRingBuffer._(ffi, pcmRingBuffer);
+    final retval = MiniAudioPCMRingBuffer._(ffi, pcmRingBuffer);
+    final _externalSize =
+        ffi.ma_get_bytes_per_sample(format) * channels * frameCount;
+    _allocFinalizer.attach(retval, pcmRingBuffer, detach: retval);
+    _finalizer?.attach(
+      retval,
+      pcmRingBuffer.cast(),
+      detach: retval,
+      externalSize: _externalSize,
+    );
+    return retval;
   }
 
   void addSamples<T extends TypedData>(T samples) {
@@ -117,5 +132,15 @@ class MiniAudioPCMRingBuffer {
         throw const OutOfMemoryError();
       }
     });
+  }
+
+  void close() {
+    if (!finalized) {
+      _allocFinalizer.detach(this);
+      _finalizer?.detach(this);
+      ffi.ma_pcm_rb_uninit(_ptr);
+      malloc.free(_ptr);
+    }
+    finalized = true;
   }
 }

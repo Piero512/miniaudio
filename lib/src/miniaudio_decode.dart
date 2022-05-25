@@ -5,7 +5,9 @@ import 'package:ffi/ffi.dart';
 import 'miniaudio_ffi.dart';
 
 class MiniAudioDecoder implements Finalizable {
-  static NativeFinalizer? _finalizer;
+  static NativeFinalizer? _decoderFinalizer;
+  static final Finalizer<Pointer<ma_decoder>> _allocFinalizer =
+      Finalizer((ptr) => malloc.free(ptr));
   final MiniAudioFfi ffi;
   final Pointer<ma_decoder> decoder;
   bool finalized = false;
@@ -16,7 +18,8 @@ class MiniAudioDecoder implements Finalizable {
   ) : assert(decoder != nullptr);
 
   factory MiniAudioDecoder.openPath(MiniAudioFfi ffi, String path) {
-    _finalizer ??= NativeFinalizer(ffi.addresses.ma_decoder_uninit.cast());
+    _decoderFinalizer ??=
+        NativeFinalizer(ffi.addresses.ma_decoder_uninit.cast());
     return using((alloc) {
       var decoder = calloc.call<ma_decoder>();
       var pathCString = path.toNativeUtf8(allocator: alloc);
@@ -24,12 +27,13 @@ class MiniAudioDecoder implements Finalizable {
           ffi.ma_decoder_init_file(pathCString.cast<Int8>(), nullptr, decoder);
       if (result == ma_result.MA_SUCCESS) {
         final retval = MiniAudioDecoder._(ffi, decoder);
-        _finalizer?.attach(
+        _decoderFinalizer?.attach(
           retval,
           decoder.cast(),
           detach: retval,
           externalSize: sizeOf<ma_decoder>(),
         );
+        _allocFinalizer.attach(retval, decoder, detach: retval);
         return retval;
       } else {
         var readableError =
@@ -42,8 +46,10 @@ class MiniAudioDecoder implements Finalizable {
 
   void closeDecoder() {
     if (!finalized) {
+      _allocFinalizer.detach(this);
+      _decoderFinalizer?.detach(this);
       ffi.ma_decoder_uninit(decoder);
-      _finalizer?.detach(this);
+      malloc.free(decoder);
     }
     finalized = true;
   }

@@ -3,7 +3,10 @@ import 'package:ffi/ffi.dart';
 
 import 'miniaudio_ffi.dart';
 
-class MiniAudioDevice {
+class MiniAudioDevice implements Finalizable {
+  static NativeFinalizer? _finalizer;
+  static final Finalizer<Pointer> _allocFinalizer =
+      Finalizer((ptr) => malloc.free(ptr));
   final Pointer<ma_device> _ptr;
   final MiniAudioFfi ffi;
   bool disposed = false;
@@ -17,6 +20,7 @@ class MiniAudioDevice {
     required ma_device_data_proc dataCallback,
     required Pointer<Void> userData,
   }) {
+    _finalizer ??= NativeFinalizer(ffi.addresses.ma_device_uninit.cast());
     final device = malloc.call<ma_device>();
     final deviceConfig = malloc.call<ma_device_config>()
       ..ref = ffi.ma_device_config_init(ma_device_type.ma_device_type_playback);
@@ -26,7 +30,16 @@ class MiniAudioDevice {
     deviceConfig.ref.dataCallback = dataCallback;
     deviceConfig.ref.pUserData = userData;
     ffi.ma_device_init(nullptr, deviceConfig, device);
-    return MiniAudioDevice._(ffi, device);
+    final retval = MiniAudioDevice._(ffi, device);
+    _finalizer?.attach(
+      retval,
+      device.cast(),
+      detach: retval,
+      externalSize: sizeOf<ma_device>(),
+    );
+    _allocFinalizer.attach(retval, device);
+    _allocFinalizer.attach(retval, deviceConfig);
+    return retval;
   }
 
   factory MiniAudioDevice.defaultPlaybackDevice(MiniAudioFfi ffi,
@@ -54,6 +67,7 @@ class MiniAudioDevice {
 
   void uninit() {
     if (!disposed) {
+      // TODO: Dispose of device config
       ffi.ma_device_uninit(_ptr);
       malloc.free(_ptr);
       disposed = true;
