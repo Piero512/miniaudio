@@ -14,7 +14,7 @@ class MiniAudioDevice {
     required int playbackFormat,
     required int channels,
     required int sampleRate,
-    required ma_device_callback_proc dataCallback,
+    required ma_device_data_proc dataCallback,
     required Pointer<Void> userData,
   }) {
     final device = malloc.call<ma_device>();
@@ -30,7 +30,7 @@ class MiniAudioDevice {
   }
 
   factory MiniAudioDevice.defaultPlaybackDevice(MiniAudioFfi ffi,
-      {required ma_device_callback_proc dataCallback,
+      {required ma_device_data_proc dataCallback,
       required Pointer<Void> userData}) {
     return MiniAudioDevice.playbackDevice(
       ffi,

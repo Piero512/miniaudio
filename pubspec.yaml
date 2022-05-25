@@ -51,4 +51,8 @@ ffigen:
   preamble: '// ignore_for_file: camel_case_types, non_constant_identifier_names, constant_identifier_names, unused_field'
   unions:
     dependency-only: opaque
+  functions:
+    symbol-address:
+      include:
+        - '.*'
   description: 'FFI bindings to miniaudio library'

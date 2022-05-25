@@ -4,7 +4,8 @@ import 'package:ffi/ffi.dart';
 
 import 'miniaudio_ffi.dart';
 
-class MiniAudioDecoder {
+class MiniAudioDecoder implements Finalizable {
+  static NativeFinalizer? _finalizer;
   final MiniAudioFfi ffi;
   final Pointer<ma_decoder> decoder;
   bool finalized = false;
@@ -15,13 +16,21 @@ class MiniAudioDecoder {
   ) : assert(decoder != nullptr);
 
   factory MiniAudioDecoder.openPath(MiniAudioFfi ffi, String path) {
+    _finalizer ??= NativeFinalizer(ffi.addresses.ma_decoder_uninit.cast());
     return using((alloc) {
       var decoder = calloc.call<ma_decoder>();
       var pathCString = path.toNativeUtf8(allocator: alloc);
       var result =
           ffi.ma_decoder_init_file(pathCString.cast<Int8>(), nullptr, decoder);
-      if (result == MA_SUCCESS) {
-        return MiniAudioDecoder._(ffi, decoder);
+      if (result == ma_result.MA_SUCCESS) {
+        final retval = MiniAudioDecoder._(ffi, decoder);
+        _finalizer?.attach(
+          retval,
+          decoder.cast(),
+          detach: retval,
+          externalSize: sizeOf<ma_decoder>(),
+        );
+        return retval;
       } else {
         var readableError =
             ffi.ma_result_description(result).cast<Utf8>().toDartString();
@@ -34,6 +43,7 @@ class MiniAudioDecoder {
   void closeDecoder() {
     if (!finalized) {
       ffi.ma_decoder_uninit(decoder);
+      _finalizer?.detach(this);
     }
     finalized = true;
   }
@@ -67,8 +77,11 @@ class MiniAudioDecoder {
       Pointer<Uint8> frameBuffer, int frameBufferSize, int framesToRead) {
     assert(finalized != true, _finalizedMessage);
     if (frameSize * framesToRead <= frameBufferSize) {
-      return ffi.ma_decoder_read_pcm_frames(
-          decoder, frameBuffer.cast<Void>(), framesToRead);
+      return using((alloc) {
+        final Pointer<Uint64> framesRead = alloc.call();
+        return ffi.ma_decoder_read_pcm_frames(
+            decoder, frameBuffer.cast<Void>(), framesToRead, framesRead);
+      });
     }
     return -1;
   }

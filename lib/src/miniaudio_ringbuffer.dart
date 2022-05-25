@@ -67,8 +67,7 @@ class MiniAudioPCMRingBuffer {
             throw UnsupportedError(
                 "This type of typed data is unsupported.${samples.runtimeType.toString()}");
         }
-        ffi.ma_pcm_rb_commit_write(
-            _ptr, pSizeInFrames.value, pBufferOut.cast<Void>());
+        ffi.ma_pcm_rb_commit_write(_ptr, pSizeInFrames.value);
       }
     });
   }
@@ -112,8 +111,7 @@ class MiniAudioPCMRingBuffer {
             throw UnsupportedError(
                 "Can't read frames with type ${T.runtimeType.toString()}");
         }
-        ffi.ma_pcm_rb_commit_read(
-            _ptr, pSizeInFrames.value, pBufferIn.cast<Void>());
+        ffi.ma_pcm_rb_commit_read(_ptr, pSizeInFrames.value);
         return readSamples;
       } else {
         throw const OutOfMemoryError();

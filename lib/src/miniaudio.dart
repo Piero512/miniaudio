@@ -31,7 +31,7 @@ class MiniAudio {
   /// so you need to get this function pointer from another piece of C code
   /// in your project. Or wait until isolate-independent FFI code is added to Dart.
   static MiniAudioDevice getDefaultPlaybackDevice(
-      ma_device_callback_proc dataCallback, Pointer<Void> userData) {
+      ma_device_data_proc dataCallback, Pointer<Void> userData) {
     return MiniAudioDevice.defaultPlaybackDevice(
       ffi,
       dataCallback: dataCallback,

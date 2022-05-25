@@ -79,7 +79,7 @@ class MiniAudioFfi {
 
   late final _ma_log_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_allocation_callbacks>,
+          ffi.Int32 Function(ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_log>)>>('ma_log_init');
   late final _ma_log_init = _ma_log_initPtr.asFunction<
       int Function(
@@ -111,7 +111,7 @@ class MiniAudioFfi {
 
   late final _ma_log_register_callbackPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_log>,
+          ffi.Int32 Function(ffi.Pointer<ma_log>,
               ma_log_callback)>>('ma_log_register_callback');
   late final _ma_log_register_callback = _ma_log_register_callbackPtr
       .asFunction<int Function(ffi.Pointer<ma_log>, ma_log_callback)>();
@@ -128,7 +128,7 @@ class MiniAudioFfi {
 
   late final _ma_log_unregister_callbackPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_log>,
+          ffi.Int32 Function(ffi.Pointer<ma_log>,
               ma_log_callback)>>('ma_log_unregister_callback');
   late final _ma_log_unregister_callback = _ma_log_unregister_callbackPtr
       .asFunction<int Function(ffi.Pointer<ma_log>, ma_log_callback)>();
@@ -147,7 +147,7 @@ class MiniAudioFfi {
 
   late final _ma_log_postPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_log>, ma_uint32,
+          ffi.Int32 Function(ffi.Pointer<ma_log>, ma_uint32,
               ffi.Pointer<ffi.Int8>)>>('ma_log_post');
   late final _ma_log_post = _ma_log_postPtr.asFunction<
       int Function(ffi.Pointer<ma_log>, int, ffi.Pointer<ffi.Int8>)>();
@@ -156,7 +156,7 @@ class MiniAudioFfi {
     ffi.Pointer<ma_log> pLog,
     int level,
     ffi.Pointer<ffi.Int8> pFormat,
-    va_list args,
+    ffi.Pointer<__va_list_tag> args,
   ) {
     return _ma_log_postv(
       pLog,
@@ -168,10 +168,14 @@ class MiniAudioFfi {
 
   late final _ma_log_postvPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_log>, ma_uint32,
-              ffi.Pointer<ffi.Int8>, va_list)>>('ma_log_postv');
+          ffi.Int32 Function(
+              ffi.Pointer<ma_log>,
+              ma_uint32,
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<__va_list_tag>)>>('ma_log_postv');
   late final _ma_log_postv = _ma_log_postvPtr.asFunction<
-      int Function(ffi.Pointer<ma_log>, int, ffi.Pointer<ffi.Int8>, va_list)>();
+      int Function(ffi.Pointer<ma_log>, int, ffi.Pointer<ffi.Int8>,
+          ffi.Pointer<__va_list_tag>)>();
 
   int ma_log_postf(
     ffi.Pointer<ma_log> pLog,
@@ -187,7 +191,7 @@ class MiniAudioFfi {
 
   late final _ma_log_postfPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_log>, ma_uint32,
+          ffi.Int32 Function(ffi.Pointer<ma_log>, ma_uint32,
               ffi.Pointer<ffi.Int8>)>>('ma_log_postf');
   late final _ma_log_postf = _ma_log_postfPtr.asFunction<
       int Function(ffi.Pointer<ma_log>, int, ffi.Pointer<ffi.Int8>)>();
@@ -229,22 +233,85 @@ class MiniAudioFfi {
       ma_biquad_config Function(
           int, int, double, double, double, double, double, double)>();
 
+  int ma_biquad_get_heap_size(
+    ffi.Pointer<ma_biquad_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_biquad_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_biquad_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_biquad_config>,
+              ffi.Pointer<size_t>)>>('ma_biquad_get_heap_size');
+  late final _ma_biquad_get_heap_size = _ma_biquad_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_biquad_config>, ffi.Pointer<size_t>)>();
+
+  int ma_biquad_init_preallocated(
+    ffi.Pointer<ma_biquad_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_biquad> pBQ,
+  ) {
+    return _ma_biquad_init_preallocated(
+      pConfig,
+      pHeap,
+      pBQ,
+    );
+  }
+
+  late final _ma_biquad_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_biquad_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_biquad>)>>('ma_biquad_init_preallocated');
+  late final _ma_biquad_init_preallocated =
+      _ma_biquad_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_biquad_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_biquad>)>();
+
   int ma_biquad_init(
     ffi.Pointer<ma_biquad_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_biquad> pBQ,
   ) {
     return _ma_biquad_init(
       pConfig,
+      pAllocationCallbacks,
       pBQ,
     );
   }
 
   late final _ma_biquad_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_biquad_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_biquad_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_biquad>)>>('ma_biquad_init');
   late final _ma_biquad_init = _ma_biquad_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_biquad_config>, ffi.Pointer<ma_biquad>)>();
+      int Function(ffi.Pointer<ma_biquad_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_biquad>)>();
+
+  void ma_biquad_uninit(
+    ffi.Pointer<ma_biquad> pBQ,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_biquad_uninit(
+      pBQ,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_biquad_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_biquad>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_biquad_uninit');
+  late final _ma_biquad_uninit = _ma_biquad_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_biquad>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_biquad_reinit(
     ffi.Pointer<ma_biquad_config> pConfig,
@@ -258,10 +325,24 @@ class MiniAudioFfi {
 
   late final _ma_biquad_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_biquad_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_biquad_config>,
               ffi.Pointer<ma_biquad>)>>('ma_biquad_reinit');
   late final _ma_biquad_reinit = _ma_biquad_reinitPtr.asFunction<
       int Function(ffi.Pointer<ma_biquad_config>, ffi.Pointer<ma_biquad>)>();
+
+  int ma_biquad_clear_cache(
+    ffi.Pointer<ma_biquad> pBQ,
+  ) {
+    return _ma_biquad_clear_cache(
+      pBQ,
+    );
+  }
+
+  late final _ma_biquad_clear_cachePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_biquad>)>>(
+          'ma_biquad_clear_cache');
+  late final _ma_biquad_clear_cache = _ma_biquad_clear_cachePtr
+      .asFunction<int Function(ffi.Pointer<ma_biquad>)>();
 
   int ma_biquad_process_pcm_frames(
     ffi.Pointer<ma_biquad> pBQ,
@@ -279,7 +360,7 @@ class MiniAudioFfi {
 
   late final _ma_biquad_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_biquad>,
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>,
@@ -347,22 +428,83 @@ class MiniAudioFfi {
   late final _ma_lpf2_config_init = _ma_lpf2_config_initPtr
       .asFunction<ma_lpf2_config Function(int, int, int, double, double)>();
 
+  int ma_lpf1_get_heap_size(
+    ffi.Pointer<ma_lpf1_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_lpf1_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_lpf1_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_lpf1_config>,
+              ffi.Pointer<size_t>)>>('ma_lpf1_get_heap_size');
+  late final _ma_lpf1_get_heap_size = _ma_lpf1_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_lpf1_config>, ffi.Pointer<size_t>)>();
+
+  int ma_lpf1_init_preallocated(
+    ffi.Pointer<ma_lpf1_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_lpf1> pLPF,
+  ) {
+    return _ma_lpf1_init_preallocated(
+      pConfig,
+      pHeap,
+      pLPF,
+    );
+  }
+
+  late final _ma_lpf1_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_lpf1_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_lpf1>)>>('ma_lpf1_init_preallocated');
+  late final _ma_lpf1_init_preallocated =
+      _ma_lpf1_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_lpf1_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_lpf1>)>();
+
   int ma_lpf1_init(
     ffi.Pointer<ma_lpf1_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_lpf1> pLPF,
   ) {
     return _ma_lpf1_init(
       pConfig,
+      pAllocationCallbacks,
       pLPF,
     );
   }
 
   late final _ma_lpf1_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_lpf1_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_lpf1_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_lpf1>)>>('ma_lpf1_init');
   late final _ma_lpf1_init = _ma_lpf1_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_lpf1_config>, ffi.Pointer<ma_lpf1>)>();
+      int Function(ffi.Pointer<ma_lpf1_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_lpf1>)>();
+
+  void ma_lpf1_uninit(
+    ffi.Pointer<ma_lpf1> pLPF,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_lpf1_uninit(
+      pLPF,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_lpf1_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_lpf1>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_lpf1_uninit');
+  late final _ma_lpf1_uninit = _ma_lpf1_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_lpf1>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_lpf1_reinit(
     ffi.Pointer<ma_lpf1_config> pConfig,
@@ -376,10 +518,24 @@ class MiniAudioFfi {
 
   late final _ma_lpf1_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_lpf1_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_lpf1_config>,
               ffi.Pointer<ma_lpf1>)>>('ma_lpf1_reinit');
   late final _ma_lpf1_reinit = _ma_lpf1_reinitPtr.asFunction<
       int Function(ffi.Pointer<ma_lpf1_config>, ffi.Pointer<ma_lpf1>)>();
+
+  int ma_lpf1_clear_cache(
+    ffi.Pointer<ma_lpf1> pLPF,
+  ) {
+    return _ma_lpf1_clear_cache(
+      pLPF,
+    );
+  }
+
+  late final _ma_lpf1_clear_cachePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_lpf1>)>>(
+          'ma_lpf1_clear_cache');
+  late final _ma_lpf1_clear_cache =
+      _ma_lpf1_clear_cachePtr.asFunction<int Function(ffi.Pointer<ma_lpf1>)>();
 
   int ma_lpf1_process_pcm_frames(
     ffi.Pointer<ma_lpf1> pLPF,
@@ -397,7 +553,7 @@ class MiniAudioFfi {
 
   late final _ma_lpf1_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_lpf1>, ffi.Pointer<ffi.Void>,
+          ffi.Int32 Function(ffi.Pointer<ma_lpf1>, ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>, ma_uint64)>>('ma_lpf1_process_pcm_frames');
   late final _ma_lpf1_process_pcm_frames =
       _ma_lpf1_process_pcm_framesPtr.asFunction<
@@ -418,22 +574,83 @@ class MiniAudioFfi {
   late final _ma_lpf1_get_latency =
       _ma_lpf1_get_latencyPtr.asFunction<int Function(ffi.Pointer<ma_lpf1>)>();
 
+  int ma_lpf2_get_heap_size(
+    ffi.Pointer<ma_lpf2_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_lpf2_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_lpf2_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_lpf2_config>,
+              ffi.Pointer<size_t>)>>('ma_lpf2_get_heap_size');
+  late final _ma_lpf2_get_heap_size = _ma_lpf2_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_lpf2_config>, ffi.Pointer<size_t>)>();
+
+  int ma_lpf2_init_preallocated(
+    ffi.Pointer<ma_lpf2_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_lpf2> pHPF,
+  ) {
+    return _ma_lpf2_init_preallocated(
+      pConfig,
+      pHeap,
+      pHPF,
+    );
+  }
+
+  late final _ma_lpf2_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_lpf2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_lpf2>)>>('ma_lpf2_init_preallocated');
+  late final _ma_lpf2_init_preallocated =
+      _ma_lpf2_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_lpf2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_lpf2>)>();
+
   int ma_lpf2_init(
     ffi.Pointer<ma_lpf2_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_lpf2> pLPF,
   ) {
     return _ma_lpf2_init(
       pConfig,
+      pAllocationCallbacks,
       pLPF,
     );
   }
 
   late final _ma_lpf2_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_lpf2_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_lpf2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_lpf2>)>>('ma_lpf2_init');
   late final _ma_lpf2_init = _ma_lpf2_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_lpf2_config>, ffi.Pointer<ma_lpf2>)>();
+      int Function(ffi.Pointer<ma_lpf2_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_lpf2>)>();
+
+  void ma_lpf2_uninit(
+    ffi.Pointer<ma_lpf2> pLPF,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_lpf2_uninit(
+      pLPF,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_lpf2_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_lpf2>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_lpf2_uninit');
+  late final _ma_lpf2_uninit = _ma_lpf2_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_lpf2>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_lpf2_reinit(
     ffi.Pointer<ma_lpf2_config> pConfig,
@@ -447,10 +664,24 @@ class MiniAudioFfi {
 
   late final _ma_lpf2_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_lpf2_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_lpf2_config>,
               ffi.Pointer<ma_lpf2>)>>('ma_lpf2_reinit');
   late final _ma_lpf2_reinit = _ma_lpf2_reinitPtr.asFunction<
       int Function(ffi.Pointer<ma_lpf2_config>, ffi.Pointer<ma_lpf2>)>();
+
+  int ma_lpf2_clear_cache(
+    ffi.Pointer<ma_lpf2> pLPF,
+  ) {
+    return _ma_lpf2_clear_cache(
+      pLPF,
+    );
+  }
+
+  late final _ma_lpf2_clear_cachePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_lpf2>)>>(
+          'ma_lpf2_clear_cache');
+  late final _ma_lpf2_clear_cache =
+      _ma_lpf2_clear_cachePtr.asFunction<int Function(ffi.Pointer<ma_lpf2>)>();
 
   int ma_lpf2_process_pcm_frames(
     ffi.Pointer<ma_lpf2> pLPF,
@@ -468,7 +699,7 @@ class MiniAudioFfi {
 
   late final _ma_lpf2_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_lpf2>, ffi.Pointer<ffi.Void>,
+          ffi.Int32 Function(ffi.Pointer<ma_lpf2>, ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>, ma_uint64)>>('ma_lpf2_process_pcm_frames');
   late final _ma_lpf2_process_pcm_frames =
       _ma_lpf2_process_pcm_framesPtr.asFunction<
@@ -512,22 +743,83 @@ class MiniAudioFfi {
   late final _ma_lpf_config_init = _ma_lpf_config_initPtr
       .asFunction<ma_lpf_config Function(int, int, int, double, int)>();
 
+  int ma_lpf_get_heap_size(
+    ffi.Pointer<ma_lpf_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_lpf_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_lpf_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_lpf_config>,
+              ffi.Pointer<size_t>)>>('ma_lpf_get_heap_size');
+  late final _ma_lpf_get_heap_size = _ma_lpf_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_lpf_config>, ffi.Pointer<size_t>)>();
+
+  int ma_lpf_init_preallocated(
+    ffi.Pointer<ma_lpf_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_lpf> pLPF,
+  ) {
+    return _ma_lpf_init_preallocated(
+      pConfig,
+      pHeap,
+      pLPF,
+    );
+  }
+
+  late final _ma_lpf_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_lpf_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_lpf>)>>('ma_lpf_init_preallocated');
+  late final _ma_lpf_init_preallocated =
+      _ma_lpf_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_lpf_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_lpf>)>();
+
   int ma_lpf_init(
     ffi.Pointer<ma_lpf_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_lpf> pLPF,
   ) {
     return _ma_lpf_init(
       pConfig,
+      pAllocationCallbacks,
       pLPF,
     );
   }
 
   late final _ma_lpf_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_lpf_config>, ffi.Pointer<ma_lpf>)>>('ma_lpf_init');
+          ffi.Int32 Function(
+              ffi.Pointer<ma_lpf_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_lpf>)>>('ma_lpf_init');
   late final _ma_lpf_init = _ma_lpf_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_lpf_config>, ffi.Pointer<ma_lpf>)>();
+      int Function(ffi.Pointer<ma_lpf_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_lpf>)>();
+
+  void ma_lpf_uninit(
+    ffi.Pointer<ma_lpf> pLPF,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_lpf_uninit(
+      pLPF,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_lpf_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_lpf>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_lpf_uninit');
+  late final _ma_lpf_uninit = _ma_lpf_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_lpf>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_lpf_reinit(
     ffi.Pointer<ma_lpf_config> pConfig,
@@ -541,10 +833,24 @@ class MiniAudioFfi {
 
   late final _ma_lpf_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_lpf_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_lpf_config>,
               ffi.Pointer<ma_lpf>)>>('ma_lpf_reinit');
   late final _ma_lpf_reinit = _ma_lpf_reinitPtr.asFunction<
       int Function(ffi.Pointer<ma_lpf_config>, ffi.Pointer<ma_lpf>)>();
+
+  int ma_lpf_clear_cache(
+    ffi.Pointer<ma_lpf> pLPF,
+  ) {
+    return _ma_lpf_clear_cache(
+      pLPF,
+    );
+  }
+
+  late final _ma_lpf_clear_cachePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_lpf>)>>(
+          'ma_lpf_clear_cache');
+  late final _ma_lpf_clear_cache =
+      _ma_lpf_clear_cachePtr.asFunction<int Function(ffi.Pointer<ma_lpf>)>();
 
   int ma_lpf_process_pcm_frames(
     ffi.Pointer<ma_lpf> pLPF,
@@ -562,7 +868,7 @@ class MiniAudioFfi {
 
   late final _ma_lpf_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_lpf>, ffi.Pointer<ffi.Void>,
+          ffi.Int32 Function(ffi.Pointer<ma_lpf>, ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>, ma_uint64)>>('ma_lpf_process_pcm_frames');
   late final _ma_lpf_process_pcm_frames =
       _ma_lpf_process_pcm_framesPtr.asFunction<
@@ -627,22 +933,83 @@ class MiniAudioFfi {
   late final _ma_hpf2_config_init = _ma_hpf2_config_initPtr
       .asFunction<ma_hpf2_config Function(int, int, int, double, double)>();
 
+  int ma_hpf1_get_heap_size(
+    ffi.Pointer<ma_hpf1_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_hpf1_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_hpf1_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hpf1_config>,
+              ffi.Pointer<size_t>)>>('ma_hpf1_get_heap_size');
+  late final _ma_hpf1_get_heap_size = _ma_hpf1_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_hpf1_config>, ffi.Pointer<size_t>)>();
+
+  int ma_hpf1_init_preallocated(
+    ffi.Pointer<ma_hpf1_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_hpf1> pLPF,
+  ) {
+    return _ma_hpf1_init_preallocated(
+      pConfig,
+      pHeap,
+      pLPF,
+    );
+  }
+
+  late final _ma_hpf1_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hpf1_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_hpf1>)>>('ma_hpf1_init_preallocated');
+  late final _ma_hpf1_init_preallocated =
+      _ma_hpf1_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_hpf1_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_hpf1>)>();
+
   int ma_hpf1_init(
     ffi.Pointer<ma_hpf1_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_hpf1> pHPF,
   ) {
     return _ma_hpf1_init(
       pConfig,
+      pAllocationCallbacks,
       pHPF,
     );
   }
 
   late final _ma_hpf1_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_hpf1_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hpf1_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_hpf1>)>>('ma_hpf1_init');
   late final _ma_hpf1_init = _ma_hpf1_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_hpf1_config>, ffi.Pointer<ma_hpf1>)>();
+      int Function(ffi.Pointer<ma_hpf1_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_hpf1>)>();
+
+  void ma_hpf1_uninit(
+    ffi.Pointer<ma_hpf1> pHPF,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_hpf1_uninit(
+      pHPF,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_hpf1_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_hpf1>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_hpf1_uninit');
+  late final _ma_hpf1_uninit = _ma_hpf1_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_hpf1>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_hpf1_reinit(
     ffi.Pointer<ma_hpf1_config> pConfig,
@@ -656,7 +1023,7 @@ class MiniAudioFfi {
 
   late final _ma_hpf1_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_hpf1_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_hpf1_config>,
               ffi.Pointer<ma_hpf1>)>>('ma_hpf1_reinit');
   late final _ma_hpf1_reinit = _ma_hpf1_reinitPtr.asFunction<
       int Function(ffi.Pointer<ma_hpf1_config>, ffi.Pointer<ma_hpf1>)>();
@@ -677,7 +1044,7 @@ class MiniAudioFfi {
 
   late final _ma_hpf1_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_hpf1>, ffi.Pointer<ffi.Void>,
+          ffi.Int32 Function(ffi.Pointer<ma_hpf1>, ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>, ma_uint64)>>('ma_hpf1_process_pcm_frames');
   late final _ma_hpf1_process_pcm_frames =
       _ma_hpf1_process_pcm_framesPtr.asFunction<
@@ -698,22 +1065,83 @@ class MiniAudioFfi {
   late final _ma_hpf1_get_latency =
       _ma_hpf1_get_latencyPtr.asFunction<int Function(ffi.Pointer<ma_hpf1>)>();
 
+  int ma_hpf2_get_heap_size(
+    ffi.Pointer<ma_hpf2_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_hpf2_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_hpf2_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hpf2_config>,
+              ffi.Pointer<size_t>)>>('ma_hpf2_get_heap_size');
+  late final _ma_hpf2_get_heap_size = _ma_hpf2_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_hpf2_config>, ffi.Pointer<size_t>)>();
+
+  int ma_hpf2_init_preallocated(
+    ffi.Pointer<ma_hpf2_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_hpf2> pHPF,
+  ) {
+    return _ma_hpf2_init_preallocated(
+      pConfig,
+      pHeap,
+      pHPF,
+    );
+  }
+
+  late final _ma_hpf2_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hpf2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_hpf2>)>>('ma_hpf2_init_preallocated');
+  late final _ma_hpf2_init_preallocated =
+      _ma_hpf2_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_hpf2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_hpf2>)>();
+
   int ma_hpf2_init(
     ffi.Pointer<ma_hpf2_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_hpf2> pHPF,
   ) {
     return _ma_hpf2_init(
       pConfig,
+      pAllocationCallbacks,
       pHPF,
     );
   }
 
   late final _ma_hpf2_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_hpf2_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hpf2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_hpf2>)>>('ma_hpf2_init');
   late final _ma_hpf2_init = _ma_hpf2_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_hpf2_config>, ffi.Pointer<ma_hpf2>)>();
+      int Function(ffi.Pointer<ma_hpf2_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_hpf2>)>();
+
+  void ma_hpf2_uninit(
+    ffi.Pointer<ma_hpf2> pHPF,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_hpf2_uninit(
+      pHPF,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_hpf2_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_hpf2>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_hpf2_uninit');
+  late final _ma_hpf2_uninit = _ma_hpf2_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_hpf2>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_hpf2_reinit(
     ffi.Pointer<ma_hpf2_config> pConfig,
@@ -727,7 +1155,7 @@ class MiniAudioFfi {
 
   late final _ma_hpf2_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_hpf2_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_hpf2_config>,
               ffi.Pointer<ma_hpf2>)>>('ma_hpf2_reinit');
   late final _ma_hpf2_reinit = _ma_hpf2_reinitPtr.asFunction<
       int Function(ffi.Pointer<ma_hpf2_config>, ffi.Pointer<ma_hpf2>)>();
@@ -748,7 +1176,7 @@ class MiniAudioFfi {
 
   late final _ma_hpf2_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_hpf2>, ffi.Pointer<ffi.Void>,
+          ffi.Int32 Function(ffi.Pointer<ma_hpf2>, ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>, ma_uint64)>>('ma_hpf2_process_pcm_frames');
   late final _ma_hpf2_process_pcm_frames =
       _ma_hpf2_process_pcm_framesPtr.asFunction<
@@ -792,22 +1220,83 @@ class MiniAudioFfi {
   late final _ma_hpf_config_init = _ma_hpf_config_initPtr
       .asFunction<ma_hpf_config Function(int, int, int, double, int)>();
 
+  int ma_hpf_get_heap_size(
+    ffi.Pointer<ma_hpf_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_hpf_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_hpf_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hpf_config>,
+              ffi.Pointer<size_t>)>>('ma_hpf_get_heap_size');
+  late final _ma_hpf_get_heap_size = _ma_hpf_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_hpf_config>, ffi.Pointer<size_t>)>();
+
+  int ma_hpf_init_preallocated(
+    ffi.Pointer<ma_hpf_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_hpf> pLPF,
+  ) {
+    return _ma_hpf_init_preallocated(
+      pConfig,
+      pHeap,
+      pLPF,
+    );
+  }
+
+  late final _ma_hpf_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hpf_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_hpf>)>>('ma_hpf_init_preallocated');
+  late final _ma_hpf_init_preallocated =
+      _ma_hpf_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_hpf_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_hpf>)>();
+
   int ma_hpf_init(
     ffi.Pointer<ma_hpf_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_hpf> pHPF,
   ) {
     return _ma_hpf_init(
       pConfig,
+      pAllocationCallbacks,
       pHPF,
     );
   }
 
   late final _ma_hpf_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_hpf_config>, ffi.Pointer<ma_hpf>)>>('ma_hpf_init');
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hpf_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_hpf>)>>('ma_hpf_init');
   late final _ma_hpf_init = _ma_hpf_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_hpf_config>, ffi.Pointer<ma_hpf>)>();
+      int Function(ffi.Pointer<ma_hpf_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_hpf>)>();
+
+  void ma_hpf_uninit(
+    ffi.Pointer<ma_hpf> pHPF,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_hpf_uninit(
+      pHPF,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_hpf_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_hpf>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_hpf_uninit');
+  late final _ma_hpf_uninit = _ma_hpf_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_hpf>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_hpf_reinit(
     ffi.Pointer<ma_hpf_config> pConfig,
@@ -821,7 +1310,7 @@ class MiniAudioFfi {
 
   late final _ma_hpf_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_hpf_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_hpf_config>,
               ffi.Pointer<ma_hpf>)>>('ma_hpf_reinit');
   late final _ma_hpf_reinit = _ma_hpf_reinitPtr.asFunction<
       int Function(ffi.Pointer<ma_hpf_config>, ffi.Pointer<ma_hpf>)>();
@@ -842,7 +1331,7 @@ class MiniAudioFfi {
 
   late final _ma_hpf_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_hpf>, ffi.Pointer<ffi.Void>,
+          ffi.Int32 Function(ffi.Pointer<ma_hpf>, ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>, ma_uint64)>>('ma_hpf_process_pcm_frames');
   late final _ma_hpf_process_pcm_frames =
       _ma_hpf_process_pcm_framesPtr.asFunction<
@@ -886,22 +1375,83 @@ class MiniAudioFfi {
   late final _ma_bpf2_config_init = _ma_bpf2_config_initPtr
       .asFunction<ma_bpf2_config Function(int, int, int, double, double)>();
 
+  int ma_bpf2_get_heap_size(
+    ffi.Pointer<ma_bpf2_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_bpf2_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_bpf2_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_bpf2_config>,
+              ffi.Pointer<size_t>)>>('ma_bpf2_get_heap_size');
+  late final _ma_bpf2_get_heap_size = _ma_bpf2_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_bpf2_config>, ffi.Pointer<size_t>)>();
+
+  int ma_bpf2_init_preallocated(
+    ffi.Pointer<ma_bpf2_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_bpf2> pBPF,
+  ) {
+    return _ma_bpf2_init_preallocated(
+      pConfig,
+      pHeap,
+      pBPF,
+    );
+  }
+
+  late final _ma_bpf2_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_bpf2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_bpf2>)>>('ma_bpf2_init_preallocated');
+  late final _ma_bpf2_init_preallocated =
+      _ma_bpf2_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_bpf2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_bpf2>)>();
+
   int ma_bpf2_init(
     ffi.Pointer<ma_bpf2_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_bpf2> pBPF,
   ) {
     return _ma_bpf2_init(
       pConfig,
+      pAllocationCallbacks,
       pBPF,
     );
   }
 
   late final _ma_bpf2_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_bpf2_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_bpf2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_bpf2>)>>('ma_bpf2_init');
   late final _ma_bpf2_init = _ma_bpf2_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_bpf2_config>, ffi.Pointer<ma_bpf2>)>();
+      int Function(ffi.Pointer<ma_bpf2_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_bpf2>)>();
+
+  void ma_bpf2_uninit(
+    ffi.Pointer<ma_bpf2> pBPF,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_bpf2_uninit(
+      pBPF,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_bpf2_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_bpf2>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_bpf2_uninit');
+  late final _ma_bpf2_uninit = _ma_bpf2_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_bpf2>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_bpf2_reinit(
     ffi.Pointer<ma_bpf2_config> pConfig,
@@ -915,7 +1465,7 @@ class MiniAudioFfi {
 
   late final _ma_bpf2_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_bpf2_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_bpf2_config>,
               ffi.Pointer<ma_bpf2>)>>('ma_bpf2_reinit');
   late final _ma_bpf2_reinit = _ma_bpf2_reinitPtr.asFunction<
       int Function(ffi.Pointer<ma_bpf2_config>, ffi.Pointer<ma_bpf2>)>();
@@ -936,7 +1486,7 @@ class MiniAudioFfi {
 
   late final _ma_bpf2_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_bpf2>, ffi.Pointer<ffi.Void>,
+          ffi.Int32 Function(ffi.Pointer<ma_bpf2>, ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>, ma_uint64)>>('ma_bpf2_process_pcm_frames');
   late final _ma_bpf2_process_pcm_frames =
       _ma_bpf2_process_pcm_framesPtr.asFunction<
@@ -980,22 +1530,83 @@ class MiniAudioFfi {
   late final _ma_bpf_config_init = _ma_bpf_config_initPtr
       .asFunction<ma_bpf_config Function(int, int, int, double, int)>();
 
+  int ma_bpf_get_heap_size(
+    ffi.Pointer<ma_bpf_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_bpf_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_bpf_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_bpf_config>,
+              ffi.Pointer<size_t>)>>('ma_bpf_get_heap_size');
+  late final _ma_bpf_get_heap_size = _ma_bpf_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_bpf_config>, ffi.Pointer<size_t>)>();
+
+  int ma_bpf_init_preallocated(
+    ffi.Pointer<ma_bpf_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_bpf> pBPF,
+  ) {
+    return _ma_bpf_init_preallocated(
+      pConfig,
+      pHeap,
+      pBPF,
+    );
+  }
+
+  late final _ma_bpf_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_bpf_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_bpf>)>>('ma_bpf_init_preallocated');
+  late final _ma_bpf_init_preallocated =
+      _ma_bpf_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_bpf_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_bpf>)>();
+
   int ma_bpf_init(
     ffi.Pointer<ma_bpf_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_bpf> pBPF,
   ) {
     return _ma_bpf_init(
       pConfig,
+      pAllocationCallbacks,
       pBPF,
     );
   }
 
   late final _ma_bpf_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_bpf_config>, ffi.Pointer<ma_bpf>)>>('ma_bpf_init');
+          ffi.Int32 Function(
+              ffi.Pointer<ma_bpf_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_bpf>)>>('ma_bpf_init');
   late final _ma_bpf_init = _ma_bpf_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_bpf_config>, ffi.Pointer<ma_bpf>)>();
+      int Function(ffi.Pointer<ma_bpf_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_bpf>)>();
+
+  void ma_bpf_uninit(
+    ffi.Pointer<ma_bpf> pBPF,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_bpf_uninit(
+      pBPF,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_bpf_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_bpf>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_bpf_uninit');
+  late final _ma_bpf_uninit = _ma_bpf_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_bpf>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_bpf_reinit(
     ffi.Pointer<ma_bpf_config> pConfig,
@@ -1009,7 +1620,7 @@ class MiniAudioFfi {
 
   late final _ma_bpf_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_bpf_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_bpf_config>,
               ffi.Pointer<ma_bpf>)>>('ma_bpf_reinit');
   late final _ma_bpf_reinit = _ma_bpf_reinitPtr.asFunction<
       int Function(ffi.Pointer<ma_bpf_config>, ffi.Pointer<ma_bpf>)>();
@@ -1030,7 +1641,7 @@ class MiniAudioFfi {
 
   late final _ma_bpf_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_bpf>, ffi.Pointer<ffi.Void>,
+          ffi.Int32 Function(ffi.Pointer<ma_bpf>, ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>, ma_uint64)>>('ma_bpf_process_pcm_frames');
   late final _ma_bpf_process_pcm_frames =
       _ma_bpf_process_pcm_framesPtr.asFunction<
@@ -1074,22 +1685,85 @@ class MiniAudioFfi {
   late final _ma_notch2_config_init = _ma_notch2_config_initPtr
       .asFunction<ma_notch2_config Function(int, int, int, double, double)>();
 
+  int ma_notch2_get_heap_size(
+    ffi.Pointer<ma_notch2_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_notch2_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_notch2_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_notch2_config>,
+              ffi.Pointer<size_t>)>>('ma_notch2_get_heap_size');
+  late final _ma_notch2_get_heap_size = _ma_notch2_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_notch2_config>, ffi.Pointer<size_t>)>();
+
+  int ma_notch2_init_preallocated(
+    ffi.Pointer<ma_notch2_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_notch2> pFilter,
+  ) {
+    return _ma_notch2_init_preallocated(
+      pConfig,
+      pHeap,
+      pFilter,
+    );
+  }
+
+  late final _ma_notch2_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_notch2_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_notch2>)>>('ma_notch2_init_preallocated');
+  late final _ma_notch2_init_preallocated =
+      _ma_notch2_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_notch2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_notch2>)>();
+
   int ma_notch2_init(
     ffi.Pointer<ma_notch2_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_notch2> pFilter,
   ) {
     return _ma_notch2_init(
       pConfig,
+      pAllocationCallbacks,
       pFilter,
     );
   }
 
   late final _ma_notch2_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_notch2_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_notch2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_notch2>)>>('ma_notch2_init');
   late final _ma_notch2_init = _ma_notch2_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_notch2_config>, ffi.Pointer<ma_notch2>)>();
+      int Function(ffi.Pointer<ma_notch2_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_notch2>)>();
+
+  void ma_notch2_uninit(
+    ffi.Pointer<ma_notch2> pFilter,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_notch2_uninit(
+      pFilter,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_notch2_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_notch2>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_notch2_uninit');
+  late final _ma_notch2_uninit = _ma_notch2_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_notch2>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_notch2_reinit(
     ffi.Pointer<ma_notch2_config> pConfig,
@@ -1103,7 +1777,7 @@ class MiniAudioFfi {
 
   late final _ma_notch2_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_notch2_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_notch2_config>,
               ffi.Pointer<ma_notch2>)>>('ma_notch2_reinit');
   late final _ma_notch2_reinit = _ma_notch2_reinitPtr.asFunction<
       int Function(ffi.Pointer<ma_notch2_config>, ffi.Pointer<ma_notch2>)>();
@@ -1124,7 +1798,7 @@ class MiniAudioFfi {
 
   late final _ma_notch2_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_notch2>,
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>,
@@ -1173,22 +1847,85 @@ class MiniAudioFfi {
   late final _ma_peak2_config_init = _ma_peak2_config_initPtr.asFunction<
       ma_peak2_config Function(int, int, int, double, double, double)>();
 
+  int ma_peak2_get_heap_size(
+    ffi.Pointer<ma_peak2_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_peak2_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_peak2_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_peak2_config>,
+              ffi.Pointer<size_t>)>>('ma_peak2_get_heap_size');
+  late final _ma_peak2_get_heap_size = _ma_peak2_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_peak2_config>, ffi.Pointer<size_t>)>();
+
+  int ma_peak2_init_preallocated(
+    ffi.Pointer<ma_peak2_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_peak2> pFilter,
+  ) {
+    return _ma_peak2_init_preallocated(
+      pConfig,
+      pHeap,
+      pFilter,
+    );
+  }
+
+  late final _ma_peak2_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_peak2_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_peak2>)>>('ma_peak2_init_preallocated');
+  late final _ma_peak2_init_preallocated =
+      _ma_peak2_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_peak2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_peak2>)>();
+
   int ma_peak2_init(
     ffi.Pointer<ma_peak2_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_peak2> pFilter,
   ) {
     return _ma_peak2_init(
       pConfig,
+      pAllocationCallbacks,
       pFilter,
     );
   }
 
   late final _ma_peak2_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_peak2_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_peak2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_peak2>)>>('ma_peak2_init');
   late final _ma_peak2_init = _ma_peak2_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_peak2_config>, ffi.Pointer<ma_peak2>)>();
+      int Function(ffi.Pointer<ma_peak2_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_peak2>)>();
+
+  void ma_peak2_uninit(
+    ffi.Pointer<ma_peak2> pFilter,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_peak2_uninit(
+      pFilter,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_peak2_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_peak2>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_peak2_uninit');
+  late final _ma_peak2_uninit = _ma_peak2_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_peak2>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_peak2_reinit(
     ffi.Pointer<ma_peak2_config> pConfig,
@@ -1202,7 +1939,7 @@ class MiniAudioFfi {
 
   late final _ma_peak2_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_peak2_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_peak2_config>,
               ffi.Pointer<ma_peak2>)>>('ma_peak2_reinit');
   late final _ma_peak2_reinit = _ma_peak2_reinitPtr.asFunction<
       int Function(ffi.Pointer<ma_peak2_config>, ffi.Pointer<ma_peak2>)>();
@@ -1223,7 +1960,7 @@ class MiniAudioFfi {
 
   late final _ma_peak2_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_peak2>,
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>,
@@ -1272,23 +2009,86 @@ class MiniAudioFfi {
   late final _ma_loshelf2_config_init = _ma_loshelf2_config_initPtr.asFunction<
       ma_loshelf2_config Function(int, int, int, double, double, double)>();
 
+  int ma_loshelf2_get_heap_size(
+    ffi.Pointer<ma_loshelf2_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_loshelf2_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_loshelf2_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_loshelf2_config>,
+              ffi.Pointer<size_t>)>>('ma_loshelf2_get_heap_size');
+  late final _ma_loshelf2_get_heap_size =
+      _ma_loshelf2_get_heap_sizePtr.asFunction<
+          int Function(ffi.Pointer<ma_loshelf2_config>, ffi.Pointer<size_t>)>();
+
+  int ma_loshelf2_init_preallocated(
+    ffi.Pointer<ma_loshelf2_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_loshelf2> pFilter,
+  ) {
+    return _ma_loshelf2_init_preallocated(
+      pConfig,
+      pHeap,
+      pFilter,
+    );
+  }
+
+  late final _ma_loshelf2_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_loshelf2_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_loshelf2>)>>('ma_loshelf2_init_preallocated');
+  late final _ma_loshelf2_init_preallocated =
+      _ma_loshelf2_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_loshelf2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_loshelf2>)>();
+
   int ma_loshelf2_init(
     ffi.Pointer<ma_loshelf2_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_loshelf2> pFilter,
   ) {
     return _ma_loshelf2_init(
       pConfig,
+      pAllocationCallbacks,
       pFilter,
     );
   }
 
   late final _ma_loshelf2_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_loshelf2_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_loshelf2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_loshelf2>)>>('ma_loshelf2_init');
   late final _ma_loshelf2_init = _ma_loshelf2_initPtr.asFunction<
-      int Function(
-          ffi.Pointer<ma_loshelf2_config>, ffi.Pointer<ma_loshelf2>)>();
+      int Function(ffi.Pointer<ma_loshelf2_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_loshelf2>)>();
+
+  void ma_loshelf2_uninit(
+    ffi.Pointer<ma_loshelf2> pFilter,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_loshelf2_uninit(
+      pFilter,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_loshelf2_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_loshelf2>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_loshelf2_uninit');
+  late final _ma_loshelf2_uninit = _ma_loshelf2_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_loshelf2>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_loshelf2_reinit(
     ffi.Pointer<ma_loshelf2_config> pConfig,
@@ -1302,7 +2102,7 @@ class MiniAudioFfi {
 
   late final _ma_loshelf2_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_loshelf2_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_loshelf2_config>,
               ffi.Pointer<ma_loshelf2>)>>('ma_loshelf2_reinit');
   late final _ma_loshelf2_reinit = _ma_loshelf2_reinitPtr.asFunction<
       int Function(
@@ -1324,7 +2124,7 @@ class MiniAudioFfi {
 
   late final _ma_loshelf2_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_loshelf2>,
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>,
@@ -1373,23 +2173,86 @@ class MiniAudioFfi {
   late final _ma_hishelf2_config_init = _ma_hishelf2_config_initPtr.asFunction<
       ma_hishelf2_config Function(int, int, int, double, double, double)>();
 
+  int ma_hishelf2_get_heap_size(
+    ffi.Pointer<ma_hishelf2_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_hishelf2_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_hishelf2_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hishelf2_config>,
+              ffi.Pointer<size_t>)>>('ma_hishelf2_get_heap_size');
+  late final _ma_hishelf2_get_heap_size =
+      _ma_hishelf2_get_heap_sizePtr.asFunction<
+          int Function(ffi.Pointer<ma_hishelf2_config>, ffi.Pointer<size_t>)>();
+
+  int ma_hishelf2_init_preallocated(
+    ffi.Pointer<ma_hishelf2_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_hishelf2> pFilter,
+  ) {
+    return _ma_hishelf2_init_preallocated(
+      pConfig,
+      pHeap,
+      pFilter,
+    );
+  }
+
+  late final _ma_hishelf2_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hishelf2_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_hishelf2>)>>('ma_hishelf2_init_preallocated');
+  late final _ma_hishelf2_init_preallocated =
+      _ma_hishelf2_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_hishelf2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_hishelf2>)>();
+
   int ma_hishelf2_init(
     ffi.Pointer<ma_hishelf2_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_hishelf2> pFilter,
   ) {
     return _ma_hishelf2_init(
       pConfig,
+      pAllocationCallbacks,
       pFilter,
     );
   }
 
   late final _ma_hishelf2_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_hishelf2_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hishelf2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_hishelf2>)>>('ma_hishelf2_init');
   late final _ma_hishelf2_init = _ma_hishelf2_initPtr.asFunction<
-      int Function(
-          ffi.Pointer<ma_hishelf2_config>, ffi.Pointer<ma_hishelf2>)>();
+      int Function(ffi.Pointer<ma_hishelf2_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_hishelf2>)>();
+
+  void ma_hishelf2_uninit(
+    ffi.Pointer<ma_hishelf2> pFilter,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_hishelf2_uninit(
+      pFilter,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_hishelf2_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_hishelf2>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_hishelf2_uninit');
+  late final _ma_hishelf2_uninit = _ma_hishelf2_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_hishelf2>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_hishelf2_reinit(
     ffi.Pointer<ma_hishelf2_config> pConfig,
@@ -1403,7 +2266,7 @@ class MiniAudioFfi {
 
   late final _ma_hishelf2_reinitPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_hishelf2_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_hishelf2_config>,
               ffi.Pointer<ma_hishelf2>)>>('ma_hishelf2_reinit');
   late final _ma_hishelf2_reinit = _ma_hishelf2_reinitPtr.asFunction<
       int Function(
@@ -1425,7 +2288,7 @@ class MiniAudioFfi {
 
   late final _ma_hishelf2_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_hishelf2>,
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>,
@@ -1449,6 +2312,1621 @@ class MiniAudioFfi {
   late final _ma_hishelf2_get_latency = _ma_hishelf2_get_latencyPtr
       .asFunction<int Function(ffi.Pointer<ma_hishelf2>)>();
 
+  ma_delay_config ma_delay_config_init(
+    int channels,
+    int sampleRate,
+    int delayInFrames,
+    double decay,
+  ) {
+    return _ma_delay_config_init(
+      channels,
+      sampleRate,
+      delayInFrames,
+      decay,
+    );
+  }
+
+  late final _ma_delay_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_delay_config Function(ma_uint32, ma_uint32, ma_uint32,
+              ffi.Float)>>('ma_delay_config_init');
+  late final _ma_delay_config_init = _ma_delay_config_initPtr
+      .asFunction<ma_delay_config Function(int, int, int, double)>();
+
+  int ma_delay_init(
+    ffi.Pointer<ma_delay_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_delay> pDelay,
+  ) {
+    return _ma_delay_init(
+      pConfig,
+      pAllocationCallbacks,
+      pDelay,
+    );
+  }
+
+  late final _ma_delay_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_delay_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_delay>)>>('ma_delay_init');
+  late final _ma_delay_init = _ma_delay_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_delay_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_delay>)>();
+
+  void ma_delay_uninit(
+    ffi.Pointer<ma_delay> pDelay,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_delay_uninit(
+      pDelay,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_delay_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_delay>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_delay_uninit');
+  late final _ma_delay_uninit = _ma_delay_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_delay>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  int ma_delay_process_pcm_frames(
+    ffi.Pointer<ma_delay> pDelay,
+    ffi.Pointer<ffi.Void> pFramesOut,
+    ffi.Pointer<ffi.Void> pFramesIn,
+    int frameCount,
+  ) {
+    return _ma_delay_process_pcm_frames(
+      pDelay,
+      pFramesOut,
+      pFramesIn,
+      frameCount,
+    );
+  }
+
+  late final _ma_delay_process_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_delay>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint32)>>('ma_delay_process_pcm_frames');
+  late final _ma_delay_process_pcm_frames =
+      _ma_delay_process_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_delay>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>, int)>();
+
+  void ma_delay_set_wet(
+    ffi.Pointer<ma_delay> pDelay,
+    double value,
+  ) {
+    return _ma_delay_set_wet(
+      pDelay,
+      value,
+    );
+  }
+
+  late final _ma_delay_set_wetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_delay>, ffi.Float)>>('ma_delay_set_wet');
+  late final _ma_delay_set_wet = _ma_delay_set_wetPtr
+      .asFunction<void Function(ffi.Pointer<ma_delay>, double)>();
+
+  double ma_delay_get_wet(
+    ffi.Pointer<ma_delay> pDelay,
+  ) {
+    return _ma_delay_get_wet(
+      pDelay,
+    );
+  }
+
+  late final _ma_delay_get_wetPtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_delay>)>>(
+          'ma_delay_get_wet');
+  late final _ma_delay_get_wet =
+      _ma_delay_get_wetPtr.asFunction<double Function(ffi.Pointer<ma_delay>)>();
+
+  void ma_delay_set_dry(
+    ffi.Pointer<ma_delay> pDelay,
+    double value,
+  ) {
+    return _ma_delay_set_dry(
+      pDelay,
+      value,
+    );
+  }
+
+  late final _ma_delay_set_dryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_delay>, ffi.Float)>>('ma_delay_set_dry');
+  late final _ma_delay_set_dry = _ma_delay_set_dryPtr
+      .asFunction<void Function(ffi.Pointer<ma_delay>, double)>();
+
+  double ma_delay_get_dry(
+    ffi.Pointer<ma_delay> pDelay,
+  ) {
+    return _ma_delay_get_dry(
+      pDelay,
+    );
+  }
+
+  late final _ma_delay_get_dryPtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_delay>)>>(
+          'ma_delay_get_dry');
+  late final _ma_delay_get_dry =
+      _ma_delay_get_dryPtr.asFunction<double Function(ffi.Pointer<ma_delay>)>();
+
+  void ma_delay_set_decay(
+    ffi.Pointer<ma_delay> pDelay,
+    double value,
+  ) {
+    return _ma_delay_set_decay(
+      pDelay,
+      value,
+    );
+  }
+
+  late final _ma_delay_set_decayPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_delay>, ffi.Float)>>('ma_delay_set_decay');
+  late final _ma_delay_set_decay = _ma_delay_set_decayPtr
+      .asFunction<void Function(ffi.Pointer<ma_delay>, double)>();
+
+  double ma_delay_get_decay(
+    ffi.Pointer<ma_delay> pDelay,
+  ) {
+    return _ma_delay_get_decay(
+      pDelay,
+    );
+  }
+
+  late final _ma_delay_get_decayPtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_delay>)>>(
+          'ma_delay_get_decay');
+  late final _ma_delay_get_decay = _ma_delay_get_decayPtr
+      .asFunction<double Function(ffi.Pointer<ma_delay>)>();
+
+  ma_gainer_config ma_gainer_config_init(
+    int channels,
+    int smoothTimeInFrames,
+  ) {
+    return _ma_gainer_config_init(
+      channels,
+      smoothTimeInFrames,
+    );
+  }
+
+  late final _ma_gainer_config_initPtr = _lookup<
+          ffi.NativeFunction<ma_gainer_config Function(ma_uint32, ma_uint32)>>(
+      'ma_gainer_config_init');
+  late final _ma_gainer_config_init = _ma_gainer_config_initPtr
+      .asFunction<ma_gainer_config Function(int, int)>();
+
+  int ma_gainer_get_heap_size(
+    ffi.Pointer<ma_gainer_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_gainer_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_gainer_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_gainer_config>,
+              ffi.Pointer<size_t>)>>('ma_gainer_get_heap_size');
+  late final _ma_gainer_get_heap_size = _ma_gainer_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_gainer_config>, ffi.Pointer<size_t>)>();
+
+  int ma_gainer_init_preallocated(
+    ffi.Pointer<ma_gainer_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_gainer> pGainer,
+  ) {
+    return _ma_gainer_init_preallocated(
+      pConfig,
+      pHeap,
+      pGainer,
+    );
+  }
+
+  late final _ma_gainer_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_gainer_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_gainer>)>>('ma_gainer_init_preallocated');
+  late final _ma_gainer_init_preallocated =
+      _ma_gainer_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_gainer_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_gainer>)>();
+
+  int ma_gainer_init(
+    ffi.Pointer<ma_gainer_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_gainer> pGainer,
+  ) {
+    return _ma_gainer_init(
+      pConfig,
+      pAllocationCallbacks,
+      pGainer,
+    );
+  }
+
+  late final _ma_gainer_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_gainer_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_gainer>)>>('ma_gainer_init');
+  late final _ma_gainer_init = _ma_gainer_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_gainer_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_gainer>)>();
+
+  void ma_gainer_uninit(
+    ffi.Pointer<ma_gainer> pGainer,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_gainer_uninit(
+      pGainer,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_gainer_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_gainer>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_gainer_uninit');
+  late final _ma_gainer_uninit = _ma_gainer_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_gainer>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  int ma_gainer_process_pcm_frames(
+    ffi.Pointer<ma_gainer> pGainer,
+    ffi.Pointer<ffi.Void> pFramesOut,
+    ffi.Pointer<ffi.Void> pFramesIn,
+    int frameCount,
+  ) {
+    return _ma_gainer_process_pcm_frames(
+      pGainer,
+      pFramesOut,
+      pFramesIn,
+      frameCount,
+    );
+  }
+
+  late final _ma_gainer_process_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_gainer>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>>('ma_gainer_process_pcm_frames');
+  late final _ma_gainer_process_pcm_frames =
+      _ma_gainer_process_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_gainer>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>, int)>();
+
+  int ma_gainer_set_gain(
+    ffi.Pointer<ma_gainer> pGainer,
+    double newGain,
+  ) {
+    return _ma_gainer_set_gain(
+      pGainer,
+      newGain,
+    );
+  }
+
+  late final _ma_gainer_set_gainPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_gainer>, ffi.Float)>>('ma_gainer_set_gain');
+  late final _ma_gainer_set_gain = _ma_gainer_set_gainPtr
+      .asFunction<int Function(ffi.Pointer<ma_gainer>, double)>();
+
+  int ma_gainer_set_gains(
+    ffi.Pointer<ma_gainer> pGainer,
+    ffi.Pointer<ffi.Float> pNewGains,
+  ) {
+    return _ma_gainer_set_gains(
+      pGainer,
+      pNewGains,
+    );
+  }
+
+  late final _ma_gainer_set_gainsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_gainer>,
+              ffi.Pointer<ffi.Float>)>>('ma_gainer_set_gains');
+  late final _ma_gainer_set_gains = _ma_gainer_set_gainsPtr.asFunction<
+      int Function(ffi.Pointer<ma_gainer>, ffi.Pointer<ffi.Float>)>();
+
+  ma_panner_config ma_panner_config_init(
+    int format,
+    int channels,
+  ) {
+    return _ma_panner_config_init(
+      format,
+      channels,
+    );
+  }
+
+  late final _ma_panner_config_initPtr = _lookup<
+          ffi.NativeFunction<ma_panner_config Function(ffi.Int32, ma_uint32)>>(
+      'ma_panner_config_init');
+  late final _ma_panner_config_init = _ma_panner_config_initPtr
+      .asFunction<ma_panner_config Function(int, int)>();
+
+  int ma_panner_init(
+    ffi.Pointer<ma_panner_config> pConfig,
+    ffi.Pointer<ma_panner> pPanner,
+  ) {
+    return _ma_panner_init(
+      pConfig,
+      pPanner,
+    );
+  }
+
+  late final _ma_panner_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_panner_config>,
+              ffi.Pointer<ma_panner>)>>('ma_panner_init');
+  late final _ma_panner_init = _ma_panner_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_panner_config>, ffi.Pointer<ma_panner>)>();
+
+  int ma_panner_process_pcm_frames(
+    ffi.Pointer<ma_panner> pPanner,
+    ffi.Pointer<ffi.Void> pFramesOut,
+    ffi.Pointer<ffi.Void> pFramesIn,
+    int frameCount,
+  ) {
+    return _ma_panner_process_pcm_frames(
+      pPanner,
+      pFramesOut,
+      pFramesIn,
+      frameCount,
+    );
+  }
+
+  late final _ma_panner_process_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_panner>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>>('ma_panner_process_pcm_frames');
+  late final _ma_panner_process_pcm_frames =
+      _ma_panner_process_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_panner>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>, int)>();
+
+  void ma_panner_set_mode(
+    ffi.Pointer<ma_panner> pPanner,
+    int mode,
+  ) {
+    return _ma_panner_set_mode(
+      pPanner,
+      mode,
+    );
+  }
+
+  late final _ma_panner_set_modePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_panner>, ffi.Int32)>>('ma_panner_set_mode');
+  late final _ma_panner_set_mode = _ma_panner_set_modePtr
+      .asFunction<void Function(ffi.Pointer<ma_panner>, int)>();
+
+  int ma_panner_get_mode(
+    ffi.Pointer<ma_panner> pPanner,
+  ) {
+    return _ma_panner_get_mode(
+      pPanner,
+    );
+  }
+
+  late final _ma_panner_get_modePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_panner>)>>(
+          'ma_panner_get_mode');
+  late final _ma_panner_get_mode =
+      _ma_panner_get_modePtr.asFunction<int Function(ffi.Pointer<ma_panner>)>();
+
+  void ma_panner_set_pan(
+    ffi.Pointer<ma_panner> pPanner,
+    double pan,
+  ) {
+    return _ma_panner_set_pan(
+      pPanner,
+      pan,
+    );
+  }
+
+  late final _ma_panner_set_panPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_panner>, ffi.Float)>>('ma_panner_set_pan');
+  late final _ma_panner_set_pan = _ma_panner_set_panPtr
+      .asFunction<void Function(ffi.Pointer<ma_panner>, double)>();
+
+  double ma_panner_get_pan(
+    ffi.Pointer<ma_panner> pPanner,
+  ) {
+    return _ma_panner_get_pan(
+      pPanner,
+    );
+  }
+
+  late final _ma_panner_get_panPtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_panner>)>>(
+          'ma_panner_get_pan');
+  late final _ma_panner_get_pan = _ma_panner_get_panPtr
+      .asFunction<double Function(ffi.Pointer<ma_panner>)>();
+
+  ma_fader_config ma_fader_config_init(
+    int format,
+    int channels,
+    int sampleRate,
+  ) {
+    return _ma_fader_config_init(
+      format,
+      channels,
+      sampleRate,
+    );
+  }
+
+  late final _ma_fader_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_fader_config Function(
+              ffi.Int32, ma_uint32, ma_uint32)>>('ma_fader_config_init');
+  late final _ma_fader_config_init = _ma_fader_config_initPtr
+      .asFunction<ma_fader_config Function(int, int, int)>();
+
+  int ma_fader_init(
+    ffi.Pointer<ma_fader_config> pConfig,
+    ffi.Pointer<ma_fader> pFader,
+  ) {
+    return _ma_fader_init(
+      pConfig,
+      pFader,
+    );
+  }
+
+  late final _ma_fader_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_fader_config>,
+              ffi.Pointer<ma_fader>)>>('ma_fader_init');
+  late final _ma_fader_init = _ma_fader_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_fader_config>, ffi.Pointer<ma_fader>)>();
+
+  int ma_fader_process_pcm_frames(
+    ffi.Pointer<ma_fader> pFader,
+    ffi.Pointer<ffi.Void> pFramesOut,
+    ffi.Pointer<ffi.Void> pFramesIn,
+    int frameCount,
+  ) {
+    return _ma_fader_process_pcm_frames(
+      pFader,
+      pFramesOut,
+      pFramesIn,
+      frameCount,
+    );
+  }
+
+  late final _ma_fader_process_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_fader>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>>('ma_fader_process_pcm_frames');
+  late final _ma_fader_process_pcm_frames =
+      _ma_fader_process_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_fader>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>, int)>();
+
+  void ma_fader_get_data_format(
+    ffi.Pointer<ma_fader> pFader,
+    ffi.Pointer<ffi.Int32> pFormat,
+    ffi.Pointer<ma_uint32> pChannels,
+    ffi.Pointer<ma_uint32> pSampleRate,
+  ) {
+    return _ma_fader_get_data_format(
+      pFader,
+      pFormat,
+      pChannels,
+      pSampleRate,
+    );
+  }
+
+  late final _ma_fader_get_data_formatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_fader>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>)>>('ma_fader_get_data_format');
+  late final _ma_fader_get_data_format =
+      _ma_fader_get_data_formatPtr.asFunction<
+          void Function(ffi.Pointer<ma_fader>, ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>, ffi.Pointer<ma_uint32>)>();
+
+  void ma_fader_set_fade(
+    ffi.Pointer<ma_fader> pFader,
+    double volumeBeg,
+    double volumeEnd,
+    int lengthInFrames,
+  ) {
+    return _ma_fader_set_fade(
+      pFader,
+      volumeBeg,
+      volumeEnd,
+      lengthInFrames,
+    );
+  }
+
+  late final _ma_fader_set_fadePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_fader>, ffi.Float, ffi.Float,
+              ma_uint64)>>('ma_fader_set_fade');
+  late final _ma_fader_set_fade = _ma_fader_set_fadePtr
+      .asFunction<void Function(ffi.Pointer<ma_fader>, double, double, int)>();
+
+  double ma_fader_get_current_volume(
+    ffi.Pointer<ma_fader> pFader,
+  ) {
+    return _ma_fader_get_current_volume(
+      pFader,
+    );
+  }
+
+  late final _ma_fader_get_current_volumePtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_fader>)>>(
+          'ma_fader_get_current_volume');
+  late final _ma_fader_get_current_volume = _ma_fader_get_current_volumePtr
+      .asFunction<double Function(ffi.Pointer<ma_fader>)>();
+
+  ma_spatializer_listener_config ma_spatializer_listener_config_init(
+    int channelsOut,
+  ) {
+    return _ma_spatializer_listener_config_init(
+      channelsOut,
+    );
+  }
+
+  late final _ma_spatializer_listener_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_spatializer_listener_config Function(
+              ma_uint32)>>('ma_spatializer_listener_config_init');
+  late final _ma_spatializer_listener_config_init =
+      _ma_spatializer_listener_config_initPtr
+          .asFunction<ma_spatializer_listener_config Function(int)>();
+
+  int ma_spatializer_listener_get_heap_size(
+    ffi.Pointer<ma_spatializer_listener_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_spatializer_listener_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_spatializer_listener_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_spatializer_listener_config>,
+              ffi.Pointer<size_t>)>>('ma_spatializer_listener_get_heap_size');
+  late final _ma_spatializer_listener_get_heap_size =
+      _ma_spatializer_listener_get_heap_sizePtr.asFunction<
+          int Function(ffi.Pointer<ma_spatializer_listener_config>,
+              ffi.Pointer<size_t>)>();
+
+  int ma_spatializer_listener_init_preallocated(
+    ffi.Pointer<ma_spatializer_listener_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_spatializer_listener> pListener,
+  ) {
+    return _ma_spatializer_listener_init_preallocated(
+      pConfig,
+      pHeap,
+      pListener,
+    );
+  }
+
+  late final _ma_spatializer_listener_init_preallocatedPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_spatializer_listener_config>,
+                  ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ma_spatializer_listener>)>>(
+      'ma_spatializer_listener_init_preallocated');
+  late final _ma_spatializer_listener_init_preallocated =
+      _ma_spatializer_listener_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_spatializer_listener_config>,
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ma_spatializer_listener>)>();
+
+  int ma_spatializer_listener_init(
+    ffi.Pointer<ma_spatializer_listener_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_spatializer_listener> pListener,
+  ) {
+    return _ma_spatializer_listener_init(
+      pConfig,
+      pAllocationCallbacks,
+      pListener,
+    );
+  }
+
+  late final _ma_spatializer_listener_initPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_spatializer_listener_config>,
+                  ffi.Pointer<ma_allocation_callbacks>,
+                  ffi.Pointer<ma_spatializer_listener>)>>(
+      'ma_spatializer_listener_init');
+  late final _ma_spatializer_listener_init =
+      _ma_spatializer_listener_initPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_spatializer_listener_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_spatializer_listener>)>();
+
+  void ma_spatializer_listener_uninit(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_spatializer_listener_uninit(
+      pListener,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_spatializer_listener_uninitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_spatializer_listener>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>(
+      'ma_spatializer_listener_uninit');
+  late final _ma_spatializer_listener_uninit =
+      _ma_spatializer_listener_uninitPtr.asFunction<
+          void Function(ffi.Pointer<ma_spatializer_listener>,
+              ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ffi.Pointer<ma_channel> ma_spatializer_listener_get_channel_map(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+  ) {
+    return _ma_spatializer_listener_get_channel_map(
+      pListener,
+    );
+  }
+
+  late final _ma_spatializer_listener_get_channel_mapPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_channel> Function(
+                  ffi.Pointer<ma_spatializer_listener>)>>(
+      'ma_spatializer_listener_get_channel_map');
+  late final _ma_spatializer_listener_get_channel_map =
+      _ma_spatializer_listener_get_channel_mapPtr.asFunction<
+          ffi.Pointer<ma_channel> Function(
+              ffi.Pointer<ma_spatializer_listener>)>();
+
+  void ma_spatializer_listener_set_cone(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+    double innerAngleInRadians,
+    double outerAngleInRadians,
+    double outerGain,
+  ) {
+    return _ma_spatializer_listener_set_cone(
+      pListener,
+      innerAngleInRadians,
+      outerAngleInRadians,
+      outerGain,
+    );
+  }
+
+  late final _ma_spatializer_listener_set_conePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer_listener>, ffi.Float,
+              ffi.Float, ffi.Float)>>('ma_spatializer_listener_set_cone');
+  late final _ma_spatializer_listener_set_cone =
+      _ma_spatializer_listener_set_conePtr.asFunction<
+          void Function(
+              ffi.Pointer<ma_spatializer_listener>, double, double, double)>();
+
+  void ma_spatializer_listener_get_cone(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+    ffi.Pointer<ffi.Float> pInnerAngleInRadians,
+    ffi.Pointer<ffi.Float> pOuterAngleInRadians,
+    ffi.Pointer<ffi.Float> pOuterGain,
+  ) {
+    return _ma_spatializer_listener_get_cone(
+      pListener,
+      pInnerAngleInRadians,
+      pOuterAngleInRadians,
+      pOuterGain,
+    );
+  }
+
+  late final _ma_spatializer_listener_get_conePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_spatializer_listener>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>>('ma_spatializer_listener_get_cone');
+  late final _ma_spatializer_listener_get_cone =
+      _ma_spatializer_listener_get_conePtr.asFunction<
+          void Function(
+              ffi.Pointer<ma_spatializer_listener>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>();
+
+  void ma_spatializer_listener_set_position(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_spatializer_listener_set_position(
+      pListener,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_spatializer_listener_set_positionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer_listener>, ffi.Float,
+              ffi.Float, ffi.Float)>>('ma_spatializer_listener_set_position');
+  late final _ma_spatializer_listener_set_position =
+      _ma_spatializer_listener_set_positionPtr.asFunction<
+          void Function(
+              ffi.Pointer<ma_spatializer_listener>, double, double, double)>();
+
+  ma_vec3f ma_spatializer_listener_get_position(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+  ) {
+    return _ma_spatializer_listener_get_position(
+      pListener,
+    );
+  }
+
+  late final _ma_spatializer_listener_get_positionPtr = _lookup<
+          ffi.NativeFunction<
+              ma_vec3f Function(ffi.Pointer<ma_spatializer_listener>)>>(
+      'ma_spatializer_listener_get_position');
+  late final _ma_spatializer_listener_get_position =
+      _ma_spatializer_listener_get_positionPtr.asFunction<
+          ma_vec3f Function(ffi.Pointer<ma_spatializer_listener>)>();
+
+  void ma_spatializer_listener_set_direction(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_spatializer_listener_set_direction(
+      pListener,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_spatializer_listener_set_directionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer_listener>, ffi.Float,
+              ffi.Float, ffi.Float)>>('ma_spatializer_listener_set_direction');
+  late final _ma_spatializer_listener_set_direction =
+      _ma_spatializer_listener_set_directionPtr.asFunction<
+          void Function(
+              ffi.Pointer<ma_spatializer_listener>, double, double, double)>();
+
+  ma_vec3f ma_spatializer_listener_get_direction(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+  ) {
+    return _ma_spatializer_listener_get_direction(
+      pListener,
+    );
+  }
+
+  late final _ma_spatializer_listener_get_directionPtr = _lookup<
+          ffi.NativeFunction<
+              ma_vec3f Function(ffi.Pointer<ma_spatializer_listener>)>>(
+      'ma_spatializer_listener_get_direction');
+  late final _ma_spatializer_listener_get_direction =
+      _ma_spatializer_listener_get_directionPtr.asFunction<
+          ma_vec3f Function(ffi.Pointer<ma_spatializer_listener>)>();
+
+  void ma_spatializer_listener_set_velocity(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_spatializer_listener_set_velocity(
+      pListener,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_spatializer_listener_set_velocityPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer_listener>, ffi.Float,
+              ffi.Float, ffi.Float)>>('ma_spatializer_listener_set_velocity');
+  late final _ma_spatializer_listener_set_velocity =
+      _ma_spatializer_listener_set_velocityPtr.asFunction<
+          void Function(
+              ffi.Pointer<ma_spatializer_listener>, double, double, double)>();
+
+  ma_vec3f ma_spatializer_listener_get_velocity(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+  ) {
+    return _ma_spatializer_listener_get_velocity(
+      pListener,
+    );
+  }
+
+  late final _ma_spatializer_listener_get_velocityPtr = _lookup<
+          ffi.NativeFunction<
+              ma_vec3f Function(ffi.Pointer<ma_spatializer_listener>)>>(
+      'ma_spatializer_listener_get_velocity');
+  late final _ma_spatializer_listener_get_velocity =
+      _ma_spatializer_listener_get_velocityPtr.asFunction<
+          ma_vec3f Function(ffi.Pointer<ma_spatializer_listener>)>();
+
+  void ma_spatializer_listener_set_speed_of_sound(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+    double speedOfSound,
+  ) {
+    return _ma_spatializer_listener_set_speed_of_sound(
+      pListener,
+      speedOfSound,
+    );
+  }
+
+  late final _ma_spatializer_listener_set_speed_of_soundPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer_listener>,
+              ffi.Float)>>('ma_spatializer_listener_set_speed_of_sound');
+  late final _ma_spatializer_listener_set_speed_of_sound =
+      _ma_spatializer_listener_set_speed_of_soundPtr.asFunction<
+          void Function(ffi.Pointer<ma_spatializer_listener>, double)>();
+
+  double ma_spatializer_listener_get_speed_of_sound(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+  ) {
+    return _ma_spatializer_listener_get_speed_of_sound(
+      pListener,
+    );
+  }
+
+  late final _ma_spatializer_listener_get_speed_of_soundPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Float Function(ffi.Pointer<ma_spatializer_listener>)>>(
+      'ma_spatializer_listener_get_speed_of_sound');
+  late final _ma_spatializer_listener_get_speed_of_sound =
+      _ma_spatializer_listener_get_speed_of_soundPtr
+          .asFunction<double Function(ffi.Pointer<ma_spatializer_listener>)>();
+
+  void ma_spatializer_listener_set_world_up(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_spatializer_listener_set_world_up(
+      pListener,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_spatializer_listener_set_world_upPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer_listener>, ffi.Float,
+              ffi.Float, ffi.Float)>>('ma_spatializer_listener_set_world_up');
+  late final _ma_spatializer_listener_set_world_up =
+      _ma_spatializer_listener_set_world_upPtr.asFunction<
+          void Function(
+              ffi.Pointer<ma_spatializer_listener>, double, double, double)>();
+
+  ma_vec3f ma_spatializer_listener_get_world_up(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+  ) {
+    return _ma_spatializer_listener_get_world_up(
+      pListener,
+    );
+  }
+
+  late final _ma_spatializer_listener_get_world_upPtr = _lookup<
+          ffi.NativeFunction<
+              ma_vec3f Function(ffi.Pointer<ma_spatializer_listener>)>>(
+      'ma_spatializer_listener_get_world_up');
+  late final _ma_spatializer_listener_get_world_up =
+      _ma_spatializer_listener_get_world_upPtr.asFunction<
+          ma_vec3f Function(ffi.Pointer<ma_spatializer_listener>)>();
+
+  void ma_spatializer_listener_set_enabled(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+    int isEnabled,
+  ) {
+    return _ma_spatializer_listener_set_enabled(
+      pListener,
+      isEnabled,
+    );
+  }
+
+  late final _ma_spatializer_listener_set_enabledPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer_listener>,
+              ma_bool32)>>('ma_spatializer_listener_set_enabled');
+  late final _ma_spatializer_listener_set_enabled =
+      _ma_spatializer_listener_set_enabledPtr.asFunction<
+          void Function(ffi.Pointer<ma_spatializer_listener>, int)>();
+
+  int ma_spatializer_listener_is_enabled(
+    ffi.Pointer<ma_spatializer_listener> pListener,
+  ) {
+    return _ma_spatializer_listener_is_enabled(
+      pListener,
+    );
+  }
+
+  late final _ma_spatializer_listener_is_enabledPtr = _lookup<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_spatializer_listener>)>>(
+      'ma_spatializer_listener_is_enabled');
+  late final _ma_spatializer_listener_is_enabled =
+      _ma_spatializer_listener_is_enabledPtr
+          .asFunction<int Function(ffi.Pointer<ma_spatializer_listener>)>();
+
+  ma_spatializer_config ma_spatializer_config_init(
+    int channelsIn,
+    int channelsOut,
+  ) {
+    return _ma_spatializer_config_init(
+      channelsIn,
+      channelsOut,
+    );
+  }
+
+  late final _ma_spatializer_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_spatializer_config Function(
+              ma_uint32, ma_uint32)>>('ma_spatializer_config_init');
+  late final _ma_spatializer_config_init = _ma_spatializer_config_initPtr
+      .asFunction<ma_spatializer_config Function(int, int)>();
+
+  int ma_spatializer_get_heap_size(
+    ffi.Pointer<ma_spatializer_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_spatializer_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_spatializer_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_spatializer_config>,
+              ffi.Pointer<size_t>)>>('ma_spatializer_get_heap_size');
+  late final _ma_spatializer_get_heap_size =
+      _ma_spatializer_get_heap_sizePtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_spatializer_config>, ffi.Pointer<size_t>)>();
+
+  int ma_spatializer_init_preallocated(
+    ffi.Pointer<ma_spatializer_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_init_preallocated(
+      pConfig,
+      pHeap,
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_init_preallocatedPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_spatializer_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_init_preallocated');
+  late final _ma_spatializer_init_preallocated =
+      _ma_spatializer_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_spatializer_config>,
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ma_spatializer>)>();
+
+  int ma_spatializer_init(
+    ffi.Pointer<ma_spatializer_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_init(
+      pConfig,
+      pAllocationCallbacks,
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_spatializer_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_spatializer>)>>('ma_spatializer_init');
+  late final _ma_spatializer_init = _ma_spatializer_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_spatializer_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_uninit(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_spatializer_uninit(
+      pSpatializer,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_spatializer_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_spatializer_uninit');
+  late final _ma_spatializer_uninit = _ma_spatializer_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_spatializer>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  int ma_spatializer_process_pcm_frames(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    ffi.Pointer<ma_spatializer_listener> pListener,
+    ffi.Pointer<ffi.Void> pFramesOut,
+    ffi.Pointer<ffi.Void> pFramesIn,
+    int frameCount,
+  ) {
+    return _ma_spatializer_process_pcm_frames(
+      pSpatializer,
+      pListener,
+      pFramesOut,
+      pFramesIn,
+      frameCount,
+    );
+  }
+
+  late final _ma_spatializer_process_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_spatializer>,
+              ffi.Pointer<ma_spatializer_listener>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>>('ma_spatializer_process_pcm_frames');
+  late final _ma_spatializer_process_pcm_frames =
+      _ma_spatializer_process_pcm_framesPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_spatializer>,
+              ffi.Pointer<ma_spatializer_listener>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              int)>();
+
+  int ma_spatializer_get_input_channels(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_input_channels(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_input_channelsPtr = _lookup<
+          ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_input_channels');
+  late final _ma_spatializer_get_input_channels =
+      _ma_spatializer_get_input_channelsPtr
+          .asFunction<int Function(ffi.Pointer<ma_spatializer>)>();
+
+  int ma_spatializer_get_output_channels(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_output_channels(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_output_channelsPtr = _lookup<
+          ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_output_channels');
+  late final _ma_spatializer_get_output_channels =
+      _ma_spatializer_get_output_channelsPtr
+          .asFunction<int Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_set_attenuation_model(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    int attenuationModel,
+  ) {
+    return _ma_spatializer_set_attenuation_model(
+      pSpatializer,
+      attenuationModel,
+    );
+  }
+
+  late final _ma_spatializer_set_attenuation_modelPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>,
+              ffi.Int32)>>('ma_spatializer_set_attenuation_model');
+  late final _ma_spatializer_set_attenuation_model =
+      _ma_spatializer_set_attenuation_modelPtr
+          .asFunction<void Function(ffi.Pointer<ma_spatializer>, int)>();
+
+  int ma_spatializer_get_attenuation_model(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_attenuation_model(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_attenuation_modelPtr = _lookup<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_attenuation_model');
+  late final _ma_spatializer_get_attenuation_model =
+      _ma_spatializer_get_attenuation_modelPtr
+          .asFunction<int Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_set_positioning(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    int positioning,
+  ) {
+    return _ma_spatializer_set_positioning(
+      pSpatializer,
+      positioning,
+    );
+  }
+
+  late final _ma_spatializer_set_positioningPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>,
+              ffi.Int32)>>('ma_spatializer_set_positioning');
+  late final _ma_spatializer_set_positioning =
+      _ma_spatializer_set_positioningPtr
+          .asFunction<void Function(ffi.Pointer<ma_spatializer>, int)>();
+
+  int ma_spatializer_get_positioning(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_positioning(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_positioningPtr = _lookup<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_positioning');
+  late final _ma_spatializer_get_positioning =
+      _ma_spatializer_get_positioningPtr
+          .asFunction<int Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_set_rolloff(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    double rolloff,
+  ) {
+    return _ma_spatializer_set_rolloff(
+      pSpatializer,
+      rolloff,
+    );
+  }
+
+  late final _ma_spatializer_set_rolloffPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>,
+              ffi.Float)>>('ma_spatializer_set_rolloff');
+  late final _ma_spatializer_set_rolloff = _ma_spatializer_set_rolloffPtr
+      .asFunction<void Function(ffi.Pointer<ma_spatializer>, double)>();
+
+  double ma_spatializer_get_rolloff(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_rolloff(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_rolloffPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_rolloff');
+  late final _ma_spatializer_get_rolloff = _ma_spatializer_get_rolloffPtr
+      .asFunction<double Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_set_min_gain(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    double minGain,
+  ) {
+    return _ma_spatializer_set_min_gain(
+      pSpatializer,
+      minGain,
+    );
+  }
+
+  late final _ma_spatializer_set_min_gainPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>,
+              ffi.Float)>>('ma_spatializer_set_min_gain');
+  late final _ma_spatializer_set_min_gain = _ma_spatializer_set_min_gainPtr
+      .asFunction<void Function(ffi.Pointer<ma_spatializer>, double)>();
+
+  double ma_spatializer_get_min_gain(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_min_gain(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_min_gainPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_min_gain');
+  late final _ma_spatializer_get_min_gain = _ma_spatializer_get_min_gainPtr
+      .asFunction<double Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_set_max_gain(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    double maxGain,
+  ) {
+    return _ma_spatializer_set_max_gain(
+      pSpatializer,
+      maxGain,
+    );
+  }
+
+  late final _ma_spatializer_set_max_gainPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>,
+              ffi.Float)>>('ma_spatializer_set_max_gain');
+  late final _ma_spatializer_set_max_gain = _ma_spatializer_set_max_gainPtr
+      .asFunction<void Function(ffi.Pointer<ma_spatializer>, double)>();
+
+  double ma_spatializer_get_max_gain(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_max_gain(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_max_gainPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_max_gain');
+  late final _ma_spatializer_get_max_gain = _ma_spatializer_get_max_gainPtr
+      .asFunction<double Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_set_min_distance(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    double minDistance,
+  ) {
+    return _ma_spatializer_set_min_distance(
+      pSpatializer,
+      minDistance,
+    );
+  }
+
+  late final _ma_spatializer_set_min_distancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>,
+              ffi.Float)>>('ma_spatializer_set_min_distance');
+  late final _ma_spatializer_set_min_distance =
+      _ma_spatializer_set_min_distancePtr
+          .asFunction<void Function(ffi.Pointer<ma_spatializer>, double)>();
+
+  double ma_spatializer_get_min_distance(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_min_distance(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_min_distancePtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_min_distance');
+  late final _ma_spatializer_get_min_distance =
+      _ma_spatializer_get_min_distancePtr
+          .asFunction<double Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_set_max_distance(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    double maxDistance,
+  ) {
+    return _ma_spatializer_set_max_distance(
+      pSpatializer,
+      maxDistance,
+    );
+  }
+
+  late final _ma_spatializer_set_max_distancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>,
+              ffi.Float)>>('ma_spatializer_set_max_distance');
+  late final _ma_spatializer_set_max_distance =
+      _ma_spatializer_set_max_distancePtr
+          .asFunction<void Function(ffi.Pointer<ma_spatializer>, double)>();
+
+  double ma_spatializer_get_max_distance(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_max_distance(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_max_distancePtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_max_distance');
+  late final _ma_spatializer_get_max_distance =
+      _ma_spatializer_get_max_distancePtr
+          .asFunction<double Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_set_cone(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    double innerAngleInRadians,
+    double outerAngleInRadians,
+    double outerGain,
+  ) {
+    return _ma_spatializer_set_cone(
+      pSpatializer,
+      innerAngleInRadians,
+      outerAngleInRadians,
+      outerGain,
+    );
+  }
+
+  late final _ma_spatializer_set_conePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_spatializer_set_cone');
+  late final _ma_spatializer_set_cone = _ma_spatializer_set_conePtr.asFunction<
+      void Function(ffi.Pointer<ma_spatializer>, double, double, double)>();
+
+  void ma_spatializer_get_cone(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    ffi.Pointer<ffi.Float> pInnerAngleInRadians,
+    ffi.Pointer<ffi.Float> pOuterAngleInRadians,
+    ffi.Pointer<ffi.Float> pOuterGain,
+  ) {
+    return _ma_spatializer_get_cone(
+      pSpatializer,
+      pInnerAngleInRadians,
+      pOuterAngleInRadians,
+      pOuterGain,
+    );
+  }
+
+  late final _ma_spatializer_get_conePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_spatializer>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>>('ma_spatializer_get_cone');
+  late final _ma_spatializer_get_cone = _ma_spatializer_get_conePtr.asFunction<
+      void Function(ffi.Pointer<ma_spatializer>, ffi.Pointer<ffi.Float>,
+          ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>)>();
+
+  void ma_spatializer_set_doppler_factor(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    double dopplerFactor,
+  ) {
+    return _ma_spatializer_set_doppler_factor(
+      pSpatializer,
+      dopplerFactor,
+    );
+  }
+
+  late final _ma_spatializer_set_doppler_factorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>,
+              ffi.Float)>>('ma_spatializer_set_doppler_factor');
+  late final _ma_spatializer_set_doppler_factor =
+      _ma_spatializer_set_doppler_factorPtr
+          .asFunction<void Function(ffi.Pointer<ma_spatializer>, double)>();
+
+  double ma_spatializer_get_doppler_factor(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_doppler_factor(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_doppler_factorPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_doppler_factor');
+  late final _ma_spatializer_get_doppler_factor =
+      _ma_spatializer_get_doppler_factorPtr
+          .asFunction<double Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_set_directional_attenuation_factor(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    double directionalAttenuationFactor,
+  ) {
+    return _ma_spatializer_set_directional_attenuation_factor(
+      pSpatializer,
+      directionalAttenuationFactor,
+    );
+  }
+
+  late final _ma_spatializer_set_directional_attenuation_factorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>,
+              ffi.Float)>>('ma_spatializer_set_directional_attenuation_factor');
+  late final _ma_spatializer_set_directional_attenuation_factor =
+      _ma_spatializer_set_directional_attenuation_factorPtr
+          .asFunction<void Function(ffi.Pointer<ma_spatializer>, double)>();
+
+  double ma_spatializer_get_directional_attenuation_factor(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_directional_attenuation_factor(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_directional_attenuation_factorPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_directional_attenuation_factor');
+  late final _ma_spatializer_get_directional_attenuation_factor =
+      _ma_spatializer_get_directional_attenuation_factorPtr
+          .asFunction<double Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_set_position(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_spatializer_set_position(
+      pSpatializer,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_spatializer_set_positionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_spatializer_set_position');
+  late final _ma_spatializer_set_position =
+      _ma_spatializer_set_positionPtr.asFunction<
+          void Function(ffi.Pointer<ma_spatializer>, double, double, double)>();
+
+  ma_vec3f ma_spatializer_get_position(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_position(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_positionPtr = _lookup<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_position');
+  late final _ma_spatializer_get_position = _ma_spatializer_get_positionPtr
+      .asFunction<ma_vec3f Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_set_direction(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_spatializer_set_direction(
+      pSpatializer,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_spatializer_set_directionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_spatializer_set_direction');
+  late final _ma_spatializer_set_direction =
+      _ma_spatializer_set_directionPtr.asFunction<
+          void Function(ffi.Pointer<ma_spatializer>, double, double, double)>();
+
+  ma_vec3f ma_spatializer_get_direction(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_direction(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_directionPtr = _lookup<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_direction');
+  late final _ma_spatializer_get_direction = _ma_spatializer_get_directionPtr
+      .asFunction<ma_vec3f Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_set_velocity(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_spatializer_set_velocity(
+      pSpatializer,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_spatializer_set_velocityPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_spatializer_set_velocity');
+  late final _ma_spatializer_set_velocity =
+      _ma_spatializer_set_velocityPtr.asFunction<
+          void Function(ffi.Pointer<ma_spatializer>, double, double, double)>();
+
+  ma_vec3f ma_spatializer_get_velocity(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+  ) {
+    return _ma_spatializer_get_velocity(
+      pSpatializer,
+    );
+  }
+
+  late final _ma_spatializer_get_velocityPtr = _lookup<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_spatializer>)>>(
+      'ma_spatializer_get_velocity');
+  late final _ma_spatializer_get_velocity = _ma_spatializer_get_velocityPtr
+      .asFunction<ma_vec3f Function(ffi.Pointer<ma_spatializer>)>();
+
+  void ma_spatializer_get_relative_position_and_direction(
+    ffi.Pointer<ma_spatializer> pSpatializer,
+    ffi.Pointer<ma_spatializer_listener> pListener,
+    ffi.Pointer<ma_vec3f> pRelativePos,
+    ffi.Pointer<ma_vec3f> pRelativeDir,
+  ) {
+    return _ma_spatializer_get_relative_position_and_direction(
+      pSpatializer,
+      pListener,
+      pRelativePos,
+      pRelativeDir,
+    );
+  }
+
+  late final _ma_spatializer_get_relative_position_and_directionPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_spatializer>,
+                  ffi.Pointer<ma_spatializer_listener>,
+                  ffi.Pointer<ma_vec3f>,
+                  ffi.Pointer<ma_vec3f>)>>(
+      'ma_spatializer_get_relative_position_and_direction');
+  late final _ma_spatializer_get_relative_position_and_direction =
+      _ma_spatializer_get_relative_position_and_directionPtr.asFunction<
+          void Function(
+              ffi.Pointer<ma_spatializer>,
+              ffi.Pointer<ma_spatializer_listener>,
+              ffi.Pointer<ma_vec3f>,
+              ffi.Pointer<ma_vec3f>)>();
+
   ma_linear_resampler_config ma_linear_resampler_config_init(
     int format,
     int channels,
@@ -1471,39 +3949,91 @@ class MiniAudioFfi {
       _ma_linear_resampler_config_initPtr.asFunction<
           ma_linear_resampler_config Function(int, int, int, int)>();
 
+  int ma_linear_resampler_get_heap_size(
+    ffi.Pointer<ma_linear_resampler_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_linear_resampler_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_linear_resampler_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_linear_resampler_config>,
+              ffi.Pointer<size_t>)>>('ma_linear_resampler_get_heap_size');
+  late final _ma_linear_resampler_get_heap_size =
+      _ma_linear_resampler_get_heap_sizePtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_linear_resampler_config>, ffi.Pointer<size_t>)>();
+
+  int ma_linear_resampler_init_preallocated(
+    ffi.Pointer<ma_linear_resampler_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_linear_resampler> pResampler,
+  ) {
+    return _ma_linear_resampler_init_preallocated(
+      pConfig,
+      pHeap,
+      pResampler,
+    );
+  }
+
+  late final _ma_linear_resampler_init_preallocatedPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_linear_resampler_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_linear_resampler>)>>(
+      'ma_linear_resampler_init_preallocated');
+  late final _ma_linear_resampler_init_preallocated =
+      _ma_linear_resampler_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_linear_resampler_config>,
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ma_linear_resampler>)>();
+
   int ma_linear_resampler_init(
     ffi.Pointer<ma_linear_resampler_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_linear_resampler> pResampler,
   ) {
     return _ma_linear_resampler_init(
       pConfig,
+      pAllocationCallbacks,
       pResampler,
     );
   }
 
   late final _ma_linear_resampler_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_linear_resampler_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_linear_resampler_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_linear_resampler>)>>('ma_linear_resampler_init');
   late final _ma_linear_resampler_init =
       _ma_linear_resampler_initPtr.asFunction<
-          int Function(ffi.Pointer<ma_linear_resampler_config>,
+          int Function(
+              ffi.Pointer<ma_linear_resampler_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_linear_resampler>)>();
 
   void ma_linear_resampler_uninit(
     ffi.Pointer<ma_linear_resampler> pResampler,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
   ) {
     return _ma_linear_resampler_uninit(
       pResampler,
+      pAllocationCallbacks,
     );
   }
 
   late final _ma_linear_resampler_uninitPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<ma_linear_resampler>)>>('ma_linear_resampler_uninit');
-  late final _ma_linear_resampler_uninit = _ma_linear_resampler_uninitPtr
-      .asFunction<void Function(ffi.Pointer<ma_linear_resampler>)>();
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_linear_resampler>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>(
+      'ma_linear_resampler_uninit');
+  late final _ma_linear_resampler_uninit =
+      _ma_linear_resampler_uninitPtr.asFunction<
+          void Function(ffi.Pointer<ma_linear_resampler>,
+              ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_linear_resampler_process_pcm_frames(
     ffi.Pointer<ma_linear_resampler> pResampler,
@@ -1523,7 +4053,7 @@ class MiniAudioFfi {
 
   late final _ma_linear_resampler_process_pcm_framesPtr = _lookup<
           ffi.NativeFunction<
-              ma_result Function(
+              ffi.Int32 Function(
                   ffi.Pointer<ma_linear_resampler>,
                   ffi.Pointer<ffi.Void>,
                   ffi.Pointer<ma_uint64>,
@@ -1553,7 +4083,7 @@ class MiniAudioFfi {
 
   late final _ma_linear_resampler_set_ratePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_linear_resampler>, ma_uint32,
+          ffi.Int32 Function(ffi.Pointer<ma_linear_resampler>, ma_uint32,
               ma_uint32)>>('ma_linear_resampler_set_rate');
   late final _ma_linear_resampler_set_rate = _ma_linear_resampler_set_ratePtr
       .asFunction<int Function(ffi.Pointer<ma_linear_resampler>, int, int)>();
@@ -1570,47 +4100,11 @@ class MiniAudioFfi {
 
   late final _ma_linear_resampler_set_rate_ratioPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_linear_resampler>,
+          ffi.Int32 Function(ffi.Pointer<ma_linear_resampler>,
               ffi.Float)>>('ma_linear_resampler_set_rate_ratio');
   late final _ma_linear_resampler_set_rate_ratio =
       _ma_linear_resampler_set_rate_ratioPtr
           .asFunction<int Function(ffi.Pointer<ma_linear_resampler>, double)>();
-
-  int ma_linear_resampler_get_required_input_frame_count(
-    ffi.Pointer<ma_linear_resampler> pResampler,
-    int outputFrameCount,
-  ) {
-    return _ma_linear_resampler_get_required_input_frame_count(
-      pResampler,
-      outputFrameCount,
-    );
-  }
-
-  late final _ma_linear_resampler_get_required_input_frame_countPtr = _lookup<
-          ffi.NativeFunction<
-              ma_uint64 Function(ffi.Pointer<ma_linear_resampler>, ma_uint64)>>(
-      'ma_linear_resampler_get_required_input_frame_count');
-  late final _ma_linear_resampler_get_required_input_frame_count =
-      _ma_linear_resampler_get_required_input_frame_countPtr
-          .asFunction<int Function(ffi.Pointer<ma_linear_resampler>, int)>();
-
-  int ma_linear_resampler_get_expected_output_frame_count(
-    ffi.Pointer<ma_linear_resampler> pResampler,
-    int inputFrameCount,
-  ) {
-    return _ma_linear_resampler_get_expected_output_frame_count(
-      pResampler,
-      inputFrameCount,
-    );
-  }
-
-  late final _ma_linear_resampler_get_expected_output_frame_countPtr = _lookup<
-          ffi.NativeFunction<
-              ma_uint64 Function(ffi.Pointer<ma_linear_resampler>, ma_uint64)>>(
-      'ma_linear_resampler_get_expected_output_frame_count');
-  late final _ma_linear_resampler_get_expected_output_frame_count =
-      _ma_linear_resampler_get_expected_output_frame_countPtr
-          .asFunction<int Function(ffi.Pointer<ma_linear_resampler>, int)>();
 
   int ma_linear_resampler_get_input_latency(
     ffi.Pointer<ma_linear_resampler> pResampler,
@@ -1644,6 +4138,65 @@ class MiniAudioFfi {
       _ma_linear_resampler_get_output_latencyPtr
           .asFunction<int Function(ffi.Pointer<ma_linear_resampler>)>();
 
+  int ma_linear_resampler_get_required_input_frame_count(
+    ffi.Pointer<ma_linear_resampler> pResampler,
+    int outputFrameCount,
+    ffi.Pointer<ma_uint64> pInputFrameCount,
+  ) {
+    return _ma_linear_resampler_get_required_input_frame_count(
+      pResampler,
+      outputFrameCount,
+      pInputFrameCount,
+    );
+  }
+
+  late final _ma_linear_resampler_get_required_input_frame_countPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_linear_resampler>, ma_uint64,
+                  ffi.Pointer<ma_uint64>)>>(
+      'ma_linear_resampler_get_required_input_frame_count');
+  late final _ma_linear_resampler_get_required_input_frame_count =
+      _ma_linear_resampler_get_required_input_frame_countPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_linear_resampler>, int, ffi.Pointer<ma_uint64>)>();
+
+  int ma_linear_resampler_get_expected_output_frame_count(
+    ffi.Pointer<ma_linear_resampler> pResampler,
+    int inputFrameCount,
+    ffi.Pointer<ma_uint64> pOutputFrameCount,
+  ) {
+    return _ma_linear_resampler_get_expected_output_frame_count(
+      pResampler,
+      inputFrameCount,
+      pOutputFrameCount,
+    );
+  }
+
+  late final _ma_linear_resampler_get_expected_output_frame_countPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_linear_resampler>, ma_uint64,
+                  ffi.Pointer<ma_uint64>)>>(
+      'ma_linear_resampler_get_expected_output_frame_count');
+  late final _ma_linear_resampler_get_expected_output_frame_count =
+      _ma_linear_resampler_get_expected_output_frame_countPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_linear_resampler>, int, ffi.Pointer<ma_uint64>)>();
+
+  int ma_linear_resampler_reset(
+    ffi.Pointer<ma_linear_resampler> pResampler,
+  ) {
+    return _ma_linear_resampler_reset(
+      pResampler,
+    );
+  }
+
+  late final _ma_linear_resampler_resetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_linear_resampler>)>>('ma_linear_resampler_reset');
+  late final _ma_linear_resampler_reset = _ma_linear_resampler_resetPtr
+      .asFunction<int Function(ffi.Pointer<ma_linear_resampler>)>();
+
   ma_resampler_config ma_resampler_config_init(
     int format,
     int channels,
@@ -1667,37 +4220,87 @@ class MiniAudioFfi {
   late final _ma_resampler_config_init = _ma_resampler_config_initPtr
       .asFunction<ma_resampler_config Function(int, int, int, int, int)>();
 
+  int ma_resampler_get_heap_size(
+    ffi.Pointer<ma_resampler_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_resampler_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_resampler_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resampler_config>,
+              ffi.Pointer<size_t>)>>('ma_resampler_get_heap_size');
+  late final _ma_resampler_get_heap_size =
+      _ma_resampler_get_heap_sizePtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resampler_config>, ffi.Pointer<size_t>)>();
+
+  int ma_resampler_init_preallocated(
+    ffi.Pointer<ma_resampler_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_resampler> pResampler,
+  ) {
+    return _ma_resampler_init_preallocated(
+      pConfig,
+      pHeap,
+      pResampler,
+    );
+  }
+
+  late final _ma_resampler_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resampler_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_resampler>)>>('ma_resampler_init_preallocated');
+  late final _ma_resampler_init_preallocated =
+      _ma_resampler_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_resampler_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_resampler>)>();
+
   int ma_resampler_init(
     ffi.Pointer<ma_resampler_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_resampler> pResampler,
   ) {
     return _ma_resampler_init(
       pConfig,
+      pAllocationCallbacks,
       pResampler,
     );
   }
 
   late final _ma_resampler_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_resampler_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resampler_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_resampler>)>>('ma_resampler_init');
   late final _ma_resampler_init = _ma_resampler_initPtr.asFunction<
-      int Function(
-          ffi.Pointer<ma_resampler_config>, ffi.Pointer<ma_resampler>)>();
+      int Function(ffi.Pointer<ma_resampler_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_resampler>)>();
 
   void ma_resampler_uninit(
     ffi.Pointer<ma_resampler> pResampler,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
   ) {
     return _ma_resampler_uninit(
       pResampler,
+      pAllocationCallbacks,
     );
   }
 
-  late final _ma_resampler_uninitPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_resampler>)>>(
-          'ma_resampler_uninit');
-  late final _ma_resampler_uninit = _ma_resampler_uninitPtr
-      .asFunction<void Function(ffi.Pointer<ma_resampler>)>();
+  late final _ma_resampler_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_resampler>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_resampler_uninit');
+  late final _ma_resampler_uninit = _ma_resampler_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_resampler>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_resampler_process_pcm_frames(
     ffi.Pointer<ma_resampler> pResampler,
@@ -1717,7 +4320,7 @@ class MiniAudioFfi {
 
   late final _ma_resampler_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_resampler>,
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<ma_uint64>,
@@ -1746,7 +4349,7 @@ class MiniAudioFfi {
 
   late final _ma_resampler_set_ratePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_resampler>, ma_uint32,
+          ffi.Int32 Function(ffi.Pointer<ma_resampler>, ma_uint32,
               ma_uint32)>>('ma_resampler_set_rate');
   late final _ma_resampler_set_rate = _ma_resampler_set_ratePtr
       .asFunction<int Function(ffi.Pointer<ma_resampler>, int, int)>();
@@ -1763,46 +4366,10 @@ class MiniAudioFfi {
 
   late final _ma_resampler_set_rate_ratioPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_resampler>,
+          ffi.Int32 Function(ffi.Pointer<ma_resampler>,
               ffi.Float)>>('ma_resampler_set_rate_ratio');
   late final _ma_resampler_set_rate_ratio = _ma_resampler_set_rate_ratioPtr
       .asFunction<int Function(ffi.Pointer<ma_resampler>, double)>();
-
-  int ma_resampler_get_required_input_frame_count(
-    ffi.Pointer<ma_resampler> pResampler,
-    int outputFrameCount,
-  ) {
-    return _ma_resampler_get_required_input_frame_count(
-      pResampler,
-      outputFrameCount,
-    );
-  }
-
-  late final _ma_resampler_get_required_input_frame_countPtr = _lookup<
-      ffi.NativeFunction<
-          ma_uint64 Function(ffi.Pointer<ma_resampler>,
-              ma_uint64)>>('ma_resampler_get_required_input_frame_count');
-  late final _ma_resampler_get_required_input_frame_count =
-      _ma_resampler_get_required_input_frame_countPtr
-          .asFunction<int Function(ffi.Pointer<ma_resampler>, int)>();
-
-  int ma_resampler_get_expected_output_frame_count(
-    ffi.Pointer<ma_resampler> pResampler,
-    int inputFrameCount,
-  ) {
-    return _ma_resampler_get_expected_output_frame_count(
-      pResampler,
-      inputFrameCount,
-    );
-  }
-
-  late final _ma_resampler_get_expected_output_frame_countPtr = _lookup<
-      ffi.NativeFunction<
-          ma_uint64 Function(ffi.Pointer<ma_resampler>,
-              ma_uint64)>>('ma_resampler_get_expected_output_frame_count');
-  late final _ma_resampler_get_expected_output_frame_count =
-      _ma_resampler_get_expected_output_frame_countPtr
-          .asFunction<int Function(ffi.Pointer<ma_resampler>, int)>();
 
   int ma_resampler_get_input_latency(
     ffi.Pointer<ma_resampler> pResampler,
@@ -1833,6 +4400,64 @@ class MiniAudioFfi {
   late final _ma_resampler_get_output_latency =
       _ma_resampler_get_output_latencyPtr
           .asFunction<int Function(ffi.Pointer<ma_resampler>)>();
+
+  int ma_resampler_get_required_input_frame_count(
+    ffi.Pointer<ma_resampler> pResampler,
+    int outputFrameCount,
+    ffi.Pointer<ma_uint64> pInputFrameCount,
+  ) {
+    return _ma_resampler_get_required_input_frame_count(
+      pResampler,
+      outputFrameCount,
+      pInputFrameCount,
+    );
+  }
+
+  late final _ma_resampler_get_required_input_frame_countPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resampler>, ma_uint64,
+                  ffi.Pointer<ma_uint64>)>>(
+      'ma_resampler_get_required_input_frame_count');
+  late final _ma_resampler_get_required_input_frame_count =
+      _ma_resampler_get_required_input_frame_countPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resampler>, int, ffi.Pointer<ma_uint64>)>();
+
+  int ma_resampler_get_expected_output_frame_count(
+    ffi.Pointer<ma_resampler> pResampler,
+    int inputFrameCount,
+    ffi.Pointer<ma_uint64> pOutputFrameCount,
+  ) {
+    return _ma_resampler_get_expected_output_frame_count(
+      pResampler,
+      inputFrameCount,
+      pOutputFrameCount,
+    );
+  }
+
+  late final _ma_resampler_get_expected_output_frame_countPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resampler>, ma_uint64,
+                  ffi.Pointer<ma_uint64>)>>(
+      'ma_resampler_get_expected_output_frame_count');
+  late final _ma_resampler_get_expected_output_frame_count =
+      _ma_resampler_get_expected_output_frame_countPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resampler>, int, ffi.Pointer<ma_uint64>)>();
+
+  int ma_resampler_reset(
+    ffi.Pointer<ma_resampler> pResampler,
+  ) {
+    return _ma_resampler_reset(
+      pResampler,
+    );
+  }
+
+  late final _ma_resampler_resetPtr = _lookup<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_resampler>)>>(
+      'ma_resampler_reset');
+  late final _ma_resampler_reset = _ma_resampler_resetPtr
+      .asFunction<int Function(ffi.Pointer<ma_resampler>)>();
 
   ma_channel_converter_config ma_channel_converter_config_init(
     int format,
@@ -1866,39 +4491,91 @@ class MiniAudioFfi {
           ma_channel_converter_config Function(int, int,
               ffi.Pointer<ma_channel>, int, ffi.Pointer<ma_channel>, int)>();
 
+  int ma_channel_converter_get_heap_size(
+    ffi.Pointer<ma_channel_converter_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_channel_converter_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_channel_converter_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_channel_converter_config>,
+              ffi.Pointer<size_t>)>>('ma_channel_converter_get_heap_size');
+  late final _ma_channel_converter_get_heap_size =
+      _ma_channel_converter_get_heap_sizePtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_channel_converter_config>, ffi.Pointer<size_t>)>();
+
+  int ma_channel_converter_init_preallocated(
+    ffi.Pointer<ma_channel_converter_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_channel_converter> pConverter,
+  ) {
+    return _ma_channel_converter_init_preallocated(
+      pConfig,
+      pHeap,
+      pConverter,
+    );
+  }
+
+  late final _ma_channel_converter_init_preallocatedPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_channel_converter_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_channel_converter>)>>(
+      'ma_channel_converter_init_preallocated');
+  late final _ma_channel_converter_init_preallocated =
+      _ma_channel_converter_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_channel_converter_config>,
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ma_channel_converter>)>();
+
   int ma_channel_converter_init(
     ffi.Pointer<ma_channel_converter_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_channel_converter> pConverter,
   ) {
     return _ma_channel_converter_init(
       pConfig,
+      pAllocationCallbacks,
       pConverter,
     );
   }
 
   late final _ma_channel_converter_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_channel_converter_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_channel_converter_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_channel_converter>)>>('ma_channel_converter_init');
   late final _ma_channel_converter_init =
       _ma_channel_converter_initPtr.asFunction<
-          int Function(ffi.Pointer<ma_channel_converter_config>,
+          int Function(
+              ffi.Pointer<ma_channel_converter_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_channel_converter>)>();
 
   void ma_channel_converter_uninit(
     ffi.Pointer<ma_channel_converter> pConverter,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
   ) {
     return _ma_channel_converter_uninit(
       pConverter,
+      pAllocationCallbacks,
     );
   }
 
   late final _ma_channel_converter_uninitPtr = _lookup<
           ffi.NativeFunction<
-              ffi.Void Function(ffi.Pointer<ma_channel_converter>)>>(
+              ffi.Void Function(ffi.Pointer<ma_channel_converter>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>(
       'ma_channel_converter_uninit');
-  late final _ma_channel_converter_uninit = _ma_channel_converter_uninitPtr
-      .asFunction<void Function(ffi.Pointer<ma_channel_converter>)>();
+  late final _ma_channel_converter_uninit =
+      _ma_channel_converter_uninitPtr.asFunction<
+          void Function(ffi.Pointer<ma_channel_converter>,
+              ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_channel_converter_process_pcm_frames(
     ffi.Pointer<ma_channel_converter> pConverter,
@@ -1916,7 +4593,7 @@ class MiniAudioFfi {
 
   late final _ma_channel_converter_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_channel_converter>,
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>,
@@ -1925,6 +4602,52 @@ class MiniAudioFfi {
       _ma_channel_converter_process_pcm_framesPtr.asFunction<
           int Function(ffi.Pointer<ma_channel_converter>, ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>, int)>();
+
+  int ma_channel_converter_get_input_channel_map(
+    ffi.Pointer<ma_channel_converter> pConverter,
+    ffi.Pointer<ma_channel> pChannelMap,
+    int channelMapCap,
+  ) {
+    return _ma_channel_converter_get_input_channel_map(
+      pConverter,
+      pChannelMap,
+      channelMapCap,
+    );
+  }
+
+  late final _ma_channel_converter_get_input_channel_mapPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_channel_converter>,
+              ffi.Pointer<ma_channel>,
+              size_t)>>('ma_channel_converter_get_input_channel_map');
+  late final _ma_channel_converter_get_input_channel_map =
+      _ma_channel_converter_get_input_channel_mapPtr.asFunction<
+          int Function(ffi.Pointer<ma_channel_converter>,
+              ffi.Pointer<ma_channel>, int)>();
+
+  int ma_channel_converter_get_output_channel_map(
+    ffi.Pointer<ma_channel_converter> pConverter,
+    ffi.Pointer<ma_channel> pChannelMap,
+    int channelMapCap,
+  ) {
+    return _ma_channel_converter_get_output_channel_map(
+      pConverter,
+      pChannelMap,
+      channelMapCap,
+    );
+  }
+
+  late final _ma_channel_converter_get_output_channel_mapPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_channel_converter>,
+              ffi.Pointer<ma_channel>,
+              size_t)>>('ma_channel_converter_get_output_channel_map');
+  late final _ma_channel_converter_get_output_channel_map =
+      _ma_channel_converter_get_output_channel_mapPtr.asFunction<
+          int Function(ffi.Pointer<ma_channel_converter>,
+              ffi.Pointer<ma_channel>, int)>();
 
   ma_data_converter_config ma_data_converter_config_init_default() {
     return _ma_data_converter_config_init_default();
@@ -1968,38 +4691,90 @@ class MiniAudioFfi {
       _ma_data_converter_config_initPtr.asFunction<
           ma_data_converter_config Function(int, int, int, int, int, int)>();
 
+  int ma_data_converter_get_heap_size(
+    ffi.Pointer<ma_data_converter_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_data_converter_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_data_converter_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_data_converter_config>,
+              ffi.Pointer<size_t>)>>('ma_data_converter_get_heap_size');
+  late final _ma_data_converter_get_heap_size =
+      _ma_data_converter_get_heap_sizePtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_data_converter_config>, ffi.Pointer<size_t>)>();
+
+  int ma_data_converter_init_preallocated(
+    ffi.Pointer<ma_data_converter_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_data_converter> pConverter,
+  ) {
+    return _ma_data_converter_init_preallocated(
+      pConfig,
+      pHeap,
+      pConverter,
+    );
+  }
+
+  late final _ma_data_converter_init_preallocatedPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_data_converter_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_data_converter>)>>(
+      'ma_data_converter_init_preallocated');
+  late final _ma_data_converter_init_preallocated =
+      _ma_data_converter_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_data_converter_config>,
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ma_data_converter>)>();
+
   int ma_data_converter_init(
     ffi.Pointer<ma_data_converter_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_data_converter> pConverter,
   ) {
     return _ma_data_converter_init(
       pConfig,
+      pAllocationCallbacks,
       pConverter,
     );
   }
 
   late final _ma_data_converter_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_data_converter_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_data_converter_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_data_converter>)>>('ma_data_converter_init');
   late final _ma_data_converter_init = _ma_data_converter_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_data_converter_config>,
+      int Function(
+          ffi.Pointer<ma_data_converter_config>,
+          ffi.Pointer<ma_allocation_callbacks>,
           ffi.Pointer<ma_data_converter>)>();
 
   void ma_data_converter_uninit(
     ffi.Pointer<ma_data_converter> pConverter,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
   ) {
     return _ma_data_converter_uninit(
       pConverter,
+      pAllocationCallbacks,
     );
   }
 
   late final _ma_data_converter_uninitPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<ma_data_converter>)>>('ma_data_converter_uninit');
-  late final _ma_data_converter_uninit = _ma_data_converter_uninitPtr
-      .asFunction<void Function(ffi.Pointer<ma_data_converter>)>();
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_data_converter>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>(
+      'ma_data_converter_uninit');
+  late final _ma_data_converter_uninit =
+      _ma_data_converter_uninitPtr.asFunction<
+          void Function(ffi.Pointer<ma_data_converter>,
+              ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_data_converter_process_pcm_frames(
     ffi.Pointer<ma_data_converter> pConverter,
@@ -2019,7 +4794,7 @@ class MiniAudioFfi {
 
   late final _ma_data_converter_process_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_data_converter>,
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<ma_uint64>,
@@ -2048,7 +4823,7 @@ class MiniAudioFfi {
 
   late final _ma_data_converter_set_ratePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_data_converter>, ma_uint32,
+          ffi.Int32 Function(ffi.Pointer<ma_data_converter>, ma_uint32,
               ma_uint32)>>('ma_data_converter_set_rate');
   late final _ma_data_converter_set_rate = _ma_data_converter_set_ratePtr
       .asFunction<int Function(ffi.Pointer<ma_data_converter>, int, int)>();
@@ -2065,47 +4840,11 @@ class MiniAudioFfi {
 
   late final _ma_data_converter_set_rate_ratioPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_data_converter>,
+          ffi.Int32 Function(ffi.Pointer<ma_data_converter>,
               ffi.Float)>>('ma_data_converter_set_rate_ratio');
   late final _ma_data_converter_set_rate_ratio =
       _ma_data_converter_set_rate_ratioPtr
           .asFunction<int Function(ffi.Pointer<ma_data_converter>, double)>();
-
-  int ma_data_converter_get_required_input_frame_count(
-    ffi.Pointer<ma_data_converter> pConverter,
-    int outputFrameCount,
-  ) {
-    return _ma_data_converter_get_required_input_frame_count(
-      pConverter,
-      outputFrameCount,
-    );
-  }
-
-  late final _ma_data_converter_get_required_input_frame_countPtr = _lookup<
-      ffi.NativeFunction<
-          ma_uint64 Function(ffi.Pointer<ma_data_converter>,
-              ma_uint64)>>('ma_data_converter_get_required_input_frame_count');
-  late final _ma_data_converter_get_required_input_frame_count =
-      _ma_data_converter_get_required_input_frame_countPtr
-          .asFunction<int Function(ffi.Pointer<ma_data_converter>, int)>();
-
-  int ma_data_converter_get_expected_output_frame_count(
-    ffi.Pointer<ma_data_converter> pConverter,
-    int inputFrameCount,
-  ) {
-    return _ma_data_converter_get_expected_output_frame_count(
-      pConverter,
-      inputFrameCount,
-    );
-  }
-
-  late final _ma_data_converter_get_expected_output_frame_countPtr = _lookup<
-      ffi.NativeFunction<
-          ma_uint64 Function(ffi.Pointer<ma_data_converter>,
-              ma_uint64)>>('ma_data_converter_get_expected_output_frame_count');
-  late final _ma_data_converter_get_expected_output_frame_count =
-      _ma_data_converter_get_expected_output_frame_countPtr
-          .asFunction<int Function(ffi.Pointer<ma_data_converter>, int)>();
 
   int ma_data_converter_get_input_latency(
     ffi.Pointer<ma_data_converter> pConverter,
@@ -2138,6 +4877,111 @@ class MiniAudioFfi {
   late final _ma_data_converter_get_output_latency =
       _ma_data_converter_get_output_latencyPtr
           .asFunction<int Function(ffi.Pointer<ma_data_converter>)>();
+
+  int ma_data_converter_get_required_input_frame_count(
+    ffi.Pointer<ma_data_converter> pConverter,
+    int outputFrameCount,
+    ffi.Pointer<ma_uint64> pInputFrameCount,
+  ) {
+    return _ma_data_converter_get_required_input_frame_count(
+      pConverter,
+      outputFrameCount,
+      pInputFrameCount,
+    );
+  }
+
+  late final _ma_data_converter_get_required_input_frame_countPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_data_converter>, ma_uint64,
+                  ffi.Pointer<ma_uint64>)>>(
+      'ma_data_converter_get_required_input_frame_count');
+  late final _ma_data_converter_get_required_input_frame_count =
+      _ma_data_converter_get_required_input_frame_countPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_data_converter>, int, ffi.Pointer<ma_uint64>)>();
+
+  int ma_data_converter_get_expected_output_frame_count(
+    ffi.Pointer<ma_data_converter> pConverter,
+    int inputFrameCount,
+    ffi.Pointer<ma_uint64> pOutputFrameCount,
+  ) {
+    return _ma_data_converter_get_expected_output_frame_count(
+      pConverter,
+      inputFrameCount,
+      pOutputFrameCount,
+    );
+  }
+
+  late final _ma_data_converter_get_expected_output_frame_countPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_data_converter>, ma_uint64,
+                  ffi.Pointer<ma_uint64>)>>(
+      'ma_data_converter_get_expected_output_frame_count');
+  late final _ma_data_converter_get_expected_output_frame_count =
+      _ma_data_converter_get_expected_output_frame_countPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_data_converter>, int, ffi.Pointer<ma_uint64>)>();
+
+  int ma_data_converter_get_input_channel_map(
+    ffi.Pointer<ma_data_converter> pConverter,
+    ffi.Pointer<ma_channel> pChannelMap,
+    int channelMapCap,
+  ) {
+    return _ma_data_converter_get_input_channel_map(
+      pConverter,
+      pChannelMap,
+      channelMapCap,
+    );
+  }
+
+  late final _ma_data_converter_get_input_channel_mapPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_data_converter>,
+              ffi.Pointer<ma_channel>,
+              size_t)>>('ma_data_converter_get_input_channel_map');
+  late final _ma_data_converter_get_input_channel_map =
+      _ma_data_converter_get_input_channel_mapPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_data_converter>, ffi.Pointer<ma_channel>, int)>();
+
+  int ma_data_converter_get_output_channel_map(
+    ffi.Pointer<ma_data_converter> pConverter,
+    ffi.Pointer<ma_channel> pChannelMap,
+    int channelMapCap,
+  ) {
+    return _ma_data_converter_get_output_channel_map(
+      pConverter,
+      pChannelMap,
+      channelMapCap,
+    );
+  }
+
+  late final _ma_data_converter_get_output_channel_mapPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_data_converter>,
+              ffi.Pointer<ma_channel>,
+              size_t)>>('ma_data_converter_get_output_channel_map');
+  late final _ma_data_converter_get_output_channel_map =
+      _ma_data_converter_get_output_channel_mapPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_data_converter>, ffi.Pointer<ma_channel>, int)>();
+
+  int ma_data_converter_reset(
+    ffi.Pointer<ma_data_converter> pConverter,
+  ) {
+    return _ma_data_converter_reset(
+      pConverter,
+    );
+  }
+
+  late final _ma_data_converter_resetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_data_converter>)>>('ma_data_converter_reset');
+  late final _ma_data_converter_reset = _ma_data_converter_resetPtr
+      .asFunction<int Function(ffi.Pointer<ma_data_converter>)>();
 
   /// Format Conversion
   void ma_pcm_u8_to_s16(
@@ -2681,23 +5525,6 @@ class MiniAudioFfi {
           void Function(int, int, int, ffi.Pointer<ffi.Pointer<ffi.Void>>,
               ffi.Pointer<ffi.Void>)>();
 
-  int ma_channel_map_get_default_channel(
-    int channelCount,
-    int channelIndex,
-  ) {
-    return _ma_channel_map_get_default_channel(
-      channelCount,
-      channelIndex,
-    );
-  }
-
-  late final _ma_channel_map_get_default_channelPtr =
-      _lookup<ffi.NativeFunction<ma_channel Function(ma_uint32, ma_uint32)>>(
-          'ma_channel_map_get_default_channel');
-  late final _ma_channel_map_get_default_channel =
-      _ma_channel_map_get_default_channelPtr
-          .asFunction<int Function(int, int)>();
-
   int ma_channel_map_get_channel(
     ffi.Pointer<ma_channel> pChannelMap,
     int channelCount,
@@ -2718,40 +5545,42 @@ class MiniAudioFfi {
       .asFunction<int Function(ffi.Pointer<ma_channel>, int, int)>();
 
   void ma_channel_map_init_blank(
-    int channels,
     ffi.Pointer<ma_channel> pChannelMap,
+    int channels,
   ) {
     return _ma_channel_map_init_blank(
-      channels,
       pChannelMap,
+      channels,
     );
   }
 
   late final _ma_channel_map_init_blankPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(ma_uint32,
-              ffi.Pointer<ma_channel>)>>('ma_channel_map_init_blank');
+          ffi.Void Function(ffi.Pointer<ma_channel>,
+              ma_uint32)>>('ma_channel_map_init_blank');
   late final _ma_channel_map_init_blank = _ma_channel_map_init_blankPtr
-      .asFunction<void Function(int, ffi.Pointer<ma_channel>)>();
+      .asFunction<void Function(ffi.Pointer<ma_channel>, int)>();
 
-  void ma_get_standard_channel_map(
+  void ma_channel_map_init_standard(
     int standardChannelMap,
-    int channels,
     ffi.Pointer<ma_channel> pChannelMap,
+    int channelMapCap,
+    int channels,
   ) {
-    return _ma_get_standard_channel_map(
+    return _ma_channel_map_init_standard(
       standardChannelMap,
-      channels,
       pChannelMap,
+      channelMapCap,
+      channels,
     );
   }
 
-  late final _ma_get_standard_channel_mapPtr = _lookup<
+  late final _ma_channel_map_init_standardPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(ffi.Int32, ma_uint32,
-              ffi.Pointer<ma_channel>)>>('ma_get_standard_channel_map');
-  late final _ma_get_standard_channel_map = _ma_get_standard_channel_mapPtr
-      .asFunction<void Function(int, int, ffi.Pointer<ma_channel>)>();
+          ffi.Void Function(ffi.Int32, ffi.Pointer<ma_channel>, size_t,
+              ma_uint32)>>('ma_channel_map_init_standard');
+  late final _ma_channel_map_init_standard = _ma_channel_map_init_standardPtr
+      .asFunction<void Function(int, ffi.Pointer<ma_channel>, int, int)>();
 
   void ma_channel_map_copy(
     ffi.Pointer<ma_channel> pOut,
@@ -2774,11 +5603,13 @@ class MiniAudioFfi {
 
   void ma_channel_map_copy_or_default(
     ffi.Pointer<ma_channel> pOut,
+    int channelMapCapOut,
     ffi.Pointer<ma_channel> pIn,
     int channels,
   ) {
     return _ma_channel_map_copy_or_default(
       pOut,
+      channelMapCapOut,
       pIn,
       channels,
     );
@@ -2786,65 +5617,68 @@ class MiniAudioFfi {
 
   late final _ma_channel_map_copy_or_defaultPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ma_channel>, ffi.Pointer<ma_channel>,
+          ffi.Void Function(
+              ffi.Pointer<ma_channel>,
+              size_t,
+              ffi.Pointer<ma_channel>,
               ma_uint32)>>('ma_channel_map_copy_or_default');
   late final _ma_channel_map_copy_or_default =
       _ma_channel_map_copy_or_defaultPtr.asFunction<
           void Function(
-              ffi.Pointer<ma_channel>, ffi.Pointer<ma_channel>, int)>();
+              ffi.Pointer<ma_channel>, int, ffi.Pointer<ma_channel>, int)>();
 
-  int ma_channel_map_valid(
-    int channels,
+  int ma_channel_map_is_valid(
     ffi.Pointer<ma_channel> pChannelMap,
+    int channels,
   ) {
-    return _ma_channel_map_valid(
-      channels,
+    return _ma_channel_map_is_valid(
       pChannelMap,
+      channels,
     );
   }
 
-  late final _ma_channel_map_validPtr = _lookup<
+  late final _ma_channel_map_is_validPtr = _lookup<
       ffi.NativeFunction<
           ma_bool32 Function(
-              ma_uint32, ffi.Pointer<ma_channel>)>>('ma_channel_map_valid');
-  late final _ma_channel_map_valid = _ma_channel_map_validPtr
-      .asFunction<int Function(int, ffi.Pointer<ma_channel>)>();
+              ffi.Pointer<ma_channel>, ma_uint32)>>('ma_channel_map_is_valid');
+  late final _ma_channel_map_is_valid = _ma_channel_map_is_validPtr
+      .asFunction<int Function(ffi.Pointer<ma_channel>, int)>();
 
-  int ma_channel_map_equal(
-    int channels,
+  int ma_channel_map_is_equal(
     ffi.Pointer<ma_channel> pChannelMapA,
     ffi.Pointer<ma_channel> pChannelMapB,
+    int channels,
   ) {
-    return _ma_channel_map_equal(
-      channels,
+    return _ma_channel_map_is_equal(
       pChannelMapA,
       pChannelMapB,
-    );
-  }
-
-  late final _ma_channel_map_equalPtr = _lookup<
-      ffi.NativeFunction<
-          ma_bool32 Function(ma_uint32, ffi.Pointer<ma_channel>,
-              ffi.Pointer<ma_channel>)>>('ma_channel_map_equal');
-  late final _ma_channel_map_equal = _ma_channel_map_equalPtr.asFunction<
-      int Function(int, ffi.Pointer<ma_channel>, ffi.Pointer<ma_channel>)>();
-
-  int ma_channel_map_blank(
-    int channels,
-    ffi.Pointer<ma_channel> pChannelMap,
-  ) {
-    return _ma_channel_map_blank(
       channels,
-      pChannelMap,
     );
   }
 
-  late final _ma_channel_map_blankPtr = _lookup<
+  late final _ma_channel_map_is_equalPtr = _lookup<
+      ffi.NativeFunction<
+          ma_bool32 Function(ffi.Pointer<ma_channel>, ffi.Pointer<ma_channel>,
+              ma_uint32)>>('ma_channel_map_is_equal');
+  late final _ma_channel_map_is_equal = _ma_channel_map_is_equalPtr.asFunction<
+      int Function(ffi.Pointer<ma_channel>, ffi.Pointer<ma_channel>, int)>();
+
+  int ma_channel_map_is_blank(
+    ffi.Pointer<ma_channel> pChannelMap,
+    int channels,
+  ) {
+    return _ma_channel_map_is_blank(
+      pChannelMap,
+      channels,
+    );
+  }
+
+  late final _ma_channel_map_is_blankPtr = _lookup<
       ffi.NativeFunction<
           ma_bool32 Function(
-              ma_uint32, ffi.Pointer<ma_channel>)>>('ma_channel_map_blank');
-  late final _ma_channel_map_blank = _ma_channel_map_blankPtr
-      .asFunction<int Function(int, ffi.Pointer<ma_channel>)>();
+              ffi.Pointer<ma_channel>, ma_uint32)>>('ma_channel_map_is_blank');
+  late final _ma_channel_map_is_blank = _ma_channel_map_is_blankPtr
+      .asFunction<int Function(ffi.Pointer<ma_channel>, int)>();
 
   int ma_channel_map_contains_channel_position(
     int channels,
@@ -2958,7 +5792,7 @@ class MiniAudioFfi {
 
   late final _ma_rb_init_exPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               size_t,
               size_t,
               size_t,
@@ -2985,7 +5819,7 @@ class MiniAudioFfi {
 
   late final _ma_rb_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               size_t,
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<ma_allocation_callbacks>,
@@ -3036,7 +5870,7 @@ class MiniAudioFfi {
 
   late final _ma_rb_acquire_readPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_rb>, ffi.Pointer<size_t>,
+          ffi.Int32 Function(ffi.Pointer<ma_rb>, ffi.Pointer<size_t>,
               ffi.Pointer<ffi.Pointer<ffi.Void>>)>>('ma_rb_acquire_read');
   late final _ma_rb_acquire_read = _ma_rb_acquire_readPtr.asFunction<
       int Function(ffi.Pointer<ma_rb>, ffi.Pointer<size_t>,
@@ -3045,21 +5879,18 @@ class MiniAudioFfi {
   int ma_rb_commit_read(
     ffi.Pointer<ma_rb> pRB,
     int sizeInBytes,
-    ffi.Pointer<ffi.Void> pBufferOut,
   ) {
     return _ma_rb_commit_read(
       pRB,
       sizeInBytes,
-      pBufferOut,
     );
   }
 
   late final _ma_rb_commit_readPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_rb>, size_t,
-              ffi.Pointer<ffi.Void>)>>('ma_rb_commit_read');
-  late final _ma_rb_commit_read = _ma_rb_commit_readPtr.asFunction<
-      int Function(ffi.Pointer<ma_rb>, int, ffi.Pointer<ffi.Void>)>();
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_rb>, size_t)>>(
+      'ma_rb_commit_read');
+  late final _ma_rb_commit_read =
+      _ma_rb_commit_readPtr.asFunction<int Function(ffi.Pointer<ma_rb>, int)>();
 
   int ma_rb_acquire_write(
     ffi.Pointer<ma_rb> pRB,
@@ -3075,7 +5906,7 @@ class MiniAudioFfi {
 
   late final _ma_rb_acquire_writePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_rb>, ffi.Pointer<size_t>,
+          ffi.Int32 Function(ffi.Pointer<ma_rb>, ffi.Pointer<size_t>,
               ffi.Pointer<ffi.Pointer<ffi.Void>>)>>('ma_rb_acquire_write');
   late final _ma_rb_acquire_write = _ma_rb_acquire_writePtr.asFunction<
       int Function(ffi.Pointer<ma_rb>, ffi.Pointer<size_t>,
@@ -3084,21 +5915,18 @@ class MiniAudioFfi {
   int ma_rb_commit_write(
     ffi.Pointer<ma_rb> pRB,
     int sizeInBytes,
-    ffi.Pointer<ffi.Void> pBufferOut,
   ) {
     return _ma_rb_commit_write(
       pRB,
       sizeInBytes,
-      pBufferOut,
     );
   }
 
   late final _ma_rb_commit_writePtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_rb>, size_t,
-              ffi.Pointer<ffi.Void>)>>('ma_rb_commit_write');
-  late final _ma_rb_commit_write = _ma_rb_commit_writePtr.asFunction<
-      int Function(ffi.Pointer<ma_rb>, int, ffi.Pointer<ffi.Void>)>();
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_rb>, size_t)>>(
+      'ma_rb_commit_write');
+  late final _ma_rb_commit_write = _ma_rb_commit_writePtr
+      .asFunction<int Function(ffi.Pointer<ma_rb>, int)>();
 
   int ma_rb_seek_read(
     ffi.Pointer<ma_rb> pRB,
@@ -3111,7 +5939,7 @@ class MiniAudioFfi {
   }
 
   late final _ma_rb_seek_readPtr = _lookup<
-          ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_rb>, size_t)>>(
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_rb>, size_t)>>(
       'ma_rb_seek_read');
   late final _ma_rb_seek_read =
       _ma_rb_seek_readPtr.asFunction<int Function(ffi.Pointer<ma_rb>, int)>();
@@ -3127,7 +5955,7 @@ class MiniAudioFfi {
   }
 
   late final _ma_rb_seek_writePtr = _lookup<
-          ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_rb>, size_t)>>(
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_rb>, size_t)>>(
       'ma_rb_seek_write');
   late final _ma_rb_seek_write =
       _ma_rb_seek_writePtr.asFunction<int Function(ffi.Pointer<ma_rb>, int)>();
@@ -3262,7 +6090,7 @@ class MiniAudioFfi {
 
   late final _ma_pcm_rb_init_exPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Int32,
               ma_uint32,
               ma_uint32,
@@ -3295,7 +6123,7 @@ class MiniAudioFfi {
 
   late final _ma_pcm_rb_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Int32,
               ma_uint32,
               ma_uint32,
@@ -3348,7 +6176,7 @@ class MiniAudioFfi {
 
   late final _ma_pcm_rb_acquire_readPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_pcm_rb>, ffi.Pointer<ma_uint32>,
+          ffi.Int32 Function(ffi.Pointer<ma_pcm_rb>, ffi.Pointer<ma_uint32>,
               ffi.Pointer<ffi.Pointer<ffi.Void>>)>>('ma_pcm_rb_acquire_read');
   late final _ma_pcm_rb_acquire_read = _ma_pcm_rb_acquire_readPtr.asFunction<
       int Function(ffi.Pointer<ma_pcm_rb>, ffi.Pointer<ma_uint32>,
@@ -3357,21 +6185,19 @@ class MiniAudioFfi {
   int ma_pcm_rb_commit_read(
     ffi.Pointer<ma_pcm_rb> pRB,
     int sizeInFrames,
-    ffi.Pointer<ffi.Void> pBufferOut,
   ) {
     return _ma_pcm_rb_commit_read(
       pRB,
       sizeInFrames,
-      pBufferOut,
     );
   }
 
   late final _ma_pcm_rb_commit_readPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_pcm_rb>, ma_uint32,
-              ffi.Pointer<ffi.Void>)>>('ma_pcm_rb_commit_read');
-  late final _ma_pcm_rb_commit_read = _ma_pcm_rb_commit_readPtr.asFunction<
-      int Function(ffi.Pointer<ma_pcm_rb>, int, ffi.Pointer<ffi.Void>)>();
+          ffi.Int32 Function(
+              ffi.Pointer<ma_pcm_rb>, ma_uint32)>>('ma_pcm_rb_commit_read');
+  late final _ma_pcm_rb_commit_read = _ma_pcm_rb_commit_readPtr
+      .asFunction<int Function(ffi.Pointer<ma_pcm_rb>, int)>();
 
   int ma_pcm_rb_acquire_write(
     ffi.Pointer<ma_pcm_rb> pRB,
@@ -3387,7 +6213,7 @@ class MiniAudioFfi {
 
   late final _ma_pcm_rb_acquire_writePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_pcm_rb>, ffi.Pointer<ma_uint32>,
+          ffi.Int32 Function(ffi.Pointer<ma_pcm_rb>, ffi.Pointer<ma_uint32>,
               ffi.Pointer<ffi.Pointer<ffi.Void>>)>>('ma_pcm_rb_acquire_write');
   late final _ma_pcm_rb_acquire_write = _ma_pcm_rb_acquire_writePtr.asFunction<
       int Function(ffi.Pointer<ma_pcm_rb>, ffi.Pointer<ma_uint32>,
@@ -3396,21 +6222,19 @@ class MiniAudioFfi {
   int ma_pcm_rb_commit_write(
     ffi.Pointer<ma_pcm_rb> pRB,
     int sizeInFrames,
-    ffi.Pointer<ffi.Void> pBufferOut,
   ) {
     return _ma_pcm_rb_commit_write(
       pRB,
       sizeInFrames,
-      pBufferOut,
     );
   }
 
   late final _ma_pcm_rb_commit_writePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_pcm_rb>, ma_uint32,
-              ffi.Pointer<ffi.Void>)>>('ma_pcm_rb_commit_write');
-  late final _ma_pcm_rb_commit_write = _ma_pcm_rb_commit_writePtr.asFunction<
-      int Function(ffi.Pointer<ma_pcm_rb>, int, ffi.Pointer<ffi.Void>)>();
+          ffi.Int32 Function(
+              ffi.Pointer<ma_pcm_rb>, ma_uint32)>>('ma_pcm_rb_commit_write');
+  late final _ma_pcm_rb_commit_write = _ma_pcm_rb_commit_writePtr
+      .asFunction<int Function(ffi.Pointer<ma_pcm_rb>, int)>();
 
   int ma_pcm_rb_seek_read(
     ffi.Pointer<ma_pcm_rb> pRB,
@@ -3424,7 +6248,7 @@ class MiniAudioFfi {
 
   late final _ma_pcm_rb_seek_readPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_pcm_rb>, ma_uint32)>>('ma_pcm_rb_seek_read');
   late final _ma_pcm_rb_seek_read = _ma_pcm_rb_seek_readPtr
       .asFunction<int Function(ffi.Pointer<ma_pcm_rb>, int)>();
@@ -3441,7 +6265,7 @@ class MiniAudioFfi {
 
   late final _ma_pcm_rb_seek_writePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_pcm_rb>, ma_uint32)>>('ma_pcm_rb_seek_write');
   late final _ma_pcm_rb_seek_write = _ma_pcm_rb_seek_writePtr
       .asFunction<int Function(ffi.Pointer<ma_pcm_rb>, int)>();
@@ -3578,7 +6402,7 @@ class MiniAudioFfi {
 
   late final _ma_duplex_rb_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Int32,
               ma_uint32,
               ma_uint32,
@@ -3599,7 +6423,7 @@ class MiniAudioFfi {
   }
 
   late final _ma_duplex_rb_uninitPtr = _lookup<
-          ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_duplex_rb>)>>(
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_duplex_rb>)>>(
       'ma_duplex_rb_uninit');
   late final _ma_duplex_rb_uninit = _ma_duplex_rb_uninitPtr
       .asFunction<int Function(ffi.Pointer<ma_duplex_rb>)>();
@@ -3614,7 +6438,7 @@ class MiniAudioFfi {
   }
 
   late final _ma_result_descriptionPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int8> Function(ma_result)>>(
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Int8> Function(ffi.Int32)>>(
           'ma_result_description');
   late final _ma_result_description = _ma_result_descriptionPtr
       .asFunction<ffi.Pointer<ffi.Int8> Function(int)>();
@@ -3634,6 +6458,24 @@ class MiniAudioFfi {
           ffi.Pointer<ffi.Void> Function(
               size_t, ffi.Pointer<ma_allocation_callbacks>)>>('ma_malloc');
   late final _ma_malloc = _ma_mallocPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(
+          int, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ffi.Pointer<ffi.Void> ma_calloc(
+    int sz,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_calloc(
+      sz,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_callocPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              size_t, ffi.Pointer<ma_allocation_callbacks>)>>('ma_calloc');
+  late final _ma_calloc = _ma_callocPtr.asFunction<
       ffi.Pointer<ffi.Void> Function(
           int, ffi.Pointer<ma_allocation_callbacks>)>();
 
@@ -3779,6 +6621,728 @@ class MiniAudioFfi {
   late final _ma_log_level_to_string = _ma_log_level_to_stringPtr
       .asFunction<ffi.Pointer<ffi.Int8> Function(int)>();
 
+  /// Synchronization
+  int ma_spinlock_lock(
+    ffi.Pointer<ma_spinlock> pSpinlock,
+  ) {
+    return _ma_spinlock_lock(
+      pSpinlock,
+    );
+  }
+
+  late final _ma_spinlock_lockPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_spinlock>)>>(
+          'ma_spinlock_lock');
+  late final _ma_spinlock_lock =
+      _ma_spinlock_lockPtr.asFunction<int Function(ffi.Pointer<ma_spinlock>)>();
+
+  int ma_spinlock_lock_noyield(
+    ffi.Pointer<ma_spinlock> pSpinlock,
+  ) {
+    return _ma_spinlock_lock_noyield(
+      pSpinlock,
+    );
+  }
+
+  late final _ma_spinlock_lock_noyieldPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_spinlock>)>>(
+          'ma_spinlock_lock_noyield');
+  late final _ma_spinlock_lock_noyield = _ma_spinlock_lock_noyieldPtr
+      .asFunction<int Function(ffi.Pointer<ma_spinlock>)>();
+
+  int ma_spinlock_unlock(
+    ffi.Pointer<ma_spinlock> pSpinlock,
+  ) {
+    return _ma_spinlock_unlock(
+      pSpinlock,
+    );
+  }
+
+  late final _ma_spinlock_unlockPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_spinlock>)>>(
+          'ma_spinlock_unlock');
+  late final _ma_spinlock_unlock = _ma_spinlock_unlockPtr
+      .asFunction<int Function(ffi.Pointer<ma_spinlock>)>();
+
+  int ma_mutex_init(
+    ffi.Pointer<ma_mutex> pMutex,
+  ) {
+    return _ma_mutex_init(
+      pMutex,
+    );
+  }
+
+  late final _ma_mutex_initPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_mutex>)>>(
+          'ma_mutex_init');
+  late final _ma_mutex_init =
+      _ma_mutex_initPtr.asFunction<int Function(ffi.Pointer<ma_mutex>)>();
+
+  void ma_mutex_uninit(
+    ffi.Pointer<ma_mutex> pMutex,
+  ) {
+    return _ma_mutex_uninit(
+      pMutex,
+    );
+  }
+
+  late final _ma_mutex_uninitPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_mutex>)>>(
+          'ma_mutex_uninit');
+  late final _ma_mutex_uninit =
+      _ma_mutex_uninitPtr.asFunction<void Function(ffi.Pointer<ma_mutex>)>();
+
+  void ma_mutex_lock(
+    ffi.Pointer<ma_mutex> pMutex,
+  ) {
+    return _ma_mutex_lock(
+      pMutex,
+    );
+  }
+
+  late final _ma_mutex_lockPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_mutex>)>>(
+          'ma_mutex_lock');
+  late final _ma_mutex_lock =
+      _ma_mutex_lockPtr.asFunction<void Function(ffi.Pointer<ma_mutex>)>();
+
+  void ma_mutex_unlock(
+    ffi.Pointer<ma_mutex> pMutex,
+  ) {
+    return _ma_mutex_unlock(
+      pMutex,
+    );
+  }
+
+  late final _ma_mutex_unlockPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_mutex>)>>(
+          'ma_mutex_unlock');
+  late final _ma_mutex_unlock =
+      _ma_mutex_unlockPtr.asFunction<void Function(ffi.Pointer<ma_mutex>)>();
+
+  int ma_event_init(
+    ffi.Pointer<ma_event> pEvent,
+  ) {
+    return _ma_event_init(
+      pEvent,
+    );
+  }
+
+  late final _ma_event_initPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_event>)>>(
+          'ma_event_init');
+  late final _ma_event_init =
+      _ma_event_initPtr.asFunction<int Function(ffi.Pointer<ma_event>)>();
+
+  void ma_event_uninit(
+    ffi.Pointer<ma_event> pEvent,
+  ) {
+    return _ma_event_uninit(
+      pEvent,
+    );
+  }
+
+  late final _ma_event_uninitPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_event>)>>(
+          'ma_event_uninit');
+  late final _ma_event_uninit =
+      _ma_event_uninitPtr.asFunction<void Function(ffi.Pointer<ma_event>)>();
+
+  int ma_event_wait(
+    ffi.Pointer<ma_event> pEvent,
+  ) {
+    return _ma_event_wait(
+      pEvent,
+    );
+  }
+
+  late final _ma_event_waitPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_event>)>>(
+          'ma_event_wait');
+  late final _ma_event_wait =
+      _ma_event_waitPtr.asFunction<int Function(ffi.Pointer<ma_event>)>();
+
+  int ma_event_signal(
+    ffi.Pointer<ma_event> pEvent,
+  ) {
+    return _ma_event_signal(
+      pEvent,
+    );
+  }
+
+  late final _ma_event_signalPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_event>)>>(
+          'ma_event_signal');
+  late final _ma_event_signal =
+      _ma_event_signalPtr.asFunction<int Function(ffi.Pointer<ma_event>)>();
+
+  int ma_fence_init(
+    ffi.Pointer<ma_fence> pFence,
+  ) {
+    return _ma_fence_init(
+      pFence,
+    );
+  }
+
+  late final _ma_fence_initPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_fence>)>>(
+          'ma_fence_init');
+  late final _ma_fence_init =
+      _ma_fence_initPtr.asFunction<int Function(ffi.Pointer<ma_fence>)>();
+
+  void ma_fence_uninit(
+    ffi.Pointer<ma_fence> pFence,
+  ) {
+    return _ma_fence_uninit(
+      pFence,
+    );
+  }
+
+  late final _ma_fence_uninitPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_fence>)>>(
+          'ma_fence_uninit');
+  late final _ma_fence_uninit =
+      _ma_fence_uninitPtr.asFunction<void Function(ffi.Pointer<ma_fence>)>();
+
+  int ma_fence_acquire(
+    ffi.Pointer<ma_fence> pFence,
+  ) {
+    return _ma_fence_acquire(
+      pFence,
+    );
+  }
+
+  late final _ma_fence_acquirePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_fence>)>>(
+          'ma_fence_acquire');
+  late final _ma_fence_acquire =
+      _ma_fence_acquirePtr.asFunction<int Function(ffi.Pointer<ma_fence>)>();
+
+  int ma_fence_release(
+    ffi.Pointer<ma_fence> pFence,
+  ) {
+    return _ma_fence_release(
+      pFence,
+    );
+  }
+
+  late final _ma_fence_releasePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_fence>)>>(
+          'ma_fence_release');
+  late final _ma_fence_release =
+      _ma_fence_releasePtr.asFunction<int Function(ffi.Pointer<ma_fence>)>();
+
+  int ma_fence_wait(
+    ffi.Pointer<ma_fence> pFence,
+  ) {
+    return _ma_fence_wait(
+      pFence,
+    );
+  }
+
+  late final _ma_fence_waitPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_fence>)>>(
+          'ma_fence_wait');
+  late final _ma_fence_wait =
+      _ma_fence_waitPtr.asFunction<int Function(ffi.Pointer<ma_fence>)>();
+
+  int ma_async_notification_signal(
+    ffi.Pointer<ma_async_notification> pNotification,
+  ) {
+    return _ma_async_notification_signal(
+      pNotification,
+    );
+  }
+
+  late final _ma_async_notification_signalPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_async_notification>)>>(
+      'ma_async_notification_signal');
+  late final _ma_async_notification_signal = _ma_async_notification_signalPtr
+      .asFunction<int Function(ffi.Pointer<ma_async_notification>)>();
+
+  int ma_async_notification_poll_init(
+    ffi.Pointer<ma_async_notification_poll> pNotificationPoll,
+  ) {
+    return _ma_async_notification_poll_init(
+      pNotificationPoll,
+    );
+  }
+
+  late final _ma_async_notification_poll_initPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_async_notification_poll>)>>(
+      'ma_async_notification_poll_init');
+  late final _ma_async_notification_poll_init =
+      _ma_async_notification_poll_initPtr
+          .asFunction<int Function(ffi.Pointer<ma_async_notification_poll>)>();
+
+  int ma_async_notification_poll_is_signalled(
+    ffi.Pointer<ma_async_notification_poll> pNotificationPoll,
+  ) {
+    return _ma_async_notification_poll_is_signalled(
+      pNotificationPoll,
+    );
+  }
+
+  late final _ma_async_notification_poll_is_signalledPtr = _lookup<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_async_notification_poll>)>>(
+      'ma_async_notification_poll_is_signalled');
+  late final _ma_async_notification_poll_is_signalled =
+      _ma_async_notification_poll_is_signalledPtr
+          .asFunction<int Function(ffi.Pointer<ma_async_notification_poll>)>();
+
+  int ma_async_notification_event_init(
+    ffi.Pointer<ma_async_notification_event> pNotificationEvent,
+  ) {
+    return _ma_async_notification_event_init(
+      pNotificationEvent,
+    );
+  }
+
+  late final _ma_async_notification_event_initPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_async_notification_event>)>>(
+      'ma_async_notification_event_init');
+  late final _ma_async_notification_event_init =
+      _ma_async_notification_event_initPtr
+          .asFunction<int Function(ffi.Pointer<ma_async_notification_event>)>();
+
+  int ma_async_notification_event_uninit(
+    ffi.Pointer<ma_async_notification_event> pNotificationEvent,
+  ) {
+    return _ma_async_notification_event_uninit(
+      pNotificationEvent,
+    );
+  }
+
+  late final _ma_async_notification_event_uninitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_async_notification_event>)>>(
+      'ma_async_notification_event_uninit');
+  late final _ma_async_notification_event_uninit =
+      _ma_async_notification_event_uninitPtr
+          .asFunction<int Function(ffi.Pointer<ma_async_notification_event>)>();
+
+  int ma_async_notification_event_wait(
+    ffi.Pointer<ma_async_notification_event> pNotificationEvent,
+  ) {
+    return _ma_async_notification_event_wait(
+      pNotificationEvent,
+    );
+  }
+
+  late final _ma_async_notification_event_waitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_async_notification_event>)>>(
+      'ma_async_notification_event_wait');
+  late final _ma_async_notification_event_wait =
+      _ma_async_notification_event_waitPtr
+          .asFunction<int Function(ffi.Pointer<ma_async_notification_event>)>();
+
+  int ma_async_notification_event_signal(
+    ffi.Pointer<ma_async_notification_event> pNotificationEvent,
+  ) {
+    return _ma_async_notification_event_signal(
+      pNotificationEvent,
+    );
+  }
+
+  late final _ma_async_notification_event_signalPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_async_notification_event>)>>(
+      'ma_async_notification_event_signal');
+  late final _ma_async_notification_event_signal =
+      _ma_async_notification_event_signalPtr
+          .asFunction<int Function(ffi.Pointer<ma_async_notification_event>)>();
+
+  ma_slot_allocator_config ma_slot_allocator_config_init(
+    int capacity,
+  ) {
+    return _ma_slot_allocator_config_init(
+      capacity,
+    );
+  }
+
+  late final _ma_slot_allocator_config_initPtr =
+      _lookup<ffi.NativeFunction<ma_slot_allocator_config Function(ma_uint32)>>(
+          'ma_slot_allocator_config_init');
+  late final _ma_slot_allocator_config_init = _ma_slot_allocator_config_initPtr
+      .asFunction<ma_slot_allocator_config Function(int)>();
+
+  int ma_slot_allocator_get_heap_size(
+    ffi.Pointer<ma_slot_allocator_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_slot_allocator_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_slot_allocator_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_slot_allocator_config>,
+              ffi.Pointer<size_t>)>>('ma_slot_allocator_get_heap_size');
+  late final _ma_slot_allocator_get_heap_size =
+      _ma_slot_allocator_get_heap_sizePtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_slot_allocator_config>, ffi.Pointer<size_t>)>();
+
+  int ma_slot_allocator_init_preallocated(
+    ffi.Pointer<ma_slot_allocator_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_slot_allocator> pAllocator,
+  ) {
+    return _ma_slot_allocator_init_preallocated(
+      pConfig,
+      pHeap,
+      pAllocator,
+    );
+  }
+
+  late final _ma_slot_allocator_init_preallocatedPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_slot_allocator_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_slot_allocator>)>>(
+      'ma_slot_allocator_init_preallocated');
+  late final _ma_slot_allocator_init_preallocated =
+      _ma_slot_allocator_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_slot_allocator_config>,
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ma_slot_allocator>)>();
+
+  int ma_slot_allocator_init(
+    ffi.Pointer<ma_slot_allocator_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_slot_allocator> pAllocator,
+  ) {
+    return _ma_slot_allocator_init(
+      pConfig,
+      pAllocationCallbacks,
+      pAllocator,
+    );
+  }
+
+  late final _ma_slot_allocator_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_slot_allocator_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_slot_allocator>)>>('ma_slot_allocator_init');
+  late final _ma_slot_allocator_init = _ma_slot_allocator_initPtr.asFunction<
+      int Function(
+          ffi.Pointer<ma_slot_allocator_config>,
+          ffi.Pointer<ma_allocation_callbacks>,
+          ffi.Pointer<ma_slot_allocator>)>();
+
+  void ma_slot_allocator_uninit(
+    ffi.Pointer<ma_slot_allocator> pAllocator,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_slot_allocator_uninit(
+      pAllocator,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_slot_allocator_uninitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_slot_allocator>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>(
+      'ma_slot_allocator_uninit');
+  late final _ma_slot_allocator_uninit =
+      _ma_slot_allocator_uninitPtr.asFunction<
+          void Function(ffi.Pointer<ma_slot_allocator>,
+              ffi.Pointer<ma_allocation_callbacks>)>();
+
+  int ma_slot_allocator_alloc(
+    ffi.Pointer<ma_slot_allocator> pAllocator,
+    ffi.Pointer<ma_uint64> pSlot,
+  ) {
+    return _ma_slot_allocator_alloc(
+      pAllocator,
+      pSlot,
+    );
+  }
+
+  late final _ma_slot_allocator_allocPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_slot_allocator>,
+              ffi.Pointer<ma_uint64>)>>('ma_slot_allocator_alloc');
+  late final _ma_slot_allocator_alloc = _ma_slot_allocator_allocPtr.asFunction<
+      int Function(ffi.Pointer<ma_slot_allocator>, ffi.Pointer<ma_uint64>)>();
+
+  int ma_slot_allocator_free(
+    ffi.Pointer<ma_slot_allocator> pAllocator,
+    int slot,
+  ) {
+    return _ma_slot_allocator_free(
+      pAllocator,
+      slot,
+    );
+  }
+
+  late final _ma_slot_allocator_freePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_slot_allocator>,
+              ma_uint64)>>('ma_slot_allocator_free');
+  late final _ma_slot_allocator_free = _ma_slot_allocator_freePtr
+      .asFunction<int Function(ffi.Pointer<ma_slot_allocator>, int)>();
+
+  ma_job ma_job_init(
+    int code,
+  ) {
+    return _ma_job_init(
+      code,
+    );
+  }
+
+  late final _ma_job_initPtr =
+      _lookup<ffi.NativeFunction<ma_job Function(ma_uint16)>>('ma_job_init');
+  late final _ma_job_init = _ma_job_initPtr.asFunction<ma_job Function(int)>();
+
+  int ma_job_process(
+    ffi.Pointer<ma_job> pJob,
+  ) {
+    return _ma_job_process(
+      pJob,
+    );
+  }
+
+  late final _ma_job_processPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_job>)>>(
+          'ma_job_process');
+  late final _ma_job_process =
+      _ma_job_processPtr.asFunction<int Function(ffi.Pointer<ma_job>)>();
+
+  ma_job_queue_config ma_job_queue_config_init(
+    int flags,
+    int capacity,
+  ) {
+    return _ma_job_queue_config_init(
+      flags,
+      capacity,
+    );
+  }
+
+  late final _ma_job_queue_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_job_queue_config Function(
+              ma_uint32, ma_uint32)>>('ma_job_queue_config_init');
+  late final _ma_job_queue_config_init = _ma_job_queue_config_initPtr
+      .asFunction<ma_job_queue_config Function(int, int)>();
+
+  int ma_job_queue_get_heap_size(
+    ffi.Pointer<ma_job_queue_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_job_queue_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_job_queue_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_job_queue_config>,
+              ffi.Pointer<size_t>)>>('ma_job_queue_get_heap_size');
+  late final _ma_job_queue_get_heap_size =
+      _ma_job_queue_get_heap_sizePtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_job_queue_config>, ffi.Pointer<size_t>)>();
+
+  int ma_job_queue_init_preallocated(
+    ffi.Pointer<ma_job_queue_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_job_queue> pQueue,
+  ) {
+    return _ma_job_queue_init_preallocated(
+      pConfig,
+      pHeap,
+      pQueue,
+    );
+  }
+
+  late final _ma_job_queue_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_job_queue_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_job_queue>)>>('ma_job_queue_init_preallocated');
+  late final _ma_job_queue_init_preallocated =
+      _ma_job_queue_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_job_queue_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_job_queue>)>();
+
+  int ma_job_queue_init(
+    ffi.Pointer<ma_job_queue_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_job_queue> pQueue,
+  ) {
+    return _ma_job_queue_init(
+      pConfig,
+      pAllocationCallbacks,
+      pQueue,
+    );
+  }
+
+  late final _ma_job_queue_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_job_queue_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_job_queue>)>>('ma_job_queue_init');
+  late final _ma_job_queue_init = _ma_job_queue_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_job_queue_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_job_queue>)>();
+
+  void ma_job_queue_uninit(
+    ffi.Pointer<ma_job_queue> pQueue,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_job_queue_uninit(
+      pQueue,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_job_queue_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_job_queue>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_job_queue_uninit');
+  late final _ma_job_queue_uninit = _ma_job_queue_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_job_queue>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  int ma_job_queue_post(
+    ffi.Pointer<ma_job_queue> pQueue,
+    ffi.Pointer<ma_job> pJob,
+  ) {
+    return _ma_job_queue_post(
+      pQueue,
+      pJob,
+    );
+  }
+
+  late final _ma_job_queue_postPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_job_queue>,
+              ffi.Pointer<ma_job>)>>('ma_job_queue_post');
+  late final _ma_job_queue_post = _ma_job_queue_postPtr.asFunction<
+      int Function(ffi.Pointer<ma_job_queue>, ffi.Pointer<ma_job>)>();
+
+  int ma_job_queue_next(
+    ffi.Pointer<ma_job_queue> pQueue,
+    ffi.Pointer<ma_job> pJob,
+  ) {
+    return _ma_job_queue_next(
+      pQueue,
+      pJob,
+    );
+  }
+
+  late final _ma_job_queue_nextPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_job_queue>,
+              ffi.Pointer<ma_job>)>>('ma_job_queue_next');
+  late final _ma_job_queue_next = _ma_job_queue_nextPtr.asFunction<
+      int Function(ffi.Pointer<ma_job_queue>, ffi.Pointer<ma_job>)>();
+
+  ma_device_job_thread_config ma_device_job_thread_config_init() {
+    return _ma_device_job_thread_config_init();
+  }
+
+  late final _ma_device_job_thread_config_initPtr =
+      _lookup<ffi.NativeFunction<ma_device_job_thread_config Function()>>(
+          'ma_device_job_thread_config_init');
+  late final _ma_device_job_thread_config_init =
+      _ma_device_job_thread_config_initPtr
+          .asFunction<ma_device_job_thread_config Function()>();
+
+  int ma_device_job_thread_init(
+    ffi.Pointer<ma_device_job_thread_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_device_job_thread> pJobThread,
+  ) {
+    return _ma_device_job_thread_init(
+      pConfig,
+      pAllocationCallbacks,
+      pJobThread,
+    );
+  }
+
+  late final _ma_device_job_thread_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_device_job_thread_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_device_job_thread>)>>('ma_device_job_thread_init');
+  late final _ma_device_job_thread_init =
+      _ma_device_job_thread_initPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_device_job_thread_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_device_job_thread>)>();
+
+  void ma_device_job_thread_uninit(
+    ffi.Pointer<ma_device_job_thread> pJobThread,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_device_job_thread_uninit(
+      pJobThread,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_device_job_thread_uninitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_device_job_thread>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>(
+      'ma_device_job_thread_uninit');
+  late final _ma_device_job_thread_uninit =
+      _ma_device_job_thread_uninitPtr.asFunction<
+          void Function(ffi.Pointer<ma_device_job_thread>,
+              ffi.Pointer<ma_allocation_callbacks>)>();
+
+  int ma_device_job_thread_post(
+    ffi.Pointer<ma_device_job_thread> pJobThread,
+    ffi.Pointer<ma_job> pJob,
+  ) {
+    return _ma_device_job_thread_post(
+      pJobThread,
+      pJob,
+    );
+  }
+
+  late final _ma_device_job_thread_postPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_device_job_thread>,
+              ffi.Pointer<ma_job>)>>('ma_device_job_thread_post');
+  late final _ma_device_job_thread_post =
+      _ma_device_job_thread_postPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_device_job_thread>, ffi.Pointer<ma_job>)>();
+
+  int ma_device_job_thread_next(
+    ffi.Pointer<ma_device_job_thread> pJobThread,
+    ffi.Pointer<ma_job> pJob,
+  ) {
+    return _ma_device_job_thread_next(
+      pJobThread,
+      pJob,
+    );
+  }
+
+  late final _ma_device_job_thread_nextPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_device_job_thread>,
+              ffi.Pointer<ma_job>)>>('ma_device_job_thread_next');
+  late final _ma_device_job_thread_next =
+      _ma_device_job_thread_nextPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_device_job_thread>, ffi.Pointer<ma_job>)>();
+
   ma_context_config ma_context_config_init() {
     return _ma_context_config_init();
   }
@@ -3805,7 +7369,7 @@ class MiniAudioFfi {
 
   late final _ma_context_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ffi.Int32>,
               ma_uint32,
               ffi.Pointer<ma_context_config>,
@@ -3823,7 +7387,7 @@ class MiniAudioFfi {
   }
 
   late final _ma_context_uninitPtr =
-      _lookup<ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_context>)>>(
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_context>)>>(
           'ma_context_uninit');
   late final _ma_context_uninit =
       _ma_context_uninitPtr.asFunction<int Function(ffi.Pointer<ma_context>)>();
@@ -3866,7 +7430,7 @@ class MiniAudioFfi {
 
   late final _ma_context_enumerate_devicesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_context>,
               ma_enum_devices_callback_proc,
               ffi.Pointer<ffi.Void>)>>('ma_context_enumerate_devices');
@@ -3893,7 +7457,7 @@ class MiniAudioFfi {
 
   late final _ma_context_get_devicesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_context>,
               ffi.Pointer<ffi.Pointer<ma_device_info>>,
               ffi.Pointer<ma_uint32>,
@@ -3911,30 +7475,27 @@ class MiniAudioFfi {
     ffi.Pointer<ma_context> pContext,
     int deviceType,
     ffi.Pointer<ma_device_id> pDeviceID,
-    int shareMode,
     ffi.Pointer<ma_device_info> pDeviceInfo,
   ) {
     return _ma_context_get_device_info(
       pContext,
       deviceType,
       pDeviceID,
-      shareMode,
       pDeviceInfo,
     );
   }
 
   late final _ma_context_get_device_infoPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_context>,
               ffi.Int32,
               ffi.Pointer<ma_device_id>,
-              ffi.Int32,
               ffi.Pointer<ma_device_info>)>>('ma_context_get_device_info');
   late final _ma_context_get_device_info =
       _ma_context_get_device_infoPtr.asFunction<
           int Function(ffi.Pointer<ma_context>, int, ffi.Pointer<ma_device_id>,
-              int, ffi.Pointer<ma_device_info>)>();
+              ffi.Pointer<ma_device_info>)>();
 
   int ma_context_is_loopback_supported(
     ffi.Pointer<ma_context> pContext,
@@ -3979,7 +7540,7 @@ class MiniAudioFfi {
 
   late final _ma_device_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_context>,
               ffi.Pointer<ma_device_config>,
               ffi.Pointer<ma_device>)>>('ma_device_init');
@@ -4005,7 +7566,7 @@ class MiniAudioFfi {
 
   late final _ma_device_init_exPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ffi.Int32>,
               ma_uint32,
               ffi.Pointer<ma_context_config>,
@@ -4059,6 +7620,53 @@ class MiniAudioFfi {
   late final _ma_device_get_log = _ma_device_get_logPtr
       .asFunction<ffi.Pointer<ma_log> Function(ffi.Pointer<ma_device>)>();
 
+  int ma_device_get_info(
+    ffi.Pointer<ma_device> pDevice,
+    int type,
+    ffi.Pointer<ma_device_info> pDeviceInfo,
+  ) {
+    return _ma_device_get_info(
+      pDevice,
+      type,
+      pDeviceInfo,
+    );
+  }
+
+  late final _ma_device_get_infoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_device>, ffi.Int32,
+              ffi.Pointer<ma_device_info>)>>('ma_device_get_info');
+  late final _ma_device_get_info = _ma_device_get_infoPtr.asFunction<
+      int Function(ffi.Pointer<ma_device>, int, ffi.Pointer<ma_device_info>)>();
+
+  int ma_device_get_name(
+    ffi.Pointer<ma_device> pDevice,
+    int type,
+    ffi.Pointer<ffi.Int8> pName,
+    int nameCap,
+    ffi.Pointer<size_t> pLengthNotIncludingNullTerminator,
+  ) {
+    return _ma_device_get_name(
+      pDevice,
+      type,
+      pName,
+      nameCap,
+      pLengthNotIncludingNullTerminator,
+    );
+  }
+
+  late final _ma_device_get_namePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_device>,
+              ffi.Int32,
+              ffi.Pointer<ffi.Int8>,
+              size_t,
+              ffi.Pointer<size_t>)>>('ma_device_get_name');
+  late final _ma_device_get_name = _ma_device_get_namePtr.asFunction<
+      int Function(ffi.Pointer<ma_device>, int, ffi.Pointer<ffi.Int8>, int,
+          ffi.Pointer<size_t>)>();
+
   int ma_device_start(
     ffi.Pointer<ma_device> pDevice,
   ) {
@@ -4068,7 +7676,7 @@ class MiniAudioFfi {
   }
 
   late final _ma_device_startPtr =
-      _lookup<ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_device>)>>(
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_device>)>>(
           'ma_device_start');
   late final _ma_device_start =
       _ma_device_startPtr.asFunction<int Function(ffi.Pointer<ma_device>)>();
@@ -4082,7 +7690,7 @@ class MiniAudioFfi {
   }
 
   late final _ma_device_stopPtr =
-      _lookup<ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_device>)>>(
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_device>)>>(
           'ma_device_stop');
   late final _ma_device_stop =
       _ma_device_stopPtr.asFunction<int Function(ffi.Pointer<ma_device>)>();
@@ -4110,10 +7718,38 @@ class MiniAudioFfi {
   }
 
   late final _ma_device_get_statePtr =
-      _lookup<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_device>)>>(
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_device>)>>(
           'ma_device_get_state');
   late final _ma_device_get_state = _ma_device_get_statePtr
       .asFunction<int Function(ffi.Pointer<ma_device>)>();
+
+  int ma_device_post_init(
+    ffi.Pointer<ma_device> pDevice,
+    int deviceType,
+    ffi.Pointer<ma_device_descriptor> pPlaybackDescriptor,
+    ffi.Pointer<ma_device_descriptor> pCaptureDescriptor,
+  ) {
+    return _ma_device_post_init(
+      pDevice,
+      deviceType,
+      pPlaybackDescriptor,
+      pCaptureDescriptor,
+    );
+  }
+
+  late final _ma_device_post_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_device>,
+              ffi.Int32,
+              ffi.Pointer<ma_device_descriptor>,
+              ffi.Pointer<ma_device_descriptor>)>>('ma_device_post_init');
+  late final _ma_device_post_init = _ma_device_post_initPtr.asFunction<
+      int Function(
+          ffi.Pointer<ma_device>,
+          int,
+          ffi.Pointer<ma_device_descriptor>,
+          ffi.Pointer<ma_device_descriptor>)>();
 
   int ma_device_set_master_volume(
     ffi.Pointer<ma_device> pDevice,
@@ -4127,7 +7763,7 @@ class MiniAudioFfi {
 
   late final _ma_device_set_master_volumePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_device>,
+          ffi.Int32 Function(ffi.Pointer<ma_device>,
               ffi.Float)>>('ma_device_set_master_volume');
   late final _ma_device_set_master_volume = _ma_device_set_master_volumePtr
       .asFunction<int Function(ffi.Pointer<ma_device>, double)>();
@@ -4144,45 +7780,46 @@ class MiniAudioFfi {
 
   late final _ma_device_get_master_volumePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_device>,
+          ffi.Int32 Function(ffi.Pointer<ma_device>,
               ffi.Pointer<ffi.Float>)>>('ma_device_get_master_volume');
   late final _ma_device_get_master_volume =
       _ma_device_get_master_volumePtr.asFunction<
           int Function(ffi.Pointer<ma_device>, ffi.Pointer<ffi.Float>)>();
 
-  int ma_device_set_master_gain_db(
+  int ma_device_set_master_volume_db(
     ffi.Pointer<ma_device> pDevice,
     double gainDB,
   ) {
-    return _ma_device_set_master_gain_db(
+    return _ma_device_set_master_volume_db(
       pDevice,
       gainDB,
     );
   }
 
-  late final _ma_device_set_master_gain_dbPtr = _lookup<
+  late final _ma_device_set_master_volume_dbPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_device>,
-              ffi.Float)>>('ma_device_set_master_gain_db');
-  late final _ma_device_set_master_gain_db = _ma_device_set_master_gain_dbPtr
-      .asFunction<int Function(ffi.Pointer<ma_device>, double)>();
+          ffi.Int32 Function(ffi.Pointer<ma_device>,
+              ffi.Float)>>('ma_device_set_master_volume_db');
+  late final _ma_device_set_master_volume_db =
+      _ma_device_set_master_volume_dbPtr
+          .asFunction<int Function(ffi.Pointer<ma_device>, double)>();
 
-  int ma_device_get_master_gain_db(
+  int ma_device_get_master_volume_db(
     ffi.Pointer<ma_device> pDevice,
     ffi.Pointer<ffi.Float> pGainDB,
   ) {
-    return _ma_device_get_master_gain_db(
+    return _ma_device_get_master_volume_db(
       pDevice,
       pGainDB,
     );
   }
 
-  late final _ma_device_get_master_gain_dbPtr = _lookup<
+  late final _ma_device_get_master_volume_dbPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_device>,
-              ffi.Pointer<ffi.Float>)>>('ma_device_get_master_gain_db');
-  late final _ma_device_get_master_gain_db =
-      _ma_device_get_master_gain_dbPtr.asFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_device>,
+              ffi.Pointer<ffi.Float>)>>('ma_device_get_master_volume_db');
+  late final _ma_device_get_master_volume_db =
+      _ma_device_get_master_volume_dbPtr.asFunction<
           int Function(ffi.Pointer<ma_device>, ffi.Pointer<ffi.Float>)>();
 
   int ma_device_handle_backend_data_callback(
@@ -4201,7 +7838,7 @@ class MiniAudioFfi {
 
   late final _ma_device_handle_backend_data_callbackPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_device>,
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>,
@@ -4274,7 +7911,7 @@ class MiniAudioFfi {
 
   late final _ma_get_enabled_backendsPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ffi.Int32>, size_t,
+          ffi.Int32 Function(ffi.Pointer<ffi.Int32>, size_t,
               ffi.Pointer<size_t>)>>('ma_get_enabled_backends');
   late final _ma_get_enabled_backends = _ma_get_enabled_backendsPtr.asFunction<
       int Function(ffi.Pointer<ffi.Int32>, int, ffi.Pointer<size_t>)>();
@@ -4293,177 +7930,7 @@ class MiniAudioFfi {
   late final _ma_is_loopback_supported =
       _ma_is_loopback_supportedPtr.asFunction<int Function(int)>();
 
-  int ma_spinlock_lock(
-    ffi.Pointer<ma_spinlock> pSpinlock,
-  ) {
-    return _ma_spinlock_lock(
-      pSpinlock,
-    );
-  }
-
-  late final _ma_spinlock_lockPtr =
-      _lookup<ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_spinlock>)>>(
-          'ma_spinlock_lock');
-  late final _ma_spinlock_lock =
-      _ma_spinlock_lockPtr.asFunction<int Function(ffi.Pointer<ma_spinlock>)>();
-
-  int ma_spinlock_lock_noyield(
-    ffi.Pointer<ma_spinlock> pSpinlock,
-  ) {
-    return _ma_spinlock_lock_noyield(
-      pSpinlock,
-    );
-  }
-
-  late final _ma_spinlock_lock_noyieldPtr =
-      _lookup<ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_spinlock>)>>(
-          'ma_spinlock_lock_noyield');
-  late final _ma_spinlock_lock_noyield = _ma_spinlock_lock_noyieldPtr
-      .asFunction<int Function(ffi.Pointer<ma_spinlock>)>();
-
-  int ma_spinlock_unlock(
-    ffi.Pointer<ma_spinlock> pSpinlock,
-  ) {
-    return _ma_spinlock_unlock(
-      pSpinlock,
-    );
-  }
-
-  late final _ma_spinlock_unlockPtr =
-      _lookup<ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_spinlock>)>>(
-          'ma_spinlock_unlock');
-  late final _ma_spinlock_unlock = _ma_spinlock_unlockPtr
-      .asFunction<int Function(ffi.Pointer<ma_spinlock>)>();
-
-  int ma_mutex_init(
-    ffi.Pointer<ma_mutex> pMutex,
-  ) {
-    return _ma_mutex_init(
-      pMutex,
-    );
-  }
-
-  late final _ma_mutex_initPtr =
-      _lookup<ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_mutex>)>>(
-          'ma_mutex_init');
-  late final _ma_mutex_init =
-      _ma_mutex_initPtr.asFunction<int Function(ffi.Pointer<ma_mutex>)>();
-
-  void ma_mutex_uninit(
-    ffi.Pointer<ma_mutex> pMutex,
-  ) {
-    return _ma_mutex_uninit(
-      pMutex,
-    );
-  }
-
-  late final _ma_mutex_uninitPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_mutex>)>>(
-          'ma_mutex_uninit');
-  late final _ma_mutex_uninit =
-      _ma_mutex_uninitPtr.asFunction<void Function(ffi.Pointer<ma_mutex>)>();
-
-  void ma_mutex_lock(
-    ffi.Pointer<ma_mutex> pMutex,
-  ) {
-    return _ma_mutex_lock(
-      pMutex,
-    );
-  }
-
-  late final _ma_mutex_lockPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_mutex>)>>(
-          'ma_mutex_lock');
-  late final _ma_mutex_lock =
-      _ma_mutex_lockPtr.asFunction<void Function(ffi.Pointer<ma_mutex>)>();
-
-  void ma_mutex_unlock(
-    ffi.Pointer<ma_mutex> pMutex,
-  ) {
-    return _ma_mutex_unlock(
-      pMutex,
-    );
-  }
-
-  late final _ma_mutex_unlockPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_mutex>)>>(
-          'ma_mutex_unlock');
-  late final _ma_mutex_unlock =
-      _ma_mutex_unlockPtr.asFunction<void Function(ffi.Pointer<ma_mutex>)>();
-
-  int ma_event_init(
-    ffi.Pointer<ma_event> pEvent,
-  ) {
-    return _ma_event_init(
-      pEvent,
-    );
-  }
-
-  late final _ma_event_initPtr =
-      _lookup<ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_event>)>>(
-          'ma_event_init');
-  late final _ma_event_init =
-      _ma_event_initPtr.asFunction<int Function(ffi.Pointer<ma_event>)>();
-
-  void ma_event_uninit(
-    ffi.Pointer<ma_event> pEvent,
-  ) {
-    return _ma_event_uninit(
-      pEvent,
-    );
-  }
-
-  late final _ma_event_uninitPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_event>)>>(
-          'ma_event_uninit');
-  late final _ma_event_uninit =
-      _ma_event_uninitPtr.asFunction<void Function(ffi.Pointer<ma_event>)>();
-
-  int ma_event_wait(
-    ffi.Pointer<ma_event> pEvent,
-  ) {
-    return _ma_event_wait(
-      pEvent,
-    );
-  }
-
-  late final _ma_event_waitPtr =
-      _lookup<ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_event>)>>(
-          'ma_event_wait');
-  late final _ma_event_wait =
-      _ma_event_waitPtr.asFunction<int Function(ffi.Pointer<ma_event>)>();
-
-  int ma_event_signal(
-    ffi.Pointer<ma_event> pEvent,
-  ) {
-    return _ma_event_signal(
-      pEvent,
-    );
-  }
-
-  late final _ma_event_signalPtr =
-      _lookup<ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_event>)>>(
-          'ma_event_signal');
-  late final _ma_event_signal =
-      _ma_event_signalPtr.asFunction<int Function(ffi.Pointer<ma_event>)>();
-
   /// Utiltities
-  int ma_scale_buffer_size(
-    int baseBufferSize,
-    double scale,
-  ) {
-    return _ma_scale_buffer_size(
-      baseBufferSize,
-      scale,
-    );
-  }
-
-  late final _ma_scale_buffer_sizePtr =
-      _lookup<ffi.NativeFunction<ma_uint32 Function(ma_uint32, ffi.Float)>>(
-          'ma_scale_buffer_size');
-  late final _ma_scale_buffer_size =
-      _ma_scale_buffer_sizePtr.asFunction<int Function(int, double)>();
-
   int ma_calculate_buffer_size_in_milliseconds_from_frames(
     int bufferSizeInFrames,
     int sampleRate,
@@ -4589,22 +8056,124 @@ class MiniAudioFfi {
           ffi.Pointer<ffi.Void> Function(
               ffi.Pointer<ffi.Void>, int, int, int)>();
 
+  void ma_clip_samples_u8(
+    ffi.Pointer<ma_uint8> pDst,
+    ffi.Pointer<ma_int16> pSrc,
+    int count,
+  ) {
+    return _ma_clip_samples_u8(
+      pDst,
+      pSrc,
+      count,
+    );
+  }
+
+  late final _ma_clip_samples_u8Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_uint8>, ffi.Pointer<ma_int16>,
+              ma_uint64)>>('ma_clip_samples_u8');
+  late final _ma_clip_samples_u8 = _ma_clip_samples_u8Ptr.asFunction<
+      void Function(ffi.Pointer<ma_uint8>, ffi.Pointer<ma_int16>, int)>();
+
+  void ma_clip_samples_s16(
+    ffi.Pointer<ma_int16> pDst,
+    ffi.Pointer<ma_int32> pSrc,
+    int count,
+  ) {
+    return _ma_clip_samples_s16(
+      pDst,
+      pSrc,
+      count,
+    );
+  }
+
+  late final _ma_clip_samples_s16Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_int16>, ffi.Pointer<ma_int32>,
+              ma_uint64)>>('ma_clip_samples_s16');
+  late final _ma_clip_samples_s16 = _ma_clip_samples_s16Ptr.asFunction<
+      void Function(ffi.Pointer<ma_int16>, ffi.Pointer<ma_int32>, int)>();
+
+  void ma_clip_samples_s24(
+    ffi.Pointer<ma_uint8> pDst,
+    ffi.Pointer<ma_int64> pSrc,
+    int count,
+  ) {
+    return _ma_clip_samples_s24(
+      pDst,
+      pSrc,
+      count,
+    );
+  }
+
+  late final _ma_clip_samples_s24Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_uint8>, ffi.Pointer<ma_int64>,
+              ma_uint64)>>('ma_clip_samples_s24');
+  late final _ma_clip_samples_s24 = _ma_clip_samples_s24Ptr.asFunction<
+      void Function(ffi.Pointer<ma_uint8>, ffi.Pointer<ma_int64>, int)>();
+
+  void ma_clip_samples_s32(
+    ffi.Pointer<ma_int32> pDst,
+    ffi.Pointer<ma_int64> pSrc,
+    int count,
+  ) {
+    return _ma_clip_samples_s32(
+      pDst,
+      pSrc,
+      count,
+    );
+  }
+
+  late final _ma_clip_samples_s32Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_int32>, ffi.Pointer<ma_int64>,
+              ma_uint64)>>('ma_clip_samples_s32');
+  late final _ma_clip_samples_s32 = _ma_clip_samples_s32Ptr.asFunction<
+      void Function(ffi.Pointer<ma_int32>, ffi.Pointer<ma_int64>, int)>();
+
   void ma_clip_samples_f32(
-    ffi.Pointer<ffi.Float> p,
-    int sampleCount,
+    ffi.Pointer<ffi.Float> pDst,
+    ffi.Pointer<ffi.Float> pSrc,
+    int count,
   ) {
     return _ma_clip_samples_f32(
-      p,
-      sampleCount,
+      pDst,
+      pSrc,
+      count,
     );
   }
 
   late final _ma_clip_samples_f32Ptr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<ffi.Float>, ma_uint64)>>('ma_clip_samples_f32');
-  late final _ma_clip_samples_f32 = _ma_clip_samples_f32Ptr
-      .asFunction<void Function(ffi.Pointer<ffi.Float>, int)>();
+          ffi.Void Function(ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>,
+              ma_uint64)>>('ma_clip_samples_f32');
+  late final _ma_clip_samples_f32 = _ma_clip_samples_f32Ptr.asFunction<
+      void Function(ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>, int)>();
+
+  void ma_clip_pcm_frames(
+    ffi.Pointer<ffi.Void> pDst,
+    ffi.Pointer<ffi.Void> pSrc,
+    int frameCount,
+    int format,
+    int channels,
+  ) {
+    return _ma_clip_pcm_frames(
+      pDst,
+      pSrc,
+      frameCount,
+      format,
+      channels,
+    );
+  }
+
+  late final _ma_clip_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>,
+              ma_uint64, ffi.Int32, ma_uint32)>>('ma_clip_pcm_frames');
+  late final _ma_clip_pcm_frames = _ma_clip_pcm_framesPtr.asFunction<
+      void Function(
+          ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int, int)>();
 
   void ma_copy_and_apply_volume_factor_u8(
     ffi.Pointer<ma_uint8> pSamplesOut,
@@ -4817,15 +8386,15 @@ class MiniAudioFfi {
       .asFunction<void Function(ffi.Pointer<ffi.Float>, int, double)>();
 
   void ma_copy_and_apply_volume_factor_pcm_frames_u8(
-    ffi.Pointer<ma_uint8> pPCMFramesOut,
-    ffi.Pointer<ma_uint8> pPCMFramesIn,
+    ffi.Pointer<ma_uint8> pFramesOut,
+    ffi.Pointer<ma_uint8> pFramesIn,
     int frameCount,
     int channels,
     double factor,
   ) {
     return _ma_copy_and_apply_volume_factor_pcm_frames_u8(
-      pPCMFramesOut,
-      pPCMFramesIn,
+      pFramesOut,
+      pFramesIn,
       frameCount,
       channels,
       factor,
@@ -4846,15 +8415,15 @@ class MiniAudioFfi {
               double)>();
 
   void ma_copy_and_apply_volume_factor_pcm_frames_s16(
-    ffi.Pointer<ma_int16> pPCMFramesOut,
-    ffi.Pointer<ma_int16> pPCMFramesIn,
+    ffi.Pointer<ma_int16> pFramesOut,
+    ffi.Pointer<ma_int16> pFramesIn,
     int frameCount,
     int channels,
     double factor,
   ) {
     return _ma_copy_and_apply_volume_factor_pcm_frames_s16(
-      pPCMFramesOut,
-      pPCMFramesIn,
+      pFramesOut,
+      pFramesIn,
       frameCount,
       channels,
       factor,
@@ -4875,15 +8444,15 @@ class MiniAudioFfi {
               double)>();
 
   void ma_copy_and_apply_volume_factor_pcm_frames_s24(
-    ffi.Pointer<ffi.Void> pPCMFramesOut,
-    ffi.Pointer<ffi.Void> pPCMFramesIn,
+    ffi.Pointer<ffi.Void> pFramesOut,
+    ffi.Pointer<ffi.Void> pFramesIn,
     int frameCount,
     int channels,
     double factor,
   ) {
     return _ma_copy_and_apply_volume_factor_pcm_frames_s24(
-      pPCMFramesOut,
-      pPCMFramesIn,
+      pFramesOut,
+      pFramesIn,
       frameCount,
       channels,
       factor,
@@ -4904,15 +8473,15 @@ class MiniAudioFfi {
               double)>();
 
   void ma_copy_and_apply_volume_factor_pcm_frames_s32(
-    ffi.Pointer<ma_int32> pPCMFramesOut,
-    ffi.Pointer<ma_int32> pPCMFramesIn,
+    ffi.Pointer<ma_int32> pFramesOut,
+    ffi.Pointer<ma_int32> pFramesIn,
     int frameCount,
     int channels,
     double factor,
   ) {
     return _ma_copy_and_apply_volume_factor_pcm_frames_s32(
-      pPCMFramesOut,
-      pPCMFramesIn,
+      pFramesOut,
+      pFramesIn,
       frameCount,
       channels,
       factor,
@@ -4933,15 +8502,15 @@ class MiniAudioFfi {
               double)>();
 
   void ma_copy_and_apply_volume_factor_pcm_frames_f32(
-    ffi.Pointer<ffi.Float> pPCMFramesOut,
-    ffi.Pointer<ffi.Float> pPCMFramesIn,
+    ffi.Pointer<ffi.Float> pFramesOut,
+    ffi.Pointer<ffi.Float> pFramesIn,
     int frameCount,
     int channels,
     double factor,
   ) {
     return _ma_copy_and_apply_volume_factor_pcm_frames_f32(
-      pPCMFramesOut,
-      pPCMFramesIn,
+      pFramesOut,
+      pFramesIn,
       frameCount,
       channels,
       factor,
@@ -5127,33 +8696,221 @@ class MiniAudioFfi {
       _ma_apply_volume_factor_pcm_framesPtr.asFunction<
           void Function(ffi.Pointer<ffi.Void>, int, int, int, double)>();
 
-  double ma_factor_to_gain_db(
+  void ma_copy_and_apply_volume_factor_per_channel_f32(
+    ffi.Pointer<ffi.Float> pFramesOut,
+    ffi.Pointer<ffi.Float> pFramesIn,
+    int frameCount,
+    int channels,
+    ffi.Pointer<ffi.Float> pChannelGains,
+  ) {
+    return _ma_copy_and_apply_volume_factor_per_channel_f32(
+      pFramesOut,
+      pFramesIn,
+      frameCount,
+      channels,
+      pChannelGains,
+    );
+  }
+
+  late final _ma_copy_and_apply_volume_factor_per_channel_f32Ptr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>,
+                  ma_uint64, ma_uint32, ffi.Pointer<ffi.Float>)>>(
+      'ma_copy_and_apply_volume_factor_per_channel_f32');
+  late final _ma_copy_and_apply_volume_factor_per_channel_f32 =
+      _ma_copy_and_apply_volume_factor_per_channel_f32Ptr.asFunction<
+          void Function(ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>, int,
+              int, ffi.Pointer<ffi.Float>)>();
+
+  void ma_copy_and_apply_volume_and_clip_samples_u8(
+    ffi.Pointer<ma_uint8> pDst,
+    ffi.Pointer<ma_int16> pSrc,
+    int count,
+    double volume,
+  ) {
+    return _ma_copy_and_apply_volume_and_clip_samples_u8(
+      pDst,
+      pSrc,
+      count,
+      volume,
+    );
+  }
+
+  late final _ma_copy_and_apply_volume_and_clip_samples_u8Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_uint8>,
+              ffi.Pointer<ma_int16>,
+              ma_uint64,
+              ffi.Float)>>('ma_copy_and_apply_volume_and_clip_samples_u8');
+  late final _ma_copy_and_apply_volume_and_clip_samples_u8 =
+      _ma_copy_and_apply_volume_and_clip_samples_u8Ptr.asFunction<
+          void Function(
+              ffi.Pointer<ma_uint8>, ffi.Pointer<ma_int16>, int, double)>();
+
+  void ma_copy_and_apply_volume_and_clip_samples_s16(
+    ffi.Pointer<ma_int16> pDst,
+    ffi.Pointer<ma_int32> pSrc,
+    int count,
+    double volume,
+  ) {
+    return _ma_copy_and_apply_volume_and_clip_samples_s16(
+      pDst,
+      pSrc,
+      count,
+      volume,
+    );
+  }
+
+  late final _ma_copy_and_apply_volume_and_clip_samples_s16Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_int16>,
+              ffi.Pointer<ma_int32>,
+              ma_uint64,
+              ffi.Float)>>('ma_copy_and_apply_volume_and_clip_samples_s16');
+  late final _ma_copy_and_apply_volume_and_clip_samples_s16 =
+      _ma_copy_and_apply_volume_and_clip_samples_s16Ptr.asFunction<
+          void Function(
+              ffi.Pointer<ma_int16>, ffi.Pointer<ma_int32>, int, double)>();
+
+  void ma_copy_and_apply_volume_and_clip_samples_s24(
+    ffi.Pointer<ma_uint8> pDst,
+    ffi.Pointer<ma_int64> pSrc,
+    int count,
+    double volume,
+  ) {
+    return _ma_copy_and_apply_volume_and_clip_samples_s24(
+      pDst,
+      pSrc,
+      count,
+      volume,
+    );
+  }
+
+  late final _ma_copy_and_apply_volume_and_clip_samples_s24Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_uint8>,
+              ffi.Pointer<ma_int64>,
+              ma_uint64,
+              ffi.Float)>>('ma_copy_and_apply_volume_and_clip_samples_s24');
+  late final _ma_copy_and_apply_volume_and_clip_samples_s24 =
+      _ma_copy_and_apply_volume_and_clip_samples_s24Ptr.asFunction<
+          void Function(
+              ffi.Pointer<ma_uint8>, ffi.Pointer<ma_int64>, int, double)>();
+
+  void ma_copy_and_apply_volume_and_clip_samples_s32(
+    ffi.Pointer<ma_int32> pDst,
+    ffi.Pointer<ma_int64> pSrc,
+    int count,
+    double volume,
+  ) {
+    return _ma_copy_and_apply_volume_and_clip_samples_s32(
+      pDst,
+      pSrc,
+      count,
+      volume,
+    );
+  }
+
+  late final _ma_copy_and_apply_volume_and_clip_samples_s32Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_int32>,
+              ffi.Pointer<ma_int64>,
+              ma_uint64,
+              ffi.Float)>>('ma_copy_and_apply_volume_and_clip_samples_s32');
+  late final _ma_copy_and_apply_volume_and_clip_samples_s32 =
+      _ma_copy_and_apply_volume_and_clip_samples_s32Ptr.asFunction<
+          void Function(
+              ffi.Pointer<ma_int32>, ffi.Pointer<ma_int64>, int, double)>();
+
+  void ma_copy_and_apply_volume_and_clip_samples_f32(
+    ffi.Pointer<ffi.Float> pDst,
+    ffi.Pointer<ffi.Float> pSrc,
+    int count,
+    double volume,
+  ) {
+    return _ma_copy_and_apply_volume_and_clip_samples_f32(
+      pDst,
+      pSrc,
+      count,
+      volume,
+    );
+  }
+
+  late final _ma_copy_and_apply_volume_and_clip_samples_f32Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ma_uint64,
+              ffi.Float)>>('ma_copy_and_apply_volume_and_clip_samples_f32');
+  late final _ma_copy_and_apply_volume_and_clip_samples_f32 =
+      _ma_copy_and_apply_volume_and_clip_samples_f32Ptr.asFunction<
+          void Function(
+              ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>, int, double)>();
+
+  void ma_copy_and_apply_volume_and_clip_pcm_frames(
+    ffi.Pointer<ffi.Void> pDst,
+    ffi.Pointer<ffi.Void> pSrc,
+    int frameCount,
+    int format,
+    int channels,
+    double volume,
+  ) {
+    return _ma_copy_and_apply_volume_and_clip_pcm_frames(
+      pDst,
+      pSrc,
+      frameCount,
+      format,
+      channels,
+      volume,
+    );
+  }
+
+  late final _ma_copy_and_apply_volume_and_clip_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32,
+              ma_uint32,
+              ffi.Float)>>('ma_copy_and_apply_volume_and_clip_pcm_frames');
+  late final _ma_copy_and_apply_volume_and_clip_pcm_frames =
+      _ma_copy_and_apply_volume_and_clip_pcm_framesPtr.asFunction<
+          void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, int, int,
+              int, double)>();
+
+  double ma_volume_linear_to_db(
     double factor,
   ) {
-    return _ma_factor_to_gain_db(
+    return _ma_volume_linear_to_db(
       factor,
     );
   }
 
-  late final _ma_factor_to_gain_dbPtr =
+  late final _ma_volume_linear_to_dbPtr =
       _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Float)>>(
-          'ma_factor_to_gain_db');
-  late final _ma_factor_to_gain_db =
-      _ma_factor_to_gain_dbPtr.asFunction<double Function(double)>();
+          'ma_volume_linear_to_db');
+  late final _ma_volume_linear_to_db =
+      _ma_volume_linear_to_dbPtr.asFunction<double Function(double)>();
 
-  double ma_gain_db_to_factor(
+  double ma_volume_db_to_linear(
     double gain,
   ) {
-    return _ma_gain_db_to_factor(
+    return _ma_volume_db_to_linear(
       gain,
     );
   }
 
-  late final _ma_gain_db_to_factorPtr =
+  late final _ma_volume_db_to_linearPtr =
       _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Float)>>(
-          'ma_gain_db_to_factor');
-  late final _ma_gain_db_to_factor =
-      _ma_gain_db_to_factorPtr.asFunction<double Function(double)>();
+          'ma_volume_db_to_linear');
+  late final _ma_volume_db_to_linear =
+      _ma_volume_db_to_linearPtr.asFunction<double Function(double)>();
 
   ma_data_source_config ma_data_source_config_init() {
     return _ma_data_source_config_init();
@@ -5177,7 +8934,7 @@ class MiniAudioFfi {
 
   late final _ma_data_source_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_data_source_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_data_source_config>,
               ffi.Pointer<ma_data_source>)>>('ma_data_source_init');
   late final _ma_data_source_init = _ma_data_source_initPtr.asFunction<
       int Function(
@@ -5202,55 +8959,47 @@ class MiniAudioFfi {
     ffi.Pointer<ffi.Void> pFramesOut,
     int frameCount,
     ffi.Pointer<ma_uint64> pFramesRead,
-    int loop,
   ) {
     return _ma_data_source_read_pcm_frames(
       pDataSource,
       pFramesOut,
       frameCount,
       pFramesRead,
-      loop,
     );
   }
 
   late final _ma_data_source_read_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_data_source>,
               ffi.Pointer<ffi.Void>,
               ma_uint64,
-              ffi.Pointer<ma_uint64>,
-              ma_bool32)>>('ma_data_source_read_pcm_frames');
+              ffi.Pointer<ma_uint64>)>>('ma_data_source_read_pcm_frames');
   late final _ma_data_source_read_pcm_frames =
       _ma_data_source_read_pcm_framesPtr.asFunction<
           int Function(ffi.Pointer<ma_data_source>, ffi.Pointer<ffi.Void>, int,
-              ffi.Pointer<ma_uint64>, int)>();
+              ffi.Pointer<ma_uint64>)>();
 
   int ma_data_source_seek_pcm_frames(
     ffi.Pointer<ma_data_source> pDataSource,
     int frameCount,
     ffi.Pointer<ma_uint64> pFramesSeeked,
-    int loop,
   ) {
     return _ma_data_source_seek_pcm_frames(
       pDataSource,
       frameCount,
       pFramesSeeked,
-      loop,
     );
   }
 
   late final _ma_data_source_seek_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_data_source>,
-              ma_uint64,
-              ffi.Pointer<ma_uint64>,
-              ma_bool32)>>('ma_data_source_seek_pcm_frames');
+          ffi.Int32 Function(ffi.Pointer<ma_data_source>, ma_uint64,
+              ffi.Pointer<ma_uint64>)>>('ma_data_source_seek_pcm_frames');
   late final _ma_data_source_seek_pcm_frames =
       _ma_data_source_seek_pcm_framesPtr.asFunction<
           int Function(
-              ffi.Pointer<ma_data_source>, int, ffi.Pointer<ma_uint64>, int)>();
+              ffi.Pointer<ma_data_source>, int, ffi.Pointer<ma_uint64>)>();
 
   int ma_data_source_seek_to_pcm_frame(
     ffi.Pointer<ma_data_source> pDataSource,
@@ -5264,76 +9013,48 @@ class MiniAudioFfi {
 
   late final _ma_data_source_seek_to_pcm_framePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_data_source>,
+          ffi.Int32 Function(ffi.Pointer<ma_data_source>,
               ma_uint64)>>('ma_data_source_seek_to_pcm_frame');
   late final _ma_data_source_seek_to_pcm_frame =
       _ma_data_source_seek_to_pcm_framePtr
           .asFunction<int Function(ffi.Pointer<ma_data_source>, int)>();
-
-  int ma_data_source_map(
-    ffi.Pointer<ma_data_source> pDataSource,
-    ffi.Pointer<ffi.Pointer<ffi.Void>> ppFramesOut,
-    ffi.Pointer<ma_uint64> pFrameCount,
-  ) {
-    return _ma_data_source_map(
-      pDataSource,
-      ppFramesOut,
-      pFrameCount,
-    );
-  }
-
-  late final _ma_data_source_mapPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_data_source>,
-              ffi.Pointer<ffi.Pointer<ffi.Void>>,
-              ffi.Pointer<ma_uint64>)>>('ma_data_source_map');
-  late final _ma_data_source_map = _ma_data_source_mapPtr.asFunction<
-      int Function(ffi.Pointer<ma_data_source>,
-          ffi.Pointer<ffi.Pointer<ffi.Void>>, ffi.Pointer<ma_uint64>)>();
-
-  int ma_data_source_unmap(
-    ffi.Pointer<ma_data_source> pDataSource,
-    int frameCount,
-  ) {
-    return _ma_data_source_unmap(
-      pDataSource,
-      frameCount,
-    );
-  }
-
-  late final _ma_data_source_unmapPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_data_source>, ma_uint64)>>('ma_data_source_unmap');
-  late final _ma_data_source_unmap = _ma_data_source_unmapPtr
-      .asFunction<int Function(ffi.Pointer<ma_data_source>, int)>();
 
   int ma_data_source_get_data_format(
     ffi.Pointer<ma_data_source> pDataSource,
     ffi.Pointer<ffi.Int32> pFormat,
     ffi.Pointer<ma_uint32> pChannels,
     ffi.Pointer<ma_uint32> pSampleRate,
+    ffi.Pointer<ma_channel> pChannelMap,
+    int channelMapCap,
   ) {
     return _ma_data_source_get_data_format(
       pDataSource,
       pFormat,
       pChannels,
       pSampleRate,
+      pChannelMap,
+      channelMapCap,
     );
   }
 
   late final _ma_data_source_get_data_formatPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_data_source>,
               ffi.Pointer<ffi.Int32>,
               ffi.Pointer<ma_uint32>,
-              ffi.Pointer<ma_uint32>)>>('ma_data_source_get_data_format');
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>>('ma_data_source_get_data_format');
   late final _ma_data_source_get_data_format =
       _ma_data_source_get_data_formatPtr.asFunction<
-          int Function(ffi.Pointer<ma_data_source>, ffi.Pointer<ffi.Int32>,
-              ffi.Pointer<ma_uint32>, ffi.Pointer<ma_uint32>)>();
+          int Function(
+              ffi.Pointer<ma_data_source>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              int)>();
 
   int ma_data_source_get_cursor_in_pcm_frames(
     ffi.Pointer<ma_data_source> pDataSource,
@@ -5347,7 +9068,7 @@ class MiniAudioFfi {
 
   late final _ma_data_source_get_cursor_in_pcm_framesPtr = _lookup<
           ffi.NativeFunction<
-              ma_result Function(
+              ffi.Int32 Function(
                   ffi.Pointer<ma_data_source>, ffi.Pointer<ma_uint64>)>>(
       'ma_data_source_get_cursor_in_pcm_frames');
   late final _ma_data_source_get_cursor_in_pcm_frames =
@@ -5366,12 +9087,267 @@ class MiniAudioFfi {
 
   late final _ma_data_source_get_length_in_pcm_framesPtr = _lookup<
           ffi.NativeFunction<
-              ma_result Function(
+              ffi.Int32 Function(
                   ffi.Pointer<ma_data_source>, ffi.Pointer<ma_uint64>)>>(
       'ma_data_source_get_length_in_pcm_frames');
   late final _ma_data_source_get_length_in_pcm_frames =
       _ma_data_source_get_length_in_pcm_framesPtr.asFunction<
           int Function(ffi.Pointer<ma_data_source>, ffi.Pointer<ma_uint64>)>();
+
+  int ma_data_source_get_cursor_in_seconds(
+    ffi.Pointer<ma_data_source> pDataSource,
+    ffi.Pointer<ffi.Float> pCursor,
+  ) {
+    return _ma_data_source_get_cursor_in_seconds(
+      pDataSource,
+      pCursor,
+    );
+  }
+
+  late final _ma_data_source_get_cursor_in_secondsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_data_source>,
+              ffi.Pointer<ffi.Float>)>>('ma_data_source_get_cursor_in_seconds');
+  late final _ma_data_source_get_cursor_in_seconds =
+      _ma_data_source_get_cursor_in_secondsPtr.asFunction<
+          int Function(ffi.Pointer<ma_data_source>, ffi.Pointer<ffi.Float>)>();
+
+  int ma_data_source_get_length_in_seconds(
+    ffi.Pointer<ma_data_source> pDataSource,
+    ffi.Pointer<ffi.Float> pLength,
+  ) {
+    return _ma_data_source_get_length_in_seconds(
+      pDataSource,
+      pLength,
+    );
+  }
+
+  late final _ma_data_source_get_length_in_secondsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_data_source>,
+              ffi.Pointer<ffi.Float>)>>('ma_data_source_get_length_in_seconds');
+  late final _ma_data_source_get_length_in_seconds =
+      _ma_data_source_get_length_in_secondsPtr.asFunction<
+          int Function(ffi.Pointer<ma_data_source>, ffi.Pointer<ffi.Float>)>();
+
+  int ma_data_source_set_looping(
+    ffi.Pointer<ma_data_source> pDataSource,
+    int isLooping,
+  ) {
+    return _ma_data_source_set_looping(
+      pDataSource,
+      isLooping,
+    );
+  }
+
+  late final _ma_data_source_set_loopingPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_data_source>,
+              ma_bool32)>>('ma_data_source_set_looping');
+  late final _ma_data_source_set_looping = _ma_data_source_set_loopingPtr
+      .asFunction<int Function(ffi.Pointer<ma_data_source>, int)>();
+
+  int ma_data_source_is_looping(
+    ffi.Pointer<ma_data_source> pDataSource,
+  ) {
+    return _ma_data_source_is_looping(
+      pDataSource,
+    );
+  }
+
+  late final _ma_data_source_is_loopingPtr = _lookup<
+          ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_data_source>)>>(
+      'ma_data_source_is_looping');
+  late final _ma_data_source_is_looping = _ma_data_source_is_loopingPtr
+      .asFunction<int Function(ffi.Pointer<ma_data_source>)>();
+
+  int ma_data_source_set_range_in_pcm_frames(
+    ffi.Pointer<ma_data_source> pDataSource,
+    int rangeBegInFrames,
+    int rangeEndInFrames,
+  ) {
+    return _ma_data_source_set_range_in_pcm_frames(
+      pDataSource,
+      rangeBegInFrames,
+      rangeEndInFrames,
+    );
+  }
+
+  late final _ma_data_source_set_range_in_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_data_source>, ma_uint64,
+              ma_uint64)>>('ma_data_source_set_range_in_pcm_frames');
+  late final _ma_data_source_set_range_in_pcm_frames =
+      _ma_data_source_set_range_in_pcm_framesPtr
+          .asFunction<int Function(ffi.Pointer<ma_data_source>, int, int)>();
+
+  void ma_data_source_get_range_in_pcm_frames(
+    ffi.Pointer<ma_data_source> pDataSource,
+    ffi.Pointer<ma_uint64> pRangeBegInFrames,
+    ffi.Pointer<ma_uint64> pRangeEndInFrames,
+  ) {
+    return _ma_data_source_get_range_in_pcm_frames(
+      pDataSource,
+      pRangeBegInFrames,
+      pRangeEndInFrames,
+    );
+  }
+
+  late final _ma_data_source_get_range_in_pcm_framesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_data_source>,
+                  ffi.Pointer<ma_uint64>, ffi.Pointer<ma_uint64>)>>(
+      'ma_data_source_get_range_in_pcm_frames');
+  late final _ma_data_source_get_range_in_pcm_frames =
+      _ma_data_source_get_range_in_pcm_framesPtr.asFunction<
+          void Function(ffi.Pointer<ma_data_source>, ffi.Pointer<ma_uint64>,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_data_source_set_loop_point_in_pcm_frames(
+    ffi.Pointer<ma_data_source> pDataSource,
+    int loopBegInFrames,
+    int loopEndInFrames,
+  ) {
+    return _ma_data_source_set_loop_point_in_pcm_frames(
+      pDataSource,
+      loopBegInFrames,
+      loopEndInFrames,
+    );
+  }
+
+  late final _ma_data_source_set_loop_point_in_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_data_source>, ma_uint64,
+              ma_uint64)>>('ma_data_source_set_loop_point_in_pcm_frames');
+  late final _ma_data_source_set_loop_point_in_pcm_frames =
+      _ma_data_source_set_loop_point_in_pcm_framesPtr
+          .asFunction<int Function(ffi.Pointer<ma_data_source>, int, int)>();
+
+  void ma_data_source_get_loop_point_in_pcm_frames(
+    ffi.Pointer<ma_data_source> pDataSource,
+    ffi.Pointer<ma_uint64> pLoopBegInFrames,
+    ffi.Pointer<ma_uint64> pLoopEndInFrames,
+  ) {
+    return _ma_data_source_get_loop_point_in_pcm_frames(
+      pDataSource,
+      pLoopBegInFrames,
+      pLoopEndInFrames,
+    );
+  }
+
+  late final _ma_data_source_get_loop_point_in_pcm_framesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_data_source>,
+                  ffi.Pointer<ma_uint64>, ffi.Pointer<ma_uint64>)>>(
+      'ma_data_source_get_loop_point_in_pcm_frames');
+  late final _ma_data_source_get_loop_point_in_pcm_frames =
+      _ma_data_source_get_loop_point_in_pcm_framesPtr.asFunction<
+          void Function(ffi.Pointer<ma_data_source>, ffi.Pointer<ma_uint64>,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_data_source_set_current(
+    ffi.Pointer<ma_data_source> pDataSource,
+    ffi.Pointer<ma_data_source> pCurrentDataSource,
+  ) {
+    return _ma_data_source_set_current(
+      pDataSource,
+      pCurrentDataSource,
+    );
+  }
+
+  late final _ma_data_source_set_currentPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_data_source>,
+              ffi.Pointer<ma_data_source>)>>('ma_data_source_set_current');
+  late final _ma_data_source_set_current =
+      _ma_data_source_set_currentPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_data_source>, ffi.Pointer<ma_data_source>)>();
+
+  ffi.Pointer<ma_data_source> ma_data_source_get_current(
+    ffi.Pointer<ma_data_source> pDataSource,
+  ) {
+    return _ma_data_source_get_current(
+      pDataSource,
+    );
+  }
+
+  late final _ma_data_source_get_currentPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_data_source> Function(
+              ffi.Pointer<ma_data_source>)>>('ma_data_source_get_current');
+  late final _ma_data_source_get_current =
+      _ma_data_source_get_currentPtr.asFunction<
+          ffi.Pointer<ma_data_source> Function(ffi.Pointer<ma_data_source>)>();
+
+  int ma_data_source_set_next(
+    ffi.Pointer<ma_data_source> pDataSource,
+    ffi.Pointer<ma_data_source> pNextDataSource,
+  ) {
+    return _ma_data_source_set_next(
+      pDataSource,
+      pNextDataSource,
+    );
+  }
+
+  late final _ma_data_source_set_nextPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_data_source>,
+              ffi.Pointer<ma_data_source>)>>('ma_data_source_set_next');
+  late final _ma_data_source_set_next = _ma_data_source_set_nextPtr.asFunction<
+      int Function(ffi.Pointer<ma_data_source>, ffi.Pointer<ma_data_source>)>();
+
+  ffi.Pointer<ma_data_source> ma_data_source_get_next(
+    ffi.Pointer<ma_data_source> pDataSource,
+  ) {
+    return _ma_data_source_get_next(
+      pDataSource,
+    );
+  }
+
+  late final _ma_data_source_get_nextPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_data_source> Function(
+              ffi.Pointer<ma_data_source>)>>('ma_data_source_get_next');
+  late final _ma_data_source_get_next = _ma_data_source_get_nextPtr.asFunction<
+      ffi.Pointer<ma_data_source> Function(ffi.Pointer<ma_data_source>)>();
+
+  int ma_data_source_set_next_callback(
+    ffi.Pointer<ma_data_source> pDataSource,
+    ma_data_source_get_next_proc onGetNext,
+  ) {
+    return _ma_data_source_set_next_callback(
+      pDataSource,
+      onGetNext,
+    );
+  }
+
+  late final _ma_data_source_set_next_callbackPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_source>, ma_data_source_get_next_proc)>>(
+      'ma_data_source_set_next_callback');
+  late final _ma_data_source_set_next_callback =
+      _ma_data_source_set_next_callbackPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_data_source>, ma_data_source_get_next_proc)>();
+
+  ma_data_source_get_next_proc ma_data_source_get_next_callback(
+    ffi.Pointer<ma_data_source> pDataSource,
+  ) {
+    return _ma_data_source_get_next_callback(
+      pDataSource,
+    );
+  }
+
+  late final _ma_data_source_get_next_callbackPtr = _lookup<
+          ffi.NativeFunction<
+              ma_data_source_get_next_proc Function(
+                  ffi.Pointer<ma_data_source>)>>(
+      'ma_data_source_get_next_callback');
+  late final _ma_data_source_get_next_callback =
+      _ma_data_source_get_next_callbackPtr.asFunction<
+          ma_data_source_get_next_proc Function(ffi.Pointer<ma_data_source>)>();
 
   int ma_audio_buffer_ref_init(
     int format,
@@ -5391,7 +9367,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_ref_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Int32,
               ma_uint32,
               ffi.Pointer<ffi.Void>,
@@ -5431,7 +9407,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_ref_set_dataPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_audio_buffer_ref>,
               ffi.Pointer<ffi.Void>,
               ma_uint64)>>('ma_audio_buffer_ref_set_data');
@@ -5478,7 +9454,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_ref_seek_to_pcm_framePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_audio_buffer_ref>,
+          ffi.Int32 Function(ffi.Pointer<ma_audio_buffer_ref>,
               ma_uint64)>>('ma_audio_buffer_ref_seek_to_pcm_frame');
   late final _ma_audio_buffer_ref_seek_to_pcm_frame =
       _ma_audio_buffer_ref_seek_to_pcm_framePtr
@@ -5498,7 +9474,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_ref_mapPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_audio_buffer_ref>,
               ffi.Pointer<ffi.Pointer<ffi.Void>>,
               ffi.Pointer<ma_uint64>)>>('ma_audio_buffer_ref_map');
@@ -5518,7 +9494,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_ref_unmapPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_audio_buffer_ref>,
+          ffi.Int32 Function(ffi.Pointer<ma_audio_buffer_ref>,
               ma_uint64)>>('ma_audio_buffer_ref_unmap');
   late final _ma_audio_buffer_ref_unmap = _ma_audio_buffer_ref_unmapPtr
       .asFunction<int Function(ffi.Pointer<ma_audio_buffer_ref>, int)>();
@@ -5550,7 +9526,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_ref_get_cursor_in_pcm_framesPtr = _lookup<
           ffi.NativeFunction<
-              ma_result Function(
+              ffi.Int32 Function(
                   ffi.Pointer<ma_audio_buffer_ref>, ffi.Pointer<ma_uint64>)>>(
       'ma_audio_buffer_ref_get_cursor_in_pcm_frames');
   late final _ma_audio_buffer_ref_get_cursor_in_pcm_frames =
@@ -5570,7 +9546,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_ref_get_length_in_pcm_framesPtr = _lookup<
           ffi.NativeFunction<
-              ma_result Function(
+              ffi.Int32 Function(
                   ffi.Pointer<ma_audio_buffer_ref>, ffi.Pointer<ma_uint64>)>>(
       'ma_audio_buffer_ref_get_length_in_pcm_frames');
   late final _ma_audio_buffer_ref_get_length_in_pcm_frames =
@@ -5590,7 +9566,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_ref_get_available_framesPtr = _lookup<
           ffi.NativeFunction<
-              ma_result Function(
+              ffi.Int32 Function(
                   ffi.Pointer<ma_audio_buffer_ref>, ffi.Pointer<ma_uint64>)>>(
       'ma_audio_buffer_ref_get_available_frames');
   late final _ma_audio_buffer_ref_get_available_frames =
@@ -5640,7 +9616,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_audio_buffer_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_audio_buffer_config>,
               ffi.Pointer<ma_audio_buffer>)>>('ma_audio_buffer_init');
   late final _ma_audio_buffer_init = _ma_audio_buffer_initPtr.asFunction<
       int Function(
@@ -5658,7 +9634,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_init_copyPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_audio_buffer_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_audio_buffer_config>,
               ffi.Pointer<ma_audio_buffer>)>>('ma_audio_buffer_init_copy');
   late final _ma_audio_buffer_init_copy =
       _ma_audio_buffer_init_copyPtr.asFunction<
@@ -5677,7 +9653,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_alloc_and_initPtr = _lookup<
           ffi.NativeFunction<
-              ma_result Function(ffi.Pointer<ma_audio_buffer_config>,
+              ffi.Int32 Function(ffi.Pointer<ma_audio_buffer_config>,
                   ffi.Pointer<ffi.Pointer<ma_audio_buffer>>)>>(
       'ma_audio_buffer_alloc_and_init');
   late final _ma_audio_buffer_alloc_and_init =
@@ -5752,7 +9728,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_seek_to_pcm_framePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_audio_buffer>,
+          ffi.Int32 Function(ffi.Pointer<ma_audio_buffer>,
               ma_uint64)>>('ma_audio_buffer_seek_to_pcm_frame');
   late final _ma_audio_buffer_seek_to_pcm_frame =
       _ma_audio_buffer_seek_to_pcm_framePtr
@@ -5772,7 +9748,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_mapPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_audio_buffer>,
               ffi.Pointer<ffi.Pointer<ffi.Void>>,
               ffi.Pointer<ma_uint64>)>>('ma_audio_buffer_map');
@@ -5792,7 +9768,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_unmapPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_audio_buffer>,
+          ffi.Int32 Function(ffi.Pointer<ma_audio_buffer>,
               ma_uint64)>>('ma_audio_buffer_unmap');
   late final _ma_audio_buffer_unmap = _ma_audio_buffer_unmapPtr
       .asFunction<int Function(ffi.Pointer<ma_audio_buffer>, int)>();
@@ -5823,7 +9799,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_get_cursor_in_pcm_framesPtr = _lookup<
           ffi.NativeFunction<
-              ma_result Function(
+              ffi.Int32 Function(
                   ffi.Pointer<ma_audio_buffer>, ffi.Pointer<ma_uint64>)>>(
       'ma_audio_buffer_get_cursor_in_pcm_frames');
   late final _ma_audio_buffer_get_cursor_in_pcm_frames =
@@ -5842,7 +9818,7 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_get_length_in_pcm_framesPtr = _lookup<
           ffi.NativeFunction<
-              ma_result Function(
+              ffi.Int32 Function(
                   ffi.Pointer<ma_audio_buffer>, ffi.Pointer<ma_uint64>)>>(
       'ma_audio_buffer_get_length_in_pcm_frames');
   late final _ma_audio_buffer_get_length_in_pcm_frames =
@@ -5861,11 +9837,350 @@ class MiniAudioFfi {
 
   late final _ma_audio_buffer_get_available_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_audio_buffer>,
+          ffi.Int32 Function(ffi.Pointer<ma_audio_buffer>,
               ffi.Pointer<ma_uint64>)>>('ma_audio_buffer_get_available_frames');
   late final _ma_audio_buffer_get_available_frames =
       _ma_audio_buffer_get_available_framesPtr.asFunction<
           int Function(ffi.Pointer<ma_audio_buffer>, ffi.Pointer<ma_uint64>)>();
+
+  int ma_paged_audio_buffer_data_init(
+    int format,
+    int channels,
+    ffi.Pointer<ma_paged_audio_buffer_data> pData,
+  ) {
+    return _ma_paged_audio_buffer_data_init(
+      format,
+      channels,
+      pData,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_data_initPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Int32, ma_uint32,
+                  ffi.Pointer<ma_paged_audio_buffer_data>)>>(
+      'ma_paged_audio_buffer_data_init');
+  late final _ma_paged_audio_buffer_data_init =
+      _ma_paged_audio_buffer_data_initPtr.asFunction<
+          int Function(int, int, ffi.Pointer<ma_paged_audio_buffer_data>)>();
+
+  void ma_paged_audio_buffer_data_uninit(
+    ffi.Pointer<ma_paged_audio_buffer_data> pData,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_paged_audio_buffer_data_uninit(
+      pData,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_data_uninitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_paged_audio_buffer_data>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>(
+      'ma_paged_audio_buffer_data_uninit');
+  late final _ma_paged_audio_buffer_data_uninit =
+      _ma_paged_audio_buffer_data_uninitPtr.asFunction<
+          void Function(ffi.Pointer<ma_paged_audio_buffer_data>,
+              ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ffi.Pointer<ma_paged_audio_buffer_page> ma_paged_audio_buffer_data_get_head(
+    ffi.Pointer<ma_paged_audio_buffer_data> pData,
+  ) {
+    return _ma_paged_audio_buffer_data_get_head(
+      pData,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_data_get_headPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_paged_audio_buffer_page> Function(
+                  ffi.Pointer<ma_paged_audio_buffer_data>)>>(
+      'ma_paged_audio_buffer_data_get_head');
+  late final _ma_paged_audio_buffer_data_get_head =
+      _ma_paged_audio_buffer_data_get_headPtr.asFunction<
+          ffi.Pointer<ma_paged_audio_buffer_page> Function(
+              ffi.Pointer<ma_paged_audio_buffer_data>)>();
+
+  ffi.Pointer<ma_paged_audio_buffer_page> ma_paged_audio_buffer_data_get_tail(
+    ffi.Pointer<ma_paged_audio_buffer_data> pData,
+  ) {
+    return _ma_paged_audio_buffer_data_get_tail(
+      pData,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_data_get_tailPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_paged_audio_buffer_page> Function(
+                  ffi.Pointer<ma_paged_audio_buffer_data>)>>(
+      'ma_paged_audio_buffer_data_get_tail');
+  late final _ma_paged_audio_buffer_data_get_tail =
+      _ma_paged_audio_buffer_data_get_tailPtr.asFunction<
+          ffi.Pointer<ma_paged_audio_buffer_page> Function(
+              ffi.Pointer<ma_paged_audio_buffer_data>)>();
+
+  int ma_paged_audio_buffer_data_get_length_in_pcm_frames(
+    ffi.Pointer<ma_paged_audio_buffer_data> pData,
+    ffi.Pointer<ma_uint64> pLength,
+  ) {
+    return _ma_paged_audio_buffer_data_get_length_in_pcm_frames(
+      pData,
+      pLength,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_data_get_length_in_pcm_framesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_paged_audio_buffer_data>,
+                  ffi.Pointer<ma_uint64>)>>(
+      'ma_paged_audio_buffer_data_get_length_in_pcm_frames');
+  late final _ma_paged_audio_buffer_data_get_length_in_pcm_frames =
+      _ma_paged_audio_buffer_data_get_length_in_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_paged_audio_buffer_data>,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_paged_audio_buffer_data_allocate_page(
+    ffi.Pointer<ma_paged_audio_buffer_data> pData,
+    int pageSizeInFrames,
+    ffi.Pointer<ffi.Void> pInitialData,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ffi.Pointer<ma_paged_audio_buffer_page>> ppPage,
+  ) {
+    return _ma_paged_audio_buffer_data_allocate_page(
+      pData,
+      pageSizeInFrames,
+      pInitialData,
+      pAllocationCallbacks,
+      ppPage,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_data_allocate_pagePtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_paged_audio_buffer_data>,
+                  ma_uint64,
+                  ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ma_allocation_callbacks>,
+                  ffi.Pointer<ffi.Pointer<ma_paged_audio_buffer_page>>)>>(
+      'ma_paged_audio_buffer_data_allocate_page');
+  late final _ma_paged_audio_buffer_data_allocate_page =
+      _ma_paged_audio_buffer_data_allocate_pagePtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_paged_audio_buffer_data>,
+              int,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ffi.Pointer<ma_paged_audio_buffer_page>>)>();
+
+  int ma_paged_audio_buffer_data_free_page(
+    ffi.Pointer<ma_paged_audio_buffer_data> pData,
+    ffi.Pointer<ma_paged_audio_buffer_page> pPage,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_paged_audio_buffer_data_free_page(
+      pData,
+      pPage,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_data_free_pagePtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_paged_audio_buffer_data>,
+                  ffi.Pointer<ma_paged_audio_buffer_page>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>(
+      'ma_paged_audio_buffer_data_free_page');
+  late final _ma_paged_audio_buffer_data_free_page =
+      _ma_paged_audio_buffer_data_free_pagePtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_paged_audio_buffer_data>,
+              ffi.Pointer<ma_paged_audio_buffer_page>,
+              ffi.Pointer<ma_allocation_callbacks>)>();
+
+  int ma_paged_audio_buffer_data_append_page(
+    ffi.Pointer<ma_paged_audio_buffer_data> pData,
+    ffi.Pointer<ma_paged_audio_buffer_page> pPage,
+  ) {
+    return _ma_paged_audio_buffer_data_append_page(
+      pData,
+      pPage,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_data_append_pagePtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_paged_audio_buffer_data>,
+                  ffi.Pointer<ma_paged_audio_buffer_page>)>>(
+      'ma_paged_audio_buffer_data_append_page');
+  late final _ma_paged_audio_buffer_data_append_page =
+      _ma_paged_audio_buffer_data_append_pagePtr.asFunction<
+          int Function(ffi.Pointer<ma_paged_audio_buffer_data>,
+              ffi.Pointer<ma_paged_audio_buffer_page>)>();
+
+  int ma_paged_audio_buffer_data_allocate_and_append_page(
+    ffi.Pointer<ma_paged_audio_buffer_data> pData,
+    int pageSizeInFrames,
+    ffi.Pointer<ffi.Void> pInitialData,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_paged_audio_buffer_data_allocate_and_append_page(
+      pData,
+      pageSizeInFrames,
+      pInitialData,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_data_allocate_and_append_pagePtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_paged_audio_buffer_data>,
+                  ma_uint32,
+                  ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>(
+      'ma_paged_audio_buffer_data_allocate_and_append_page');
+  late final _ma_paged_audio_buffer_data_allocate_and_append_page =
+      _ma_paged_audio_buffer_data_allocate_and_append_pagePtr.asFunction<
+          int Function(ffi.Pointer<ma_paged_audio_buffer_data>, int,
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ma_paged_audio_buffer_config ma_paged_audio_buffer_config_init(
+    ffi.Pointer<ma_paged_audio_buffer_data> pData,
+  ) {
+    return _ma_paged_audio_buffer_config_init(
+      pData,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_config_initPtr = _lookup<
+          ffi.NativeFunction<
+              ma_paged_audio_buffer_config Function(
+                  ffi.Pointer<ma_paged_audio_buffer_data>)>>(
+      'ma_paged_audio_buffer_config_init');
+  late final _ma_paged_audio_buffer_config_init =
+      _ma_paged_audio_buffer_config_initPtr.asFunction<
+          ma_paged_audio_buffer_config Function(
+              ffi.Pointer<ma_paged_audio_buffer_data>)>();
+
+  int ma_paged_audio_buffer_init(
+    ffi.Pointer<ma_paged_audio_buffer_config> pConfig,
+    ffi.Pointer<ma_paged_audio_buffer> pPagedAudioBuffer,
+  ) {
+    return _ma_paged_audio_buffer_init(
+      pConfig,
+      pPagedAudioBuffer,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_initPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_paged_audio_buffer_config>,
+                  ffi.Pointer<ma_paged_audio_buffer>)>>(
+      'ma_paged_audio_buffer_init');
+  late final _ma_paged_audio_buffer_init =
+      _ma_paged_audio_buffer_initPtr.asFunction<
+          int Function(ffi.Pointer<ma_paged_audio_buffer_config>,
+              ffi.Pointer<ma_paged_audio_buffer>)>();
+
+  void ma_paged_audio_buffer_uninit(
+    ffi.Pointer<ma_paged_audio_buffer> pPagedAudioBuffer,
+  ) {
+    return _ma_paged_audio_buffer_uninit(
+      pPagedAudioBuffer,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_uninitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_paged_audio_buffer>)>>(
+      'ma_paged_audio_buffer_uninit');
+  late final _ma_paged_audio_buffer_uninit = _ma_paged_audio_buffer_uninitPtr
+      .asFunction<void Function(ffi.Pointer<ma_paged_audio_buffer>)>();
+
+  int ma_paged_audio_buffer_read_pcm_frames(
+    ffi.Pointer<ma_paged_audio_buffer> pPagedAudioBuffer,
+    ffi.Pointer<ffi.Void> pFramesOut,
+    int frameCount,
+    ffi.Pointer<ma_uint64> pFramesRead,
+  ) {
+    return _ma_paged_audio_buffer_read_pcm_frames(
+      pPagedAudioBuffer,
+      pFramesOut,
+      frameCount,
+      pFramesRead,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_read_pcm_framesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_paged_audio_buffer>,
+                  ffi.Pointer<ffi.Void>, ma_uint64, ffi.Pointer<ma_uint64>)>>(
+      'ma_paged_audio_buffer_read_pcm_frames');
+  late final _ma_paged_audio_buffer_read_pcm_frames =
+      _ma_paged_audio_buffer_read_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_paged_audio_buffer>,
+              ffi.Pointer<ffi.Void>, int, ffi.Pointer<ma_uint64>)>();
+
+  int ma_paged_audio_buffer_seek_to_pcm_frame(
+    ffi.Pointer<ma_paged_audio_buffer> pPagedAudioBuffer,
+    int frameIndex,
+  ) {
+    return _ma_paged_audio_buffer_seek_to_pcm_frame(
+      pPagedAudioBuffer,
+      frameIndex,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_seek_to_pcm_framePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_paged_audio_buffer>,
+              ma_uint64)>>('ma_paged_audio_buffer_seek_to_pcm_frame');
+  late final _ma_paged_audio_buffer_seek_to_pcm_frame =
+      _ma_paged_audio_buffer_seek_to_pcm_framePtr
+          .asFunction<int Function(ffi.Pointer<ma_paged_audio_buffer>, int)>();
+
+  int ma_paged_audio_buffer_get_cursor_in_pcm_frames(
+    ffi.Pointer<ma_paged_audio_buffer> pPagedAudioBuffer,
+    ffi.Pointer<ma_uint64> pCursor,
+  ) {
+    return _ma_paged_audio_buffer_get_cursor_in_pcm_frames(
+      pPagedAudioBuffer,
+      pCursor,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_get_cursor_in_pcm_framesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_paged_audio_buffer>, ffi.Pointer<ma_uint64>)>>(
+      'ma_paged_audio_buffer_get_cursor_in_pcm_frames');
+  late final _ma_paged_audio_buffer_get_cursor_in_pcm_frames =
+      _ma_paged_audio_buffer_get_cursor_in_pcm_framesPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_paged_audio_buffer>, ffi.Pointer<ma_uint64>)>();
+
+  int ma_paged_audio_buffer_get_length_in_pcm_frames(
+    ffi.Pointer<ma_paged_audio_buffer> pPagedAudioBuffer,
+    ffi.Pointer<ma_uint64> pLength,
+  ) {
+    return _ma_paged_audio_buffer_get_length_in_pcm_frames(
+      pPagedAudioBuffer,
+      pLength,
+    );
+  }
+
+  late final _ma_paged_audio_buffer_get_length_in_pcm_framesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_paged_audio_buffer>, ffi.Pointer<ma_uint64>)>>(
+      'ma_paged_audio_buffer_get_length_in_pcm_frames');
+  late final _ma_paged_audio_buffer_get_length_in_pcm_frames =
+      _ma_paged_audio_buffer_get_length_in_pcm_framesPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_paged_audio_buffer>, ffi.Pointer<ma_uint64>)>();
 
   int ma_vfs_open(
     ffi.Pointer<ma_vfs> pVFS,
@@ -5883,7 +10198,7 @@ class MiniAudioFfi {
 
   late final _ma_vfs_openPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_vfs>, ffi.Pointer<ffi.Int8>,
+          ffi.Int32 Function(ffi.Pointer<ma_vfs>, ffi.Pointer<ffi.Int8>,
               ma_uint32, ffi.Pointer<ma_vfs_file>)>>('ma_vfs_open');
   late final _ma_vfs_open = _ma_vfs_openPtr.asFunction<
       int Function(ffi.Pointer<ma_vfs>, ffi.Pointer<ffi.Int8>, int,
@@ -5905,7 +10220,7 @@ class MiniAudioFfi {
 
   late final _ma_vfs_open_wPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_vfs>, ffi.Pointer<wchar_t>,
+          ffi.Int32 Function(ffi.Pointer<ma_vfs>, ffi.Pointer<wchar_t>,
               ma_uint32, ffi.Pointer<ma_vfs_file>)>>('ma_vfs_open_w');
   late final _ma_vfs_open_w = _ma_vfs_open_wPtr.asFunction<
       int Function(ffi.Pointer<ma_vfs>, ffi.Pointer<wchar_t>, int,
@@ -5923,7 +10238,7 @@ class MiniAudioFfi {
 
   late final _ma_vfs_closePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_vfs>, ma_vfs_file)>>('ma_vfs_close');
   late final _ma_vfs_close = _ma_vfs_closePtr
       .asFunction<int Function(ffi.Pointer<ma_vfs>, ma_vfs_file)>();
@@ -5946,7 +10261,7 @@ class MiniAudioFfi {
 
   late final _ma_vfs_readPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_vfs>,
               ma_vfs_file,
               ffi.Pointer<ffi.Void>,
@@ -5974,7 +10289,7 @@ class MiniAudioFfi {
 
   late final _ma_vfs_writePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_vfs>,
               ma_vfs_file,
               ffi.Pointer<ffi.Void>,
@@ -6000,7 +10315,7 @@ class MiniAudioFfi {
 
   late final _ma_vfs_seekPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_vfs>, ma_vfs_file, ma_int64,
+          ffi.Int32 Function(ffi.Pointer<ma_vfs>, ma_vfs_file, ma_int64,
               ffi.Int32)>>('ma_vfs_seek');
   late final _ma_vfs_seek = _ma_vfs_seekPtr
       .asFunction<int Function(ffi.Pointer<ma_vfs>, ma_vfs_file, int, int)>();
@@ -6019,7 +10334,7 @@ class MiniAudioFfi {
 
   late final _ma_vfs_tellPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_vfs>, ma_vfs_file,
+          ffi.Int32 Function(ffi.Pointer<ma_vfs>, ma_vfs_file,
               ffi.Pointer<ma_int64>)>>('ma_vfs_tell');
   late final _ma_vfs_tell = _ma_vfs_tellPtr.asFunction<
       int Function(ffi.Pointer<ma_vfs>, ma_vfs_file, ffi.Pointer<ma_int64>)>();
@@ -6038,7 +10353,7 @@ class MiniAudioFfi {
 
   late final _ma_vfs_infoPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_vfs>, ma_vfs_file,
+          ffi.Int32 Function(ffi.Pointer<ma_vfs>, ma_vfs_file,
               ffi.Pointer<ma_file_info>)>>('ma_vfs_info');
   late final _ma_vfs_info = _ma_vfs_infoPtr.asFunction<
       int Function(
@@ -6062,7 +10377,7 @@ class MiniAudioFfi {
 
   late final _ma_vfs_open_and_read_filePtr = _lookup<
           ffi.NativeFunction<
-              ma_result Function(
+              ffi.Int32 Function(
                   ffi.Pointer<ma_vfs>,
                   ffi.Pointer<ffi.Int8>,
                   ffi.Pointer<ffi.Pointer<ffi.Void>>,
@@ -6090,7 +10405,7 @@ class MiniAudioFfi {
 
   late final _ma_default_vfs_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_default_vfs>,
+          ffi.Int32 Function(ffi.Pointer<ma_default_vfs>,
               ffi.Pointer<ma_allocation_callbacks>)>>('ma_default_vfs_init');
   late final _ma_default_vfs_init = _ma_default_vfs_initPtr.asFunction<
       int Function(
@@ -6098,18 +10413,21 @@ class MiniAudioFfi {
 
   ma_decoding_backend_config ma_decoding_backend_config_init(
     int preferredFormat,
+    int seekPointCount,
   ) {
     return _ma_decoding_backend_config_init(
       preferredFormat,
+      seekPointCount,
     );
   }
 
   late final _ma_decoding_backend_config_initPtr = _lookup<
-          ffi.NativeFunction<ma_decoding_backend_config Function(ffi.Int32)>>(
-      'ma_decoding_backend_config_init');
+      ffi.NativeFunction<
+          ma_decoding_backend_config Function(
+              ffi.Int32, ma_uint32)>>('ma_decoding_backend_config_init');
   late final _ma_decoding_backend_config_init =
       _ma_decoding_backend_config_initPtr
-          .asFunction<ma_decoding_backend_config Function(int)>();
+          .asFunction<ma_decoding_backend_config Function(int, int)>();
 
   ma_decoder_config ma_decoder_config_init(
     int outputFormat,
@@ -6159,7 +10477,7 @@ class MiniAudioFfi {
 
   late final _ma_decoder_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ma_decoder_read_proc,
               ma_decoder_seek_proc,
               ffi.Pointer<ffi.Void>,
@@ -6189,7 +10507,7 @@ class MiniAudioFfi {
 
   late final _ma_decoder_init_memoryPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ffi.Void>,
               size_t,
               ffi.Pointer<ma_decoder_config>,
@@ -6214,7 +10532,7 @@ class MiniAudioFfi {
 
   late final _ma_decoder_init_vfsPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_vfs>,
               ffi.Pointer<ffi.Int8>,
               ffi.Pointer<ma_decoder_config>,
@@ -6239,7 +10557,7 @@ class MiniAudioFfi {
 
   late final _ma_decoder_init_vfs_wPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_vfs>,
               ffi.Pointer<wchar_t>,
               ffi.Pointer<ma_decoder_config>,
@@ -6262,7 +10580,7 @@ class MiniAudioFfi {
 
   late final _ma_decoder_init_filePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ffi.Int8>,
               ffi.Pointer<ma_decoder_config>,
               ffi.Pointer<ma_decoder>)>>('ma_decoder_init_file');
@@ -6284,7 +10602,7 @@ class MiniAudioFfi {
 
   late final _ma_decoder_init_file_wPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<wchar_t>,
               ffi.Pointer<ma_decoder_config>,
               ffi.Pointer<ma_decoder>)>>('ma_decoder_init_file_w');
@@ -6301,63 +10619,36 @@ class MiniAudioFfi {
   }
 
   late final _ma_decoder_uninitPtr =
-      _lookup<ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_decoder>)>>(
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_decoder>)>>(
           'ma_decoder_uninit');
   late final _ma_decoder_uninit =
       _ma_decoder_uninitPtr.asFunction<int Function(ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_get_cursor_in_pcm_frames(
-    ffi.Pointer<ma_decoder> pDecoder,
-    ffi.Pointer<ma_uint64> pCursor,
-  ) {
-    return _ma_decoder_get_cursor_in_pcm_frames(
-      pDecoder,
-      pCursor,
-    );
-  }
-
-  late final _ma_decoder_get_cursor_in_pcm_framesPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_decoder>,
-              ffi.Pointer<ma_uint64>)>>('ma_decoder_get_cursor_in_pcm_frames');
-  late final _ma_decoder_get_cursor_in_pcm_frames =
-      _ma_decoder_get_cursor_in_pcm_framesPtr.asFunction<
-          int Function(ffi.Pointer<ma_decoder>, ffi.Pointer<ma_uint64>)>();
-
-  int ma_decoder_get_length_in_pcm_frames(
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_get_length_in_pcm_frames(
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_get_length_in_pcm_framesPtr =
-      _lookup<ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_decoder>)>>(
-          'ma_decoder_get_length_in_pcm_frames');
-  late final _ma_decoder_get_length_in_pcm_frames =
-      _ma_decoder_get_length_in_pcm_framesPtr
-          .asFunction<int Function(ffi.Pointer<ma_decoder>)>();
 
   int ma_decoder_read_pcm_frames(
     ffi.Pointer<ma_decoder> pDecoder,
     ffi.Pointer<ffi.Void> pFramesOut,
     int frameCount,
+    ffi.Pointer<ma_uint64> pFramesRead,
   ) {
     return _ma_decoder_read_pcm_frames(
       pDecoder,
       pFramesOut,
       frameCount,
+      pFramesRead,
     );
   }
 
   late final _ma_decoder_read_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_uint64 Function(ffi.Pointer<ma_decoder>, ffi.Pointer<ffi.Void>,
-              ma_uint64)>>('ma_decoder_read_pcm_frames');
+          ffi.Int32 Function(
+              ffi.Pointer<ma_decoder>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>>('ma_decoder_read_pcm_frames');
   late final _ma_decoder_read_pcm_frames =
       _ma_decoder_read_pcm_framesPtr.asFunction<
-          int Function(ffi.Pointer<ma_decoder>, ffi.Pointer<ffi.Void>, int)>();
+          int Function(ffi.Pointer<ma_decoder>, ffi.Pointer<ffi.Void>, int,
+              ffi.Pointer<ma_uint64>)>();
 
   int ma_decoder_seek_to_pcm_frame(
     ffi.Pointer<ma_decoder> pDecoder,
@@ -6371,10 +10662,83 @@ class MiniAudioFfi {
 
   late final _ma_decoder_seek_to_pcm_framePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_decoder>,
+          ffi.Int32 Function(ffi.Pointer<ma_decoder>,
               ma_uint64)>>('ma_decoder_seek_to_pcm_frame');
   late final _ma_decoder_seek_to_pcm_frame = _ma_decoder_seek_to_pcm_framePtr
       .asFunction<int Function(ffi.Pointer<ma_decoder>, int)>();
+
+  int ma_decoder_get_data_format(
+    ffi.Pointer<ma_decoder> pDecoder,
+    ffi.Pointer<ffi.Int32> pFormat,
+    ffi.Pointer<ma_uint32> pChannels,
+    ffi.Pointer<ma_uint32> pSampleRate,
+    ffi.Pointer<ma_channel> pChannelMap,
+    int channelMapCap,
+  ) {
+    return _ma_decoder_get_data_format(
+      pDecoder,
+      pFormat,
+      pChannels,
+      pSampleRate,
+      pChannelMap,
+      channelMapCap,
+    );
+  }
+
+  late final _ma_decoder_get_data_formatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_decoder>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>>('ma_decoder_get_data_format');
+  late final _ma_decoder_get_data_format =
+      _ma_decoder_get_data_formatPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_decoder>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              int)>();
+
+  int ma_decoder_get_cursor_in_pcm_frames(
+    ffi.Pointer<ma_decoder> pDecoder,
+    ffi.Pointer<ma_uint64> pCursor,
+  ) {
+    return _ma_decoder_get_cursor_in_pcm_frames(
+      pDecoder,
+      pCursor,
+    );
+  }
+
+  late final _ma_decoder_get_cursor_in_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_decoder>,
+              ffi.Pointer<ma_uint64>)>>('ma_decoder_get_cursor_in_pcm_frames');
+  late final _ma_decoder_get_cursor_in_pcm_frames =
+      _ma_decoder_get_cursor_in_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_decoder>, ffi.Pointer<ma_uint64>)>();
+
+  int ma_decoder_get_length_in_pcm_frames(
+    ffi.Pointer<ma_decoder> pDecoder,
+    ffi.Pointer<ma_uint64> pLength,
+  ) {
+    return _ma_decoder_get_length_in_pcm_frames(
+      pDecoder,
+      pLength,
+    );
+  }
+
+  late final _ma_decoder_get_length_in_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_decoder>,
+              ffi.Pointer<ma_uint64>)>>('ma_decoder_get_length_in_pcm_frames');
+  late final _ma_decoder_get_length_in_pcm_frames =
+      _ma_decoder_get_length_in_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_decoder>, ffi.Pointer<ma_uint64>)>();
 
   int ma_decoder_get_available_frames(
     ffi.Pointer<ma_decoder> pDecoder,
@@ -6388,7 +10752,7 @@ class MiniAudioFfi {
 
   late final _ma_decoder_get_available_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_decoder>,
+          ffi.Int32 Function(ffi.Pointer<ma_decoder>,
               ffi.Pointer<ma_uint64>)>>('ma_decoder_get_available_frames');
   late final _ma_decoder_get_available_frames =
       _ma_decoder_get_available_framesPtr.asFunction<
@@ -6412,7 +10776,7 @@ class MiniAudioFfi {
 
   late final _ma_decode_from_vfsPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_vfs>,
               ffi.Pointer<ffi.Int8>,
               ffi.Pointer<ma_decoder_config>,
@@ -6442,7 +10806,7 @@ class MiniAudioFfi {
 
   late final _ma_decode_filePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ffi.Int8>,
               ffi.Pointer<ma_decoder_config>,
               ffi.Pointer<ma_uint64>,
@@ -6469,7 +10833,7 @@ class MiniAudioFfi {
 
   late final _ma_decode_memoryPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ffi.Void>,
               size_t,
               ffi.Pointer<ma_decoder_config>,
@@ -6479,636 +10843,14 @@ class MiniAudioFfi {
       int Function(ffi.Pointer<ffi.Void>, int, ffi.Pointer<ma_decoder_config>,
           ffi.Pointer<ma_uint64>, ffi.Pointer<ffi.Pointer<ffi.Void>>)>();
 
-  int ma_decoder_init_wav(
-    ma_decoder_read_proc onRead,
-    ma_decoder_seek_proc onSeek,
-    ffi.Pointer<ffi.Void> pUserData,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_wav(
-      onRead,
-      onSeek,
-      pUserData,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_wavPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ma_decoder_read_proc,
-              ma_decoder_seek_proc,
-              ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_wav');
-  late final _ma_decoder_init_wav = _ma_decoder_init_wavPtr.asFunction<
-      int Function(
-          ma_decoder_read_proc,
-          ma_decoder_seek_proc,
-          ffi.Pointer<ffi.Void>,
-          ffi.Pointer<ma_decoder_config>,
-          ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_flac(
-    ma_decoder_read_proc onRead,
-    ma_decoder_seek_proc onSeek,
-    ffi.Pointer<ffi.Void> pUserData,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_flac(
-      onRead,
-      onSeek,
-      pUserData,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_flacPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ma_decoder_read_proc,
-              ma_decoder_seek_proc,
-              ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_flac');
-  late final _ma_decoder_init_flac = _ma_decoder_init_flacPtr.asFunction<
-      int Function(
-          ma_decoder_read_proc,
-          ma_decoder_seek_proc,
-          ffi.Pointer<ffi.Void>,
-          ffi.Pointer<ma_decoder_config>,
-          ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_mp3(
-    ma_decoder_read_proc onRead,
-    ma_decoder_seek_proc onSeek,
-    ffi.Pointer<ffi.Void> pUserData,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_mp3(
-      onRead,
-      onSeek,
-      pUserData,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_mp3Ptr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ma_decoder_read_proc,
-              ma_decoder_seek_proc,
-              ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_mp3');
-  late final _ma_decoder_init_mp3 = _ma_decoder_init_mp3Ptr.asFunction<
-      int Function(
-          ma_decoder_read_proc,
-          ma_decoder_seek_proc,
-          ffi.Pointer<ffi.Void>,
-          ffi.Pointer<ma_decoder_config>,
-          ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_vorbis(
-    ma_decoder_read_proc onRead,
-    ma_decoder_seek_proc onSeek,
-    ffi.Pointer<ffi.Void> pUserData,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_vorbis(
-      onRead,
-      onSeek,
-      pUserData,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_vorbisPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ma_decoder_read_proc,
-              ma_decoder_seek_proc,
-              ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_vorbis');
-  late final _ma_decoder_init_vorbis = _ma_decoder_init_vorbisPtr.asFunction<
-      int Function(
-          ma_decoder_read_proc,
-          ma_decoder_seek_proc,
-          ffi.Pointer<ffi.Void>,
-          ffi.Pointer<ma_decoder_config>,
-          ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_memory_wav(
-    ffi.Pointer<ffi.Void> pData,
-    int dataSize,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_memory_wav(
-      pData,
-      dataSize,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_memory_wavPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ffi.Void>,
-              size_t,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_memory_wav');
-  late final _ma_decoder_init_memory_wav =
-      _ma_decoder_init_memory_wavPtr.asFunction<
-          int Function(ffi.Pointer<ffi.Void>, int,
-              ffi.Pointer<ma_decoder_config>, ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_memory_flac(
-    ffi.Pointer<ffi.Void> pData,
-    int dataSize,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_memory_flac(
-      pData,
-      dataSize,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_memory_flacPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ffi.Void>,
-              size_t,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_memory_flac');
-  late final _ma_decoder_init_memory_flac =
-      _ma_decoder_init_memory_flacPtr.asFunction<
-          int Function(ffi.Pointer<ffi.Void>, int,
-              ffi.Pointer<ma_decoder_config>, ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_memory_mp3(
-    ffi.Pointer<ffi.Void> pData,
-    int dataSize,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_memory_mp3(
-      pData,
-      dataSize,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_memory_mp3Ptr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ffi.Void>,
-              size_t,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_memory_mp3');
-  late final _ma_decoder_init_memory_mp3 =
-      _ma_decoder_init_memory_mp3Ptr.asFunction<
-          int Function(ffi.Pointer<ffi.Void>, int,
-              ffi.Pointer<ma_decoder_config>, ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_memory_vorbis(
-    ffi.Pointer<ffi.Void> pData,
-    int dataSize,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_memory_vorbis(
-      pData,
-      dataSize,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_memory_vorbisPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ffi.Void>,
-              size_t,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_memory_vorbis');
-  late final _ma_decoder_init_memory_vorbis =
-      _ma_decoder_init_memory_vorbisPtr.asFunction<
-          int Function(ffi.Pointer<ffi.Void>, int,
-              ffi.Pointer<ma_decoder_config>, ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_vfs_wav(
-    ffi.Pointer<ma_vfs> pVFS,
-    ffi.Pointer<ffi.Int8> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_vfs_wav(
-      pVFS,
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_vfs_wavPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_vfs>,
-              ffi.Pointer<ffi.Int8>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_vfs_wav');
-  late final _ma_decoder_init_vfs_wav = _ma_decoder_init_vfs_wavPtr.asFunction<
-      int Function(ffi.Pointer<ma_vfs>, ffi.Pointer<ffi.Int8>,
-          ffi.Pointer<ma_decoder_config>, ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_vfs_flac(
-    ffi.Pointer<ma_vfs> pVFS,
-    ffi.Pointer<ffi.Int8> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_vfs_flac(
-      pVFS,
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_vfs_flacPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_vfs>,
-              ffi.Pointer<ffi.Int8>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_vfs_flac');
-  late final _ma_decoder_init_vfs_flac =
-      _ma_decoder_init_vfs_flacPtr.asFunction<
-          int Function(ffi.Pointer<ma_vfs>, ffi.Pointer<ffi.Int8>,
-              ffi.Pointer<ma_decoder_config>, ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_vfs_mp3(
-    ffi.Pointer<ma_vfs> pVFS,
-    ffi.Pointer<ffi.Int8> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_vfs_mp3(
-      pVFS,
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_vfs_mp3Ptr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_vfs>,
-              ffi.Pointer<ffi.Int8>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_vfs_mp3');
-  late final _ma_decoder_init_vfs_mp3 = _ma_decoder_init_vfs_mp3Ptr.asFunction<
-      int Function(ffi.Pointer<ma_vfs>, ffi.Pointer<ffi.Int8>,
-          ffi.Pointer<ma_decoder_config>, ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_vfs_vorbis(
-    ffi.Pointer<ma_vfs> pVFS,
-    ffi.Pointer<ffi.Int8> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_vfs_vorbis(
-      pVFS,
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_vfs_vorbisPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_vfs>,
-              ffi.Pointer<ffi.Int8>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_vfs_vorbis');
-  late final _ma_decoder_init_vfs_vorbis =
-      _ma_decoder_init_vfs_vorbisPtr.asFunction<
-          int Function(ffi.Pointer<ma_vfs>, ffi.Pointer<ffi.Int8>,
-              ffi.Pointer<ma_decoder_config>, ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_vfs_wav_w(
-    ffi.Pointer<ma_vfs> pVFS,
-    ffi.Pointer<wchar_t> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_vfs_wav_w(
-      pVFS,
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_vfs_wav_wPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_vfs>,
-              ffi.Pointer<wchar_t>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_vfs_wav_w');
-  late final _ma_decoder_init_vfs_wav_w =
-      _ma_decoder_init_vfs_wav_wPtr.asFunction<
-          int Function(ffi.Pointer<ma_vfs>, ffi.Pointer<wchar_t>,
-              ffi.Pointer<ma_decoder_config>, ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_vfs_flac_w(
-    ffi.Pointer<ma_vfs> pVFS,
-    ffi.Pointer<wchar_t> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_vfs_flac_w(
-      pVFS,
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_vfs_flac_wPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_vfs>,
-              ffi.Pointer<wchar_t>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_vfs_flac_w');
-  late final _ma_decoder_init_vfs_flac_w =
-      _ma_decoder_init_vfs_flac_wPtr.asFunction<
-          int Function(ffi.Pointer<ma_vfs>, ffi.Pointer<wchar_t>,
-              ffi.Pointer<ma_decoder_config>, ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_vfs_mp3_w(
-    ffi.Pointer<ma_vfs> pVFS,
-    ffi.Pointer<wchar_t> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_vfs_mp3_w(
-      pVFS,
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_vfs_mp3_wPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_vfs>,
-              ffi.Pointer<wchar_t>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_vfs_mp3_w');
-  late final _ma_decoder_init_vfs_mp3_w =
-      _ma_decoder_init_vfs_mp3_wPtr.asFunction<
-          int Function(ffi.Pointer<ma_vfs>, ffi.Pointer<wchar_t>,
-              ffi.Pointer<ma_decoder_config>, ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_vfs_vorbis_w(
-    ffi.Pointer<ma_vfs> pVFS,
-    ffi.Pointer<wchar_t> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_vfs_vorbis_w(
-      pVFS,
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_vfs_vorbis_wPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_vfs>,
-              ffi.Pointer<wchar_t>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_vfs_vorbis_w');
-  late final _ma_decoder_init_vfs_vorbis_w =
-      _ma_decoder_init_vfs_vorbis_wPtr.asFunction<
-          int Function(ffi.Pointer<ma_vfs>, ffi.Pointer<wchar_t>,
-              ffi.Pointer<ma_decoder_config>, ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_file_wav(
-    ffi.Pointer<ffi.Int8> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_file_wav(
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_file_wavPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ffi.Int8>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_file_wav');
-  late final _ma_decoder_init_file_wav =
-      _ma_decoder_init_file_wavPtr.asFunction<
-          int Function(ffi.Pointer<ffi.Int8>, ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_file_flac(
-    ffi.Pointer<ffi.Int8> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_file_flac(
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_file_flacPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ffi.Int8>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_file_flac');
-  late final _ma_decoder_init_file_flac =
-      _ma_decoder_init_file_flacPtr.asFunction<
-          int Function(ffi.Pointer<ffi.Int8>, ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_file_mp3(
-    ffi.Pointer<ffi.Int8> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_file_mp3(
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_file_mp3Ptr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ffi.Int8>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_file_mp3');
-  late final _ma_decoder_init_file_mp3 =
-      _ma_decoder_init_file_mp3Ptr.asFunction<
-          int Function(ffi.Pointer<ffi.Int8>, ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_file_vorbis(
-    ffi.Pointer<ffi.Int8> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_file_vorbis(
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_file_vorbisPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ffi.Int8>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_file_vorbis');
-  late final _ma_decoder_init_file_vorbis =
-      _ma_decoder_init_file_vorbisPtr.asFunction<
-          int Function(ffi.Pointer<ffi.Int8>, ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_file_wav_w(
-    ffi.Pointer<wchar_t> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_file_wav_w(
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_file_wav_wPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<wchar_t>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_file_wav_w');
-  late final _ma_decoder_init_file_wav_w =
-      _ma_decoder_init_file_wav_wPtr.asFunction<
-          int Function(ffi.Pointer<wchar_t>, ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_file_flac_w(
-    ffi.Pointer<wchar_t> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_file_flac_w(
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_file_flac_wPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<wchar_t>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_file_flac_w');
-  late final _ma_decoder_init_file_flac_w =
-      _ma_decoder_init_file_flac_wPtr.asFunction<
-          int Function(ffi.Pointer<wchar_t>, ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_file_mp3_w(
-    ffi.Pointer<wchar_t> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_file_mp3_w(
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_file_mp3_wPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<wchar_t>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_file_mp3_w');
-  late final _ma_decoder_init_file_mp3_w =
-      _ma_decoder_init_file_mp3_wPtr.asFunction<
-          int Function(ffi.Pointer<wchar_t>, ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>();
-
-  int ma_decoder_init_file_vorbis_w(
-    ffi.Pointer<wchar_t> pFilePath,
-    ffi.Pointer<ma_decoder_config> pConfig,
-    ffi.Pointer<ma_decoder> pDecoder,
-  ) {
-    return _ma_decoder_init_file_vorbis_w(
-      pFilePath,
-      pConfig,
-      pDecoder,
-    );
-  }
-
-  late final _ma_decoder_init_file_vorbis_wPtr = _lookup<
-      ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<wchar_t>,
-              ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>>('ma_decoder_init_file_vorbis_w');
-  late final _ma_decoder_init_file_vorbis_w =
-      _ma_decoder_init_file_vorbis_wPtr.asFunction<
-          int Function(ffi.Pointer<wchar_t>, ffi.Pointer<ma_decoder_config>,
-              ffi.Pointer<ma_decoder>)>();
-
   ma_encoder_config ma_encoder_config_init(
-    int resourceFormat,
+    int encodingFormat,
     int format,
     int channels,
     int sampleRate,
   ) {
     return _ma_encoder_config_init(
-      resourceFormat,
+      encodingFormat,
       format,
       channels,
       sampleRate,
@@ -7140,7 +10882,7 @@ class MiniAudioFfi {
 
   late final _ma_encoder_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ma_encoder_write_proc,
               ma_encoder_seek_proc,
               ffi.Pointer<ffi.Void>,
@@ -7153,6 +10895,56 @@ class MiniAudioFfi {
           ffi.Pointer<ffi.Void>,
           ffi.Pointer<ma_encoder_config>,
           ffi.Pointer<ma_encoder>)>();
+
+  int ma_encoder_init_vfs(
+    ffi.Pointer<ma_vfs> pVFS,
+    ffi.Pointer<ffi.Int8> pFilePath,
+    ffi.Pointer<ma_encoder_config> pConfig,
+    ffi.Pointer<ma_encoder> pEncoder,
+  ) {
+    return _ma_encoder_init_vfs(
+      pVFS,
+      pFilePath,
+      pConfig,
+      pEncoder,
+    );
+  }
+
+  late final _ma_encoder_init_vfsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_vfs>,
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ma_encoder_config>,
+              ffi.Pointer<ma_encoder>)>>('ma_encoder_init_vfs');
+  late final _ma_encoder_init_vfs = _ma_encoder_init_vfsPtr.asFunction<
+      int Function(ffi.Pointer<ma_vfs>, ffi.Pointer<ffi.Int8>,
+          ffi.Pointer<ma_encoder_config>, ffi.Pointer<ma_encoder>)>();
+
+  int ma_encoder_init_vfs_w(
+    ffi.Pointer<ma_vfs> pVFS,
+    ffi.Pointer<wchar_t> pFilePath,
+    ffi.Pointer<ma_encoder_config> pConfig,
+    ffi.Pointer<ma_encoder> pEncoder,
+  ) {
+    return _ma_encoder_init_vfs_w(
+      pVFS,
+      pFilePath,
+      pConfig,
+      pEncoder,
+    );
+  }
+
+  late final _ma_encoder_init_vfs_wPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_vfs>,
+              ffi.Pointer<wchar_t>,
+              ffi.Pointer<ma_encoder_config>,
+              ffi.Pointer<ma_encoder>)>>('ma_encoder_init_vfs_w');
+  late final _ma_encoder_init_vfs_w = _ma_encoder_init_vfs_wPtr.asFunction<
+      int Function(ffi.Pointer<ma_vfs>, ffi.Pointer<wchar_t>,
+          ffi.Pointer<ma_encoder_config>, ffi.Pointer<ma_encoder>)>();
 
   int ma_encoder_init_file(
     ffi.Pointer<ffi.Int8> pFilePath,
@@ -7168,7 +10960,7 @@ class MiniAudioFfi {
 
   late final _ma_encoder_init_filePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ffi.Int8>,
               ffi.Pointer<ma_encoder_config>,
               ffi.Pointer<ma_encoder>)>>('ma_encoder_init_file');
@@ -7190,7 +10982,7 @@ class MiniAudioFfi {
 
   late final _ma_encoder_init_file_wPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<wchar_t>,
               ffi.Pointer<ma_encoder_config>,
               ffi.Pointer<ma_encoder>)>>('ma_encoder_init_file_w');
@@ -7216,21 +11008,27 @@ class MiniAudioFfi {
     ffi.Pointer<ma_encoder> pEncoder,
     ffi.Pointer<ffi.Void> pFramesIn,
     int frameCount,
+    ffi.Pointer<ma_uint64> pFramesWritten,
   ) {
     return _ma_encoder_write_pcm_frames(
       pEncoder,
       pFramesIn,
       frameCount,
+      pFramesWritten,
     );
   }
 
   late final _ma_encoder_write_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_uint64 Function(ffi.Pointer<ma_encoder>, ffi.Pointer<ffi.Void>,
-              ma_uint64)>>('ma_encoder_write_pcm_frames');
+          ffi.Int32 Function(
+              ffi.Pointer<ma_encoder>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>>('ma_encoder_write_pcm_frames');
   late final _ma_encoder_write_pcm_frames =
       _ma_encoder_write_pcm_framesPtr.asFunction<
-          int Function(ffi.Pointer<ma_encoder>, ffi.Pointer<ffi.Void>, int)>();
+          int Function(ffi.Pointer<ma_encoder>, ffi.Pointer<ffi.Void>, int,
+              ffi.Pointer<ma_uint64>)>();
 
   ma_waveform_config ma_waveform_config_init(
     int format,
@@ -7269,7 +11067,7 @@ class MiniAudioFfi {
 
   late final _ma_waveform_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_waveform_config>,
+          ffi.Int32 Function(ffi.Pointer<ma_waveform_config>,
               ffi.Pointer<ma_waveform>)>>('ma_waveform_init');
   late final _ma_waveform_init = _ma_waveform_initPtr.asFunction<
       int Function(
@@ -7293,21 +11091,27 @@ class MiniAudioFfi {
     ffi.Pointer<ma_waveform> pWaveform,
     ffi.Pointer<ffi.Void> pFramesOut,
     int frameCount,
+    ffi.Pointer<ma_uint64> pFramesRead,
   ) {
     return _ma_waveform_read_pcm_frames(
       pWaveform,
       pFramesOut,
       frameCount,
+      pFramesRead,
     );
   }
 
   late final _ma_waveform_read_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_uint64 Function(ffi.Pointer<ma_waveform>, ffi.Pointer<ffi.Void>,
-              ma_uint64)>>('ma_waveform_read_pcm_frames');
+          ffi.Int32 Function(
+              ffi.Pointer<ma_waveform>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>>('ma_waveform_read_pcm_frames');
   late final _ma_waveform_read_pcm_frames =
       _ma_waveform_read_pcm_framesPtr.asFunction<
-          int Function(ffi.Pointer<ma_waveform>, ffi.Pointer<ffi.Void>, int)>();
+          int Function(ffi.Pointer<ma_waveform>, ffi.Pointer<ffi.Void>, int,
+              ffi.Pointer<ma_uint64>)>();
 
   int ma_waveform_seek_to_pcm_frame(
     ffi.Pointer<ma_waveform> pWaveform,
@@ -7321,7 +11125,7 @@ class MiniAudioFfi {
 
   late final _ma_waveform_seek_to_pcm_framePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_waveform>,
+          ffi.Int32 Function(ffi.Pointer<ma_waveform>,
               ma_uint64)>>('ma_waveform_seek_to_pcm_frame');
   late final _ma_waveform_seek_to_pcm_frame = _ma_waveform_seek_to_pcm_framePtr
       .asFunction<int Function(ffi.Pointer<ma_waveform>, int)>();
@@ -7338,7 +11142,7 @@ class MiniAudioFfi {
 
   late final _ma_waveform_set_amplitudePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_waveform>,
+          ffi.Int32 Function(ffi.Pointer<ma_waveform>,
               ffi.Double)>>('ma_waveform_set_amplitude');
   late final _ma_waveform_set_amplitude = _ma_waveform_set_amplitudePtr
       .asFunction<int Function(ffi.Pointer<ma_waveform>, double)>();
@@ -7355,7 +11159,7 @@ class MiniAudioFfi {
 
   late final _ma_waveform_set_frequencyPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_waveform>,
+          ffi.Int32 Function(ffi.Pointer<ma_waveform>,
               ffi.Double)>>('ma_waveform_set_frequency');
   late final _ma_waveform_set_frequency = _ma_waveform_set_frequencyPtr
       .asFunction<int Function(ffi.Pointer<ma_waveform>, double)>();
@@ -7372,7 +11176,7 @@ class MiniAudioFfi {
 
   late final _ma_waveform_set_typePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_waveform>, ffi.Int32)>>('ma_waveform_set_type');
   late final _ma_waveform_set_type = _ma_waveform_set_typePtr
       .asFunction<int Function(ffi.Pointer<ma_waveform>, int)>();
@@ -7389,7 +11193,7 @@ class MiniAudioFfi {
 
   late final _ma_waveform_set_sample_ratePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_waveform>,
+          ffi.Int32 Function(ffi.Pointer<ma_waveform>,
               ma_uint32)>>('ma_waveform_set_sample_rate');
   late final _ma_waveform_set_sample_rate = _ma_waveform_set_sample_ratePtr
       .asFunction<int Function(ffi.Pointer<ma_waveform>, int)>();
@@ -7417,56 +11221,108 @@ class MiniAudioFfi {
   late final _ma_noise_config_init = _ma_noise_config_initPtr
       .asFunction<ma_noise_config Function(int, int, int, int, double)>();
 
+  int ma_noise_get_heap_size(
+    ffi.Pointer<ma_noise_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_noise_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_noise_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_noise_config>,
+              ffi.Pointer<size_t>)>>('ma_noise_get_heap_size');
+  late final _ma_noise_get_heap_size = _ma_noise_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_noise_config>, ffi.Pointer<size_t>)>();
+
+  int ma_noise_init_preallocated(
+    ffi.Pointer<ma_noise_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_noise> pNoise,
+  ) {
+    return _ma_noise_init_preallocated(
+      pConfig,
+      pHeap,
+      pNoise,
+    );
+  }
+
+  late final _ma_noise_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_noise_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_noise>)>>('ma_noise_init_preallocated');
+  late final _ma_noise_init_preallocated =
+      _ma_noise_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_noise_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_noise>)>();
+
   int ma_noise_init(
     ffi.Pointer<ma_noise_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
     ffi.Pointer<ma_noise> pNoise,
   ) {
     return _ma_noise_init(
       pConfig,
+      pAllocationCallbacks,
       pNoise,
     );
   }
 
   late final _ma_noise_initPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_noise_config>,
+          ffi.Int32 Function(
+              ffi.Pointer<ma_noise_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
               ffi.Pointer<ma_noise>)>>('ma_noise_init');
   late final _ma_noise_init = _ma_noise_initPtr.asFunction<
-      int Function(ffi.Pointer<ma_noise_config>, ffi.Pointer<ma_noise>)>();
+      int Function(ffi.Pointer<ma_noise_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_noise>)>();
 
   void ma_noise_uninit(
     ffi.Pointer<ma_noise> pNoise,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
   ) {
     return _ma_noise_uninit(
       pNoise,
+      pAllocationCallbacks,
     );
   }
 
-  late final _ma_noise_uninitPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_noise>)>>(
-          'ma_noise_uninit');
-  late final _ma_noise_uninit =
-      _ma_noise_uninitPtr.asFunction<void Function(ffi.Pointer<ma_noise>)>();
+  late final _ma_noise_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_noise>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_noise_uninit');
+  late final _ma_noise_uninit = _ma_noise_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_noise>, ffi.Pointer<ma_allocation_callbacks>)>();
 
   int ma_noise_read_pcm_frames(
     ffi.Pointer<ma_noise> pNoise,
     ffi.Pointer<ffi.Void> pFramesOut,
     int frameCount,
+    ffi.Pointer<ma_uint64> pFramesRead,
   ) {
     return _ma_noise_read_pcm_frames(
       pNoise,
       pFramesOut,
       frameCount,
+      pFramesRead,
     );
   }
 
   late final _ma_noise_read_pcm_framesPtr = _lookup<
       ffi.NativeFunction<
-          ma_uint64 Function(ffi.Pointer<ma_noise>, ffi.Pointer<ffi.Void>,
-              ma_uint64)>>('ma_noise_read_pcm_frames');
+          ffi.Int32 Function(ffi.Pointer<ma_noise>, ffi.Pointer<ffi.Void>,
+              ma_uint64, ffi.Pointer<ma_uint64>)>>('ma_noise_read_pcm_frames');
   late final _ma_noise_read_pcm_frames =
       _ma_noise_read_pcm_framesPtr.asFunction<
-          int Function(ffi.Pointer<ma_noise>, ffi.Pointer<ffi.Void>, int)>();
+          int Function(ffi.Pointer<ma_noise>, ffi.Pointer<ffi.Void>, int,
+              ffi.Pointer<ma_uint64>)>();
 
   int ma_noise_set_amplitude(
     ffi.Pointer<ma_noise> pNoise,
@@ -7480,7 +11336,7 @@ class MiniAudioFfi {
 
   late final _ma_noise_set_amplitudePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_noise>, ffi.Double)>>('ma_noise_set_amplitude');
   late final _ma_noise_set_amplitude = _ma_noise_set_amplitudePtr
       .asFunction<int Function(ffi.Pointer<ma_noise>, double)>();
@@ -7497,7 +11353,7 @@ class MiniAudioFfi {
 
   late final _ma_noise_set_seedPtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_noise>, ma_int32)>>('ma_noise_set_seed');
   late final _ma_noise_set_seed = _ma_noise_set_seedPtr
       .asFunction<int Function(ffi.Pointer<ma_noise>, int)>();
@@ -7514,10 +11370,10519 @@ class MiniAudioFfi {
 
   late final _ma_noise_set_typePtr = _lookup<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_noise>, ffi.Int32)>>('ma_noise_set_type');
   late final _ma_noise_set_type = _ma_noise_set_typePtr
       .asFunction<int Function(ffi.Pointer<ma_noise>, int)>();
+
+  ma_resource_manager_pipeline_notifications
+      ma_resource_manager_pipeline_notifications_init() {
+    return _ma_resource_manager_pipeline_notifications_init();
+  }
+
+  late final _ma_resource_manager_pipeline_notifications_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_resource_manager_pipeline_notifications
+              Function()>>('ma_resource_manager_pipeline_notifications_init');
+  late final _ma_resource_manager_pipeline_notifications_init =
+      _ma_resource_manager_pipeline_notifications_initPtr
+          .asFunction<ma_resource_manager_pipeline_notifications Function()>();
+
+  ma_resource_manager_data_source_config
+      ma_resource_manager_data_source_config_init() {
+    return _ma_resource_manager_data_source_config_init();
+  }
+
+  late final _ma_resource_manager_data_source_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_resource_manager_data_source_config
+              Function()>>('ma_resource_manager_data_source_config_init');
+  late final _ma_resource_manager_data_source_config_init =
+      _ma_resource_manager_data_source_config_initPtr
+          .asFunction<ma_resource_manager_data_source_config Function()>();
+
+  ma_resource_manager_config ma_resource_manager_config_init() {
+    return _ma_resource_manager_config_init();
+  }
+
+  late final _ma_resource_manager_config_initPtr =
+      _lookup<ffi.NativeFunction<ma_resource_manager_config Function()>>(
+          'ma_resource_manager_config_init');
+  late final _ma_resource_manager_config_init =
+      _ma_resource_manager_config_initPtr
+          .asFunction<ma_resource_manager_config Function()>();
+
+  int ma_resource_manager_init(
+    ffi.Pointer<ma_resource_manager_config> pConfig,
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+  ) {
+    return _ma_resource_manager_init(
+      pConfig,
+      pResourceManager,
+    );
+  }
+
+  late final _ma_resource_manager_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager_config>,
+              ffi.Pointer<ma_resource_manager>)>>('ma_resource_manager_init');
+  late final _ma_resource_manager_init =
+      _ma_resource_manager_initPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_config>,
+              ffi.Pointer<ma_resource_manager>)>();
+
+  void ma_resource_manager_uninit(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+  ) {
+    return _ma_resource_manager_uninit(
+      pResourceManager,
+    );
+  }
+
+  late final _ma_resource_manager_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_resource_manager>)>>('ma_resource_manager_uninit');
+  late final _ma_resource_manager_uninit = _ma_resource_manager_uninitPtr
+      .asFunction<void Function(ffi.Pointer<ma_resource_manager>)>();
+
+  ffi.Pointer<ma_log> ma_resource_manager_get_log(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+  ) {
+    return _ma_resource_manager_get_log(
+      pResourceManager,
+    );
+  }
+
+  late final _ma_resource_manager_get_logPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_log> Function(ffi.Pointer<ma_resource_manager>)>>(
+      'ma_resource_manager_get_log');
+  late final _ma_resource_manager_get_log =
+      _ma_resource_manager_get_logPtr.asFunction<
+          ffi.Pointer<ma_log> Function(ffi.Pointer<ma_resource_manager>)>();
+
+  int ma_resource_manager_register_file(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ffi.Int8> pFilePath,
+    int flags,
+  ) {
+    return _ma_resource_manager_register_file(
+      pResourceManager,
+      pFilePath,
+      flags,
+    );
+  }
+
+  late final _ma_resource_manager_register_filePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ffi.Int8>,
+              ma_uint32)>>('ma_resource_manager_register_file');
+  late final _ma_resource_manager_register_file =
+      _ma_resource_manager_register_filePtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>, ffi.Pointer<ffi.Int8>, int)>();
+
+  int ma_resource_manager_register_file_w(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<wchar_t> pFilePath,
+    int flags,
+  ) {
+    return _ma_resource_manager_register_file_w(
+      pResourceManager,
+      pFilePath,
+      flags,
+    );
+  }
+
+  late final _ma_resource_manager_register_file_wPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<wchar_t>,
+              ma_uint32)>>('ma_resource_manager_register_file_w');
+  late final _ma_resource_manager_register_file_w =
+      _ma_resource_manager_register_file_wPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>, ffi.Pointer<wchar_t>, int)>();
+
+  int ma_resource_manager_register_decoded_data(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ffi.Int8> pName,
+    ffi.Pointer<ffi.Void> pData,
+    int frameCount,
+    int format,
+    int channels,
+    int sampleRate,
+  ) {
+    return _ma_resource_manager_register_decoded_data(
+      pResourceManager,
+      pName,
+      pData,
+      frameCount,
+      format,
+      channels,
+      sampleRate,
+    );
+  }
+
+  late final _ma_resource_manager_register_decoded_dataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32)>>('ma_resource_manager_register_decoded_data');
+  late final _ma_resource_manager_register_decoded_data =
+      _ma_resource_manager_register_decoded_dataPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager>, ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ffi.Void>, int, int, int, int)>();
+
+  int ma_resource_manager_register_decoded_data_w(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<wchar_t> pName,
+    ffi.Pointer<ffi.Void> pData,
+    int frameCount,
+    int format,
+    int channels,
+    int sampleRate,
+  ) {
+    return _ma_resource_manager_register_decoded_data_w(
+      pResourceManager,
+      pName,
+      pData,
+      frameCount,
+      format,
+      channels,
+      sampleRate,
+    );
+  }
+
+  late final _ma_resource_manager_register_decoded_data_wPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<wchar_t>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32)>>('ma_resource_manager_register_decoded_data_w');
+  late final _ma_resource_manager_register_decoded_data_w =
+      _ma_resource_manager_register_decoded_data_wPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager>, ffi.Pointer<wchar_t>,
+              ffi.Pointer<ffi.Void>, int, int, int, int)>();
+
+  int ma_resource_manager_register_encoded_data(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ffi.Int8> pName,
+    ffi.Pointer<ffi.Void> pData,
+    int sizeInBytes,
+  ) {
+    return _ma_resource_manager_register_encoded_data(
+      pResourceManager,
+      pName,
+      pData,
+      sizeInBytes,
+    );
+  }
+
+  late final _ma_resource_manager_register_encoded_dataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ffi.Void>,
+              size_t)>>('ma_resource_manager_register_encoded_data');
+  late final _ma_resource_manager_register_encoded_data =
+      _ma_resource_manager_register_encoded_dataPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager>, ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ffi.Void>, int)>();
+
+  int ma_resource_manager_register_encoded_data_w(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<wchar_t> pName,
+    ffi.Pointer<ffi.Void> pData,
+    int sizeInBytes,
+  ) {
+    return _ma_resource_manager_register_encoded_data_w(
+      pResourceManager,
+      pName,
+      pData,
+      sizeInBytes,
+    );
+  }
+
+  late final _ma_resource_manager_register_encoded_data_wPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<wchar_t>,
+              ffi.Pointer<ffi.Void>,
+              size_t)>>('ma_resource_manager_register_encoded_data_w');
+  late final _ma_resource_manager_register_encoded_data_w =
+      _ma_resource_manager_register_encoded_data_wPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager>, ffi.Pointer<wchar_t>,
+              ffi.Pointer<ffi.Void>, int)>();
+
+  int ma_resource_manager_unregister_file(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ffi.Int8> pFilePath,
+  ) {
+    return _ma_resource_manager_unregister_file(
+      pResourceManager,
+      pFilePath,
+    );
+  }
+
+  late final _ma_resource_manager_unregister_filePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ffi.Int8>)>>('ma_resource_manager_unregister_file');
+  late final _ma_resource_manager_unregister_file =
+      _ma_resource_manager_unregister_filePtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>, ffi.Pointer<ffi.Int8>)>();
+
+  int ma_resource_manager_unregister_file_w(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<wchar_t> pFilePath,
+  ) {
+    return _ma_resource_manager_unregister_file_w(
+      pResourceManager,
+      pFilePath,
+    );
+  }
+
+  late final _ma_resource_manager_unregister_file_wPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<wchar_t>)>>('ma_resource_manager_unregister_file_w');
+  late final _ma_resource_manager_unregister_file_w =
+      _ma_resource_manager_unregister_file_wPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>, ffi.Pointer<wchar_t>)>();
+
+  int ma_resource_manager_unregister_data(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ffi.Int8> pName,
+  ) {
+    return _ma_resource_manager_unregister_data(
+      pResourceManager,
+      pName,
+    );
+  }
+
+  late final _ma_resource_manager_unregister_dataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ffi.Int8>)>>('ma_resource_manager_unregister_data');
+  late final _ma_resource_manager_unregister_data =
+      _ma_resource_manager_unregister_dataPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>, ffi.Pointer<ffi.Int8>)>();
+
+  int ma_resource_manager_unregister_data_w(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<wchar_t> pName,
+  ) {
+    return _ma_resource_manager_unregister_data_w(
+      pResourceManager,
+      pName,
+    );
+  }
+
+  late final _ma_resource_manager_unregister_data_wPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<wchar_t>)>>('ma_resource_manager_unregister_data_w');
+  late final _ma_resource_manager_unregister_data_w =
+      _ma_resource_manager_unregister_data_wPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>, ffi.Pointer<wchar_t>)>();
+
+  int ma_resource_manager_data_buffer_init_ex(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ma_resource_manager_data_source_config> pConfig,
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+  ) {
+    return _ma_resource_manager_data_buffer_init_ex(
+      pResourceManager,
+      pConfig,
+      pDataBuffer,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_init_exPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ma_resource_manager_data_source_config>,
+                  ffi.Pointer<ma_resource_manager_data_buffer>)>>(
+      'ma_resource_manager_data_buffer_init_ex');
+  late final _ma_resource_manager_data_buffer_init_ex =
+      _ma_resource_manager_data_buffer_init_exPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ma_resource_manager_data_source_config>,
+              ffi.Pointer<ma_resource_manager_data_buffer>)>();
+
+  int ma_resource_manager_data_buffer_init(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ffi.Int8> pFilePath,
+    int flags,
+    ffi.Pointer<ma_resource_manager_pipeline_notifications> pNotifications,
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+  ) {
+    return _ma_resource_manager_data_buffer_init(
+      pResourceManager,
+      pFilePath,
+      flags,
+      pNotifications,
+      pDataBuffer,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_initPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ffi.Int8>,
+                  ma_uint32,
+                  ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+                  ffi.Pointer<ma_resource_manager_data_buffer>)>>(
+      'ma_resource_manager_data_buffer_init');
+  late final _ma_resource_manager_data_buffer_init =
+      _ma_resource_manager_data_buffer_initPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ffi.Int8>,
+              int,
+              ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+              ffi.Pointer<ma_resource_manager_data_buffer>)>();
+
+  int ma_resource_manager_data_buffer_init_w(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<wchar_t> pFilePath,
+    int flags,
+    ffi.Pointer<ma_resource_manager_pipeline_notifications> pNotifications,
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+  ) {
+    return _ma_resource_manager_data_buffer_init_w(
+      pResourceManager,
+      pFilePath,
+      flags,
+      pNotifications,
+      pDataBuffer,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_init_wPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<wchar_t>,
+                  ma_uint32,
+                  ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+                  ffi.Pointer<ma_resource_manager_data_buffer>)>>(
+      'ma_resource_manager_data_buffer_init_w');
+  late final _ma_resource_manager_data_buffer_init_w =
+      _ma_resource_manager_data_buffer_init_wPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<wchar_t>,
+              int,
+              ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+              ffi.Pointer<ma_resource_manager_data_buffer>)>();
+
+  int ma_resource_manager_data_buffer_init_copy(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ma_resource_manager_data_buffer> pExistingDataBuffer,
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+  ) {
+    return _ma_resource_manager_data_buffer_init_copy(
+      pResourceManager,
+      pExistingDataBuffer,
+      pDataBuffer,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_init_copyPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ma_resource_manager_data_buffer>,
+                  ffi.Pointer<ma_resource_manager_data_buffer>)>>(
+      'ma_resource_manager_data_buffer_init_copy');
+  late final _ma_resource_manager_data_buffer_init_copy =
+      _ma_resource_manager_data_buffer_init_copyPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ma_resource_manager_data_buffer>,
+              ffi.Pointer<ma_resource_manager_data_buffer>)>();
+
+  int ma_resource_manager_data_buffer_uninit(
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+  ) {
+    return _ma_resource_manager_data_buffer_uninit(
+      pDataBuffer,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_uninitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager_data_buffer>)>>(
+      'ma_resource_manager_data_buffer_uninit');
+  late final _ma_resource_manager_data_buffer_uninit =
+      _ma_resource_manager_data_buffer_uninitPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_buffer>)>();
+
+  int ma_resource_manager_data_buffer_read_pcm_frames(
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+    ffi.Pointer<ffi.Void> pFramesOut,
+    int frameCount,
+    ffi.Pointer<ma_uint64> pFramesRead,
+  ) {
+    return _ma_resource_manager_data_buffer_read_pcm_frames(
+      pDataBuffer,
+      pFramesOut,
+      frameCount,
+      pFramesRead,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_read_pcm_framesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_buffer>,
+                  ffi.Pointer<ffi.Void>, ma_uint64, ffi.Pointer<ma_uint64>)>>(
+      'ma_resource_manager_data_buffer_read_pcm_frames');
+  late final _ma_resource_manager_data_buffer_read_pcm_frames =
+      _ma_resource_manager_data_buffer_read_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_buffer>,
+              ffi.Pointer<ffi.Void>, int, ffi.Pointer<ma_uint64>)>();
+
+  int ma_resource_manager_data_buffer_seek_to_pcm_frame(
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+    int frameIndex,
+  ) {
+    return _ma_resource_manager_data_buffer_seek_to_pcm_frame(
+      pDataBuffer,
+      frameIndex,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_seek_to_pcm_framePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_buffer>,
+              ma_uint64)>>('ma_resource_manager_data_buffer_seek_to_pcm_frame');
+  late final _ma_resource_manager_data_buffer_seek_to_pcm_frame =
+      _ma_resource_manager_data_buffer_seek_to_pcm_framePtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_buffer>, int)>();
+
+  int ma_resource_manager_data_buffer_get_data_format(
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+    ffi.Pointer<ffi.Int32> pFormat,
+    ffi.Pointer<ma_uint32> pChannels,
+    ffi.Pointer<ma_uint32> pSampleRate,
+    ffi.Pointer<ma_channel> pChannelMap,
+    int channelMapCap,
+  ) {
+    return _ma_resource_manager_data_buffer_get_data_format(
+      pDataBuffer,
+      pFormat,
+      pChannels,
+      pSampleRate,
+      pChannelMap,
+      channelMapCap,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_get_data_formatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager_data_buffer>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>>('ma_resource_manager_data_buffer_get_data_format');
+  late final _ma_resource_manager_data_buffer_get_data_format =
+      _ma_resource_manager_data_buffer_get_data_formatPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager_data_buffer>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              int)>();
+
+  int ma_resource_manager_data_buffer_get_cursor_in_pcm_frames(
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+    ffi.Pointer<ma_uint64> pCursor,
+  ) {
+    return _ma_resource_manager_data_buffer_get_cursor_in_pcm_frames(
+      pDataBuffer,
+      pCursor,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_get_cursor_in_pcm_framesPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Int32 Function(
+                      ffi.Pointer<ma_resource_manager_data_buffer>,
+                      ffi.Pointer<ma_uint64>)>>(
+          'ma_resource_manager_data_buffer_get_cursor_in_pcm_frames');
+  late final _ma_resource_manager_data_buffer_get_cursor_in_pcm_frames =
+      _ma_resource_manager_data_buffer_get_cursor_in_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_buffer>,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_resource_manager_data_buffer_get_length_in_pcm_frames(
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+    ffi.Pointer<ma_uint64> pLength,
+  ) {
+    return _ma_resource_manager_data_buffer_get_length_in_pcm_frames(
+      pDataBuffer,
+      pLength,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_get_length_in_pcm_framesPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Int32 Function(
+                      ffi.Pointer<ma_resource_manager_data_buffer>,
+                      ffi.Pointer<ma_uint64>)>>(
+          'ma_resource_manager_data_buffer_get_length_in_pcm_frames');
+  late final _ma_resource_manager_data_buffer_get_length_in_pcm_frames =
+      _ma_resource_manager_data_buffer_get_length_in_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_buffer>,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_resource_manager_data_buffer_result(
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+  ) {
+    return _ma_resource_manager_data_buffer_result(
+      pDataBuffer,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_resultPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager_data_buffer>)>>(
+      'ma_resource_manager_data_buffer_result');
+  late final _ma_resource_manager_data_buffer_result =
+      _ma_resource_manager_data_buffer_resultPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_buffer>)>();
+
+  int ma_resource_manager_data_buffer_set_looping(
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+    int isLooping,
+  ) {
+    return _ma_resource_manager_data_buffer_set_looping(
+      pDataBuffer,
+      isLooping,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_set_loopingPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_buffer>,
+              ma_bool32)>>('ma_resource_manager_data_buffer_set_looping');
+  late final _ma_resource_manager_data_buffer_set_looping =
+      _ma_resource_manager_data_buffer_set_loopingPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_buffer>, int)>();
+
+  int ma_resource_manager_data_buffer_is_looping(
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+  ) {
+    return _ma_resource_manager_data_buffer_is_looping(
+      pDataBuffer,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_is_loopingPtr = _lookup<
+          ffi.NativeFunction<
+              ma_bool32 Function(
+                  ffi.Pointer<ma_resource_manager_data_buffer>)>>(
+      'ma_resource_manager_data_buffer_is_looping');
+  late final _ma_resource_manager_data_buffer_is_looping =
+      _ma_resource_manager_data_buffer_is_loopingPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_buffer>)>();
+
+  int ma_resource_manager_data_buffer_get_available_frames(
+    ffi.Pointer<ma_resource_manager_data_buffer> pDataBuffer,
+    ffi.Pointer<ma_uint64> pAvailableFrames,
+  ) {
+    return _ma_resource_manager_data_buffer_get_available_frames(
+      pDataBuffer,
+      pAvailableFrames,
+    );
+  }
+
+  late final _ma_resource_manager_data_buffer_get_available_framesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_buffer>,
+                  ffi.Pointer<ma_uint64>)>>(
+      'ma_resource_manager_data_buffer_get_available_frames');
+  late final _ma_resource_manager_data_buffer_get_available_frames =
+      _ma_resource_manager_data_buffer_get_available_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_buffer>,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_resource_manager_data_stream_init_ex(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ma_resource_manager_data_source_config> pConfig,
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+  ) {
+    return _ma_resource_manager_data_stream_init_ex(
+      pResourceManager,
+      pConfig,
+      pDataStream,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_init_exPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ma_resource_manager_data_source_config>,
+                  ffi.Pointer<ma_resource_manager_data_stream>)>>(
+      'ma_resource_manager_data_stream_init_ex');
+  late final _ma_resource_manager_data_stream_init_ex =
+      _ma_resource_manager_data_stream_init_exPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ma_resource_manager_data_source_config>,
+              ffi.Pointer<ma_resource_manager_data_stream>)>();
+
+  int ma_resource_manager_data_stream_init(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ffi.Int8> pFilePath,
+    int flags,
+    ffi.Pointer<ma_resource_manager_pipeline_notifications> pNotifications,
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+  ) {
+    return _ma_resource_manager_data_stream_init(
+      pResourceManager,
+      pFilePath,
+      flags,
+      pNotifications,
+      pDataStream,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_initPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ffi.Int8>,
+                  ma_uint32,
+                  ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+                  ffi.Pointer<ma_resource_manager_data_stream>)>>(
+      'ma_resource_manager_data_stream_init');
+  late final _ma_resource_manager_data_stream_init =
+      _ma_resource_manager_data_stream_initPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ffi.Int8>,
+              int,
+              ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+              ffi.Pointer<ma_resource_manager_data_stream>)>();
+
+  int ma_resource_manager_data_stream_init_w(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<wchar_t> pFilePath,
+    int flags,
+    ffi.Pointer<ma_resource_manager_pipeline_notifications> pNotifications,
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+  ) {
+    return _ma_resource_manager_data_stream_init_w(
+      pResourceManager,
+      pFilePath,
+      flags,
+      pNotifications,
+      pDataStream,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_init_wPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<wchar_t>,
+                  ma_uint32,
+                  ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+                  ffi.Pointer<ma_resource_manager_data_stream>)>>(
+      'ma_resource_manager_data_stream_init_w');
+  late final _ma_resource_manager_data_stream_init_w =
+      _ma_resource_manager_data_stream_init_wPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<wchar_t>,
+              int,
+              ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+              ffi.Pointer<ma_resource_manager_data_stream>)>();
+
+  int ma_resource_manager_data_stream_uninit(
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+  ) {
+    return _ma_resource_manager_data_stream_uninit(
+      pDataStream,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_uninitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager_data_stream>)>>(
+      'ma_resource_manager_data_stream_uninit');
+  late final _ma_resource_manager_data_stream_uninit =
+      _ma_resource_manager_data_stream_uninitPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_stream>)>();
+
+  int ma_resource_manager_data_stream_read_pcm_frames(
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+    ffi.Pointer<ffi.Void> pFramesOut,
+    int frameCount,
+    ffi.Pointer<ma_uint64> pFramesRead,
+  ) {
+    return _ma_resource_manager_data_stream_read_pcm_frames(
+      pDataStream,
+      pFramesOut,
+      frameCount,
+      pFramesRead,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_read_pcm_framesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_stream>,
+                  ffi.Pointer<ffi.Void>, ma_uint64, ffi.Pointer<ma_uint64>)>>(
+      'ma_resource_manager_data_stream_read_pcm_frames');
+  late final _ma_resource_manager_data_stream_read_pcm_frames =
+      _ma_resource_manager_data_stream_read_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_stream>,
+              ffi.Pointer<ffi.Void>, int, ffi.Pointer<ma_uint64>)>();
+
+  int ma_resource_manager_data_stream_seek_to_pcm_frame(
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+    int frameIndex,
+  ) {
+    return _ma_resource_manager_data_stream_seek_to_pcm_frame(
+      pDataStream,
+      frameIndex,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_seek_to_pcm_framePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_stream>,
+              ma_uint64)>>('ma_resource_manager_data_stream_seek_to_pcm_frame');
+  late final _ma_resource_manager_data_stream_seek_to_pcm_frame =
+      _ma_resource_manager_data_stream_seek_to_pcm_framePtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_stream>, int)>();
+
+  int ma_resource_manager_data_stream_get_data_format(
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+    ffi.Pointer<ffi.Int32> pFormat,
+    ffi.Pointer<ma_uint32> pChannels,
+    ffi.Pointer<ma_uint32> pSampleRate,
+    ffi.Pointer<ma_channel> pChannelMap,
+    int channelMapCap,
+  ) {
+    return _ma_resource_manager_data_stream_get_data_format(
+      pDataStream,
+      pFormat,
+      pChannels,
+      pSampleRate,
+      pChannelMap,
+      channelMapCap,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_get_data_formatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager_data_stream>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>>('ma_resource_manager_data_stream_get_data_format');
+  late final _ma_resource_manager_data_stream_get_data_format =
+      _ma_resource_manager_data_stream_get_data_formatPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager_data_stream>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              int)>();
+
+  int ma_resource_manager_data_stream_get_cursor_in_pcm_frames(
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+    ffi.Pointer<ma_uint64> pCursor,
+  ) {
+    return _ma_resource_manager_data_stream_get_cursor_in_pcm_frames(
+      pDataStream,
+      pCursor,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_get_cursor_in_pcm_framesPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Int32 Function(
+                      ffi.Pointer<ma_resource_manager_data_stream>,
+                      ffi.Pointer<ma_uint64>)>>(
+          'ma_resource_manager_data_stream_get_cursor_in_pcm_frames');
+  late final _ma_resource_manager_data_stream_get_cursor_in_pcm_frames =
+      _ma_resource_manager_data_stream_get_cursor_in_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_stream>,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_resource_manager_data_stream_get_length_in_pcm_frames(
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+    ffi.Pointer<ma_uint64> pLength,
+  ) {
+    return _ma_resource_manager_data_stream_get_length_in_pcm_frames(
+      pDataStream,
+      pLength,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_get_length_in_pcm_framesPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Int32 Function(
+                      ffi.Pointer<ma_resource_manager_data_stream>,
+                      ffi.Pointer<ma_uint64>)>>(
+          'ma_resource_manager_data_stream_get_length_in_pcm_frames');
+  late final _ma_resource_manager_data_stream_get_length_in_pcm_frames =
+      _ma_resource_manager_data_stream_get_length_in_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_stream>,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_resource_manager_data_stream_result(
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+  ) {
+    return _ma_resource_manager_data_stream_result(
+      pDataStream,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_resultPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager_data_stream>)>>(
+      'ma_resource_manager_data_stream_result');
+  late final _ma_resource_manager_data_stream_result =
+      _ma_resource_manager_data_stream_resultPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_stream>)>();
+
+  int ma_resource_manager_data_stream_set_looping(
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+    int isLooping,
+  ) {
+    return _ma_resource_manager_data_stream_set_looping(
+      pDataStream,
+      isLooping,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_set_loopingPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_stream>,
+              ma_bool32)>>('ma_resource_manager_data_stream_set_looping');
+  late final _ma_resource_manager_data_stream_set_looping =
+      _ma_resource_manager_data_stream_set_loopingPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_stream>, int)>();
+
+  int ma_resource_manager_data_stream_is_looping(
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+  ) {
+    return _ma_resource_manager_data_stream_is_looping(
+      pDataStream,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_is_loopingPtr = _lookup<
+          ffi.NativeFunction<
+              ma_bool32 Function(
+                  ffi.Pointer<ma_resource_manager_data_stream>)>>(
+      'ma_resource_manager_data_stream_is_looping');
+  late final _ma_resource_manager_data_stream_is_looping =
+      _ma_resource_manager_data_stream_is_loopingPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_stream>)>();
+
+  int ma_resource_manager_data_stream_get_available_frames(
+    ffi.Pointer<ma_resource_manager_data_stream> pDataStream,
+    ffi.Pointer<ma_uint64> pAvailableFrames,
+  ) {
+    return _ma_resource_manager_data_stream_get_available_frames(
+      pDataStream,
+      pAvailableFrames,
+    );
+  }
+
+  late final _ma_resource_manager_data_stream_get_available_framesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_stream>,
+                  ffi.Pointer<ma_uint64>)>>(
+      'ma_resource_manager_data_stream_get_available_frames');
+  late final _ma_resource_manager_data_stream_get_available_frames =
+      _ma_resource_manager_data_stream_get_available_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_stream>,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_resource_manager_data_source_init_ex(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ma_resource_manager_data_source_config> pConfig,
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+  ) {
+    return _ma_resource_manager_data_source_init_ex(
+      pResourceManager,
+      pConfig,
+      pDataSource,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_init_exPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ma_resource_manager_data_source_config>,
+                  ffi.Pointer<ma_resource_manager_data_source>)>>(
+      'ma_resource_manager_data_source_init_ex');
+  late final _ma_resource_manager_data_source_init_ex =
+      _ma_resource_manager_data_source_init_exPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ma_resource_manager_data_source_config>,
+              ffi.Pointer<ma_resource_manager_data_source>)>();
+
+  int ma_resource_manager_data_source_init(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ffi.Int8> pName,
+    int flags,
+    ffi.Pointer<ma_resource_manager_pipeline_notifications> pNotifications,
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+  ) {
+    return _ma_resource_manager_data_source_init(
+      pResourceManager,
+      pName,
+      flags,
+      pNotifications,
+      pDataSource,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_initPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ffi.Int8>,
+                  ma_uint32,
+                  ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+                  ffi.Pointer<ma_resource_manager_data_source>)>>(
+      'ma_resource_manager_data_source_init');
+  late final _ma_resource_manager_data_source_init =
+      _ma_resource_manager_data_source_initPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ffi.Int8>,
+              int,
+              ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+              ffi.Pointer<ma_resource_manager_data_source>)>();
+
+  int ma_resource_manager_data_source_init_w(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<wchar_t> pName,
+    int flags,
+    ffi.Pointer<ma_resource_manager_pipeline_notifications> pNotifications,
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+  ) {
+    return _ma_resource_manager_data_source_init_w(
+      pResourceManager,
+      pName,
+      flags,
+      pNotifications,
+      pDataSource,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_init_wPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<wchar_t>,
+                  ma_uint32,
+                  ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+                  ffi.Pointer<ma_resource_manager_data_source>)>>(
+      'ma_resource_manager_data_source_init_w');
+  late final _ma_resource_manager_data_source_init_w =
+      _ma_resource_manager_data_source_init_wPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<wchar_t>,
+              int,
+              ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+              ffi.Pointer<ma_resource_manager_data_source>)>();
+
+  int ma_resource_manager_data_source_init_copy(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ma_resource_manager_data_source> pExistingDataSource,
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+  ) {
+    return _ma_resource_manager_data_source_init_copy(
+      pResourceManager,
+      pExistingDataSource,
+      pDataSource,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_init_copyPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ma_resource_manager_data_source>,
+                  ffi.Pointer<ma_resource_manager_data_source>)>>(
+      'ma_resource_manager_data_source_init_copy');
+  late final _ma_resource_manager_data_source_init_copy =
+      _ma_resource_manager_data_source_init_copyPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ma_resource_manager_data_source>,
+              ffi.Pointer<ma_resource_manager_data_source>)>();
+
+  int ma_resource_manager_data_source_uninit(
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+  ) {
+    return _ma_resource_manager_data_source_uninit(
+      pDataSource,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_uninitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager_data_source>)>>(
+      'ma_resource_manager_data_source_uninit');
+  late final _ma_resource_manager_data_source_uninit =
+      _ma_resource_manager_data_source_uninitPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_source>)>();
+
+  int ma_resource_manager_data_source_read_pcm_frames(
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+    ffi.Pointer<ffi.Void> pFramesOut,
+    int frameCount,
+    ffi.Pointer<ma_uint64> pFramesRead,
+  ) {
+    return _ma_resource_manager_data_source_read_pcm_frames(
+      pDataSource,
+      pFramesOut,
+      frameCount,
+      pFramesRead,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_read_pcm_framesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_source>,
+                  ffi.Pointer<ffi.Void>, ma_uint64, ffi.Pointer<ma_uint64>)>>(
+      'ma_resource_manager_data_source_read_pcm_frames');
+  late final _ma_resource_manager_data_source_read_pcm_frames =
+      _ma_resource_manager_data_source_read_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_source>,
+              ffi.Pointer<ffi.Void>, int, ffi.Pointer<ma_uint64>)>();
+
+  int ma_resource_manager_data_source_seek_to_pcm_frame(
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+    int frameIndex,
+  ) {
+    return _ma_resource_manager_data_source_seek_to_pcm_frame(
+      pDataSource,
+      frameIndex,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_seek_to_pcm_framePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_source>,
+              ma_uint64)>>('ma_resource_manager_data_source_seek_to_pcm_frame');
+  late final _ma_resource_manager_data_source_seek_to_pcm_frame =
+      _ma_resource_manager_data_source_seek_to_pcm_framePtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_source>, int)>();
+
+  int ma_resource_manager_data_source_get_data_format(
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+    ffi.Pointer<ffi.Int32> pFormat,
+    ffi.Pointer<ma_uint32> pChannels,
+    ffi.Pointer<ma_uint32> pSampleRate,
+    ffi.Pointer<ma_channel> pChannelMap,
+    int channelMapCap,
+  ) {
+    return _ma_resource_manager_data_source_get_data_format(
+      pDataSource,
+      pFormat,
+      pChannels,
+      pSampleRate,
+      pChannelMap,
+      channelMapCap,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_get_data_formatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager_data_source>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>>('ma_resource_manager_data_source_get_data_format');
+  late final _ma_resource_manager_data_source_get_data_format =
+      _ma_resource_manager_data_source_get_data_formatPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager_data_source>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              int)>();
+
+  int ma_resource_manager_data_source_get_cursor_in_pcm_frames(
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+    ffi.Pointer<ma_uint64> pCursor,
+  ) {
+    return _ma_resource_manager_data_source_get_cursor_in_pcm_frames(
+      pDataSource,
+      pCursor,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_get_cursor_in_pcm_framesPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Int32 Function(
+                      ffi.Pointer<ma_resource_manager_data_source>,
+                      ffi.Pointer<ma_uint64>)>>(
+          'ma_resource_manager_data_source_get_cursor_in_pcm_frames');
+  late final _ma_resource_manager_data_source_get_cursor_in_pcm_frames =
+      _ma_resource_manager_data_source_get_cursor_in_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_source>,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_resource_manager_data_source_get_length_in_pcm_frames(
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+    ffi.Pointer<ma_uint64> pLength,
+  ) {
+    return _ma_resource_manager_data_source_get_length_in_pcm_frames(
+      pDataSource,
+      pLength,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_get_length_in_pcm_framesPtr =
+      _lookup<
+              ffi.NativeFunction<
+                  ffi.Int32 Function(
+                      ffi.Pointer<ma_resource_manager_data_source>,
+                      ffi.Pointer<ma_uint64>)>>(
+          'ma_resource_manager_data_source_get_length_in_pcm_frames');
+  late final _ma_resource_manager_data_source_get_length_in_pcm_frames =
+      _ma_resource_manager_data_source_get_length_in_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_source>,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_resource_manager_data_source_result(
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+  ) {
+    return _ma_resource_manager_data_source_result(
+      pDataSource,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_resultPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager_data_source>)>>(
+      'ma_resource_manager_data_source_result');
+  late final _ma_resource_manager_data_source_result =
+      _ma_resource_manager_data_source_resultPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_source>)>();
+
+  int ma_resource_manager_data_source_set_looping(
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+    int isLooping,
+  ) {
+    return _ma_resource_manager_data_source_set_looping(
+      pDataSource,
+      isLooping,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_set_loopingPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_source>,
+              ma_bool32)>>('ma_resource_manager_data_source_set_looping');
+  late final _ma_resource_manager_data_source_set_looping =
+      _ma_resource_manager_data_source_set_loopingPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_source>, int)>();
+
+  int ma_resource_manager_data_source_is_looping(
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+  ) {
+    return _ma_resource_manager_data_source_is_looping(
+      pDataSource,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_is_loopingPtr = _lookup<
+          ffi.NativeFunction<
+              ma_bool32 Function(
+                  ffi.Pointer<ma_resource_manager_data_source>)>>(
+      'ma_resource_manager_data_source_is_looping');
+  late final _ma_resource_manager_data_source_is_looping =
+      _ma_resource_manager_data_source_is_loopingPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_source>)>();
+
+  int ma_resource_manager_data_source_get_available_frames(
+    ffi.Pointer<ma_resource_manager_data_source> pDataSource,
+    ffi.Pointer<ma_uint64> pAvailableFrames,
+  ) {
+    return _ma_resource_manager_data_source_get_available_frames(
+      pDataSource,
+      pAvailableFrames,
+    );
+  }
+
+  late final _ma_resource_manager_data_source_get_available_framesPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_source>,
+                  ffi.Pointer<ma_uint64>)>>(
+      'ma_resource_manager_data_source_get_available_frames');
+  late final _ma_resource_manager_data_source_get_available_frames =
+      _ma_resource_manager_data_source_get_available_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_resource_manager_data_source>,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_resource_manager_post_job(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ma_job> pJob,
+  ) {
+    return _ma_resource_manager_post_job(
+      pResourceManager,
+      pJob,
+    );
+  }
+
+  late final _ma_resource_manager_post_jobPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ma_job>)>>('ma_resource_manager_post_job');
+  late final _ma_resource_manager_post_job =
+      _ma_resource_manager_post_jobPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>, ffi.Pointer<ma_job>)>();
+
+  int ma_resource_manager_post_job_quit(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+  ) {
+    return _ma_resource_manager_post_job_quit(
+      pResourceManager,
+    );
+  }
+
+  late final _ma_resource_manager_post_job_quitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager>)>>(
+      'ma_resource_manager_post_job_quit');
+  late final _ma_resource_manager_post_job_quit =
+      _ma_resource_manager_post_job_quitPtr
+          .asFunction<int Function(ffi.Pointer<ma_resource_manager>)>();
+
+  int ma_resource_manager_next_job(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ma_job> pJob,
+  ) {
+    return _ma_resource_manager_next_job(
+      pResourceManager,
+      pJob,
+    );
+  }
+
+  late final _ma_resource_manager_next_jobPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ma_job>)>>('ma_resource_manager_next_job');
+  late final _ma_resource_manager_next_job =
+      _ma_resource_manager_next_jobPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>, ffi.Pointer<ma_job>)>();
+
+  int ma_resource_manager_process_job(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+    ffi.Pointer<ma_job> pJob,
+  ) {
+    return _ma_resource_manager_process_job(
+      pResourceManager,
+      pJob,
+    );
+  }
+
+  late final _ma_resource_manager_process_jobPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ma_job>)>>('ma_resource_manager_process_job');
+  late final _ma_resource_manager_process_job =
+      _ma_resource_manager_process_jobPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_resource_manager>, ffi.Pointer<ma_job>)>();
+
+  int ma_resource_manager_process_next_job(
+    ffi.Pointer<ma_resource_manager> pResourceManager,
+  ) {
+    return _ma_resource_manager_process_next_job(
+      pResourceManager,
+    );
+  }
+
+  late final _ma_resource_manager_process_next_jobPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager>)>>(
+      'ma_resource_manager_process_next_job');
+  late final _ma_resource_manager_process_next_job =
+      _ma_resource_manager_process_next_jobPtr
+          .asFunction<int Function(ffi.Pointer<ma_resource_manager>)>();
+
+  ma_node_config ma_node_config_init() {
+    return _ma_node_config_init();
+  }
+
+  late final _ma_node_config_initPtr =
+      _lookup<ffi.NativeFunction<ma_node_config Function()>>(
+          'ma_node_config_init');
+  late final _ma_node_config_init =
+      _ma_node_config_initPtr.asFunction<ma_node_config Function()>();
+
+  int ma_node_get_heap_size(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_node_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_node_get_heap_size(
+      pNodeGraph,
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_node_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_node_config>,
+              ffi.Pointer<size_t>)>>('ma_node_get_heap_size');
+  late final _ma_node_get_heap_size = _ma_node_get_heap_sizePtr.asFunction<
+      int Function(ffi.Pointer<ma_node_graph>, ffi.Pointer<ma_node_config>,
+          ffi.Pointer<size_t>)>();
+
+  int ma_node_init_preallocated(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_node_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_node> pNode,
+  ) {
+    return _ma_node_init_preallocated(
+      pNodeGraph,
+      pConfig,
+      pHeap,
+      pNode,
+    );
+  }
+
+  late final _ma_node_init_preallocatedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_node_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_node>)>>('ma_node_init_preallocated');
+  late final _ma_node_init_preallocated =
+      _ma_node_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_node_graph>, ffi.Pointer<ma_node_config>,
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ma_node>)>();
+
+  int ma_node_init(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_node> pNode,
+  ) {
+    return _ma_node_init(
+      pNodeGraph,
+      pConfig,
+      pAllocationCallbacks,
+      pNode,
+    );
+  }
+
+  late final _ma_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_node>)>>('ma_node_init');
+  late final _ma_node_init = _ma_node_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_node_graph>, ffi.Pointer<ma_node_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_node>)>();
+
+  void ma_node_uninit(
+    ffi.Pointer<ma_node> pNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_node_uninit(
+      pNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_node_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_node_uninit');
+  late final _ma_node_uninit = _ma_node_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_node>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ffi.Pointer<ma_node_graph> ma_node_get_node_graph(
+    ffi.Pointer<ma_node> pNode,
+  ) {
+    return _ma_node_get_node_graph(
+      pNode,
+    );
+  }
+
+  late final _ma_node_get_node_graphPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_node_graph> Function(
+              ffi.Pointer<ma_node>)>>('ma_node_get_node_graph');
+  late final _ma_node_get_node_graph = _ma_node_get_node_graphPtr
+      .asFunction<ffi.Pointer<ma_node_graph> Function(ffi.Pointer<ma_node>)>();
+
+  int ma_node_get_input_bus_count(
+    ffi.Pointer<ma_node> pNode,
+  ) {
+    return _ma_node_get_input_bus_count(
+      pNode,
+    );
+  }
+
+  late final _ma_node_get_input_bus_countPtr =
+      _lookup<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_node>)>>(
+          'ma_node_get_input_bus_count');
+  late final _ma_node_get_input_bus_count = _ma_node_get_input_bus_countPtr
+      .asFunction<int Function(ffi.Pointer<ma_node>)>();
+
+  int ma_node_get_output_bus_count(
+    ffi.Pointer<ma_node> pNode,
+  ) {
+    return _ma_node_get_output_bus_count(
+      pNode,
+    );
+  }
+
+  late final _ma_node_get_output_bus_countPtr =
+      _lookup<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_node>)>>(
+          'ma_node_get_output_bus_count');
+  late final _ma_node_get_output_bus_count = _ma_node_get_output_bus_countPtr
+      .asFunction<int Function(ffi.Pointer<ma_node>)>();
+
+  int ma_node_get_input_channels(
+    ffi.Pointer<ma_node> pNode,
+    int inputBusIndex,
+  ) {
+    return _ma_node_get_input_channels(
+      pNode,
+      inputBusIndex,
+    );
+  }
+
+  late final _ma_node_get_input_channelsPtr = _lookup<
+      ffi.NativeFunction<
+          ma_uint32 Function(
+              ffi.Pointer<ma_node>, ma_uint32)>>('ma_node_get_input_channels');
+  late final _ma_node_get_input_channels = _ma_node_get_input_channelsPtr
+      .asFunction<int Function(ffi.Pointer<ma_node>, int)>();
+
+  int ma_node_get_output_channels(
+    ffi.Pointer<ma_node> pNode,
+    int outputBusIndex,
+  ) {
+    return _ma_node_get_output_channels(
+      pNode,
+      outputBusIndex,
+    );
+  }
+
+  late final _ma_node_get_output_channelsPtr = _lookup<
+      ffi.NativeFunction<
+          ma_uint32 Function(
+              ffi.Pointer<ma_node>, ma_uint32)>>('ma_node_get_output_channels');
+  late final _ma_node_get_output_channels = _ma_node_get_output_channelsPtr
+      .asFunction<int Function(ffi.Pointer<ma_node>, int)>();
+
+  int ma_node_attach_output_bus(
+    ffi.Pointer<ma_node> pNode,
+    int outputBusIndex,
+    ffi.Pointer<ma_node> pOtherNode,
+    int otherNodeInputBusIndex,
+  ) {
+    return _ma_node_attach_output_bus(
+      pNode,
+      outputBusIndex,
+      pOtherNode,
+      otherNodeInputBusIndex,
+    );
+  }
+
+  late final _ma_node_attach_output_busPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_node>, ma_uint32,
+              ffi.Pointer<ma_node>, ma_uint32)>>('ma_node_attach_output_bus');
+  late final _ma_node_attach_output_bus =
+      _ma_node_attach_output_busPtr.asFunction<
+          int Function(ffi.Pointer<ma_node>, int, ffi.Pointer<ma_node>, int)>();
+
+  int ma_node_detach_output_bus(
+    ffi.Pointer<ma_node> pNode,
+    int outputBusIndex,
+  ) {
+    return _ma_node_detach_output_bus(
+      pNode,
+      outputBusIndex,
+    );
+  }
+
+  late final _ma_node_detach_output_busPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node>, ma_uint32)>>('ma_node_detach_output_bus');
+  late final _ma_node_detach_output_bus = _ma_node_detach_output_busPtr
+      .asFunction<int Function(ffi.Pointer<ma_node>, int)>();
+
+  int ma_node_detach_all_output_buses(
+    ffi.Pointer<ma_node> pNode,
+  ) {
+    return _ma_node_detach_all_output_buses(
+      pNode,
+    );
+  }
+
+  late final _ma_node_detach_all_output_busesPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_node>)>>(
+          'ma_node_detach_all_output_buses');
+  late final _ma_node_detach_all_output_buses =
+      _ma_node_detach_all_output_busesPtr
+          .asFunction<int Function(ffi.Pointer<ma_node>)>();
+
+  int ma_node_set_output_bus_volume(
+    ffi.Pointer<ma_node> pNode,
+    int outputBusIndex,
+    double volume,
+  ) {
+    return _ma_node_set_output_bus_volume(
+      pNode,
+      outputBusIndex,
+      volume,
+    );
+  }
+
+  late final _ma_node_set_output_bus_volumePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_node>, ma_uint32,
+              ffi.Float)>>('ma_node_set_output_bus_volume');
+  late final _ma_node_set_output_bus_volume = _ma_node_set_output_bus_volumePtr
+      .asFunction<int Function(ffi.Pointer<ma_node>, int, double)>();
+
+  double ma_node_get_output_bus_volume(
+    ffi.Pointer<ma_node> pNode,
+    int outputBusIndex,
+  ) {
+    return _ma_node_get_output_bus_volume(
+      pNode,
+      outputBusIndex,
+    );
+  }
+
+  late final _ma_node_get_output_bus_volumePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Float Function(ffi.Pointer<ma_node>,
+              ma_uint32)>>('ma_node_get_output_bus_volume');
+  late final _ma_node_get_output_bus_volume = _ma_node_get_output_bus_volumePtr
+      .asFunction<double Function(ffi.Pointer<ma_node>, int)>();
+
+  int ma_node_set_state(
+    ffi.Pointer<ma_node> pNode,
+    int state,
+  ) {
+    return _ma_node_set_state(
+      pNode,
+      state,
+    );
+  }
+
+  late final _ma_node_set_statePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node>, ffi.Int32)>>('ma_node_set_state');
+  late final _ma_node_set_state = _ma_node_set_statePtr
+      .asFunction<int Function(ffi.Pointer<ma_node>, int)>();
+
+  int ma_node_get_state(
+    ffi.Pointer<ma_node> pNode,
+  ) {
+    return _ma_node_get_state(
+      pNode,
+    );
+  }
+
+  late final _ma_node_get_statePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_node>)>>(
+          'ma_node_get_state');
+  late final _ma_node_get_state =
+      _ma_node_get_statePtr.asFunction<int Function(ffi.Pointer<ma_node>)>();
+
+  int ma_node_set_state_time(
+    ffi.Pointer<ma_node> pNode,
+    int state,
+    int globalTime,
+  ) {
+    return _ma_node_set_state_time(
+      pNode,
+      state,
+      globalTime,
+    );
+  }
+
+  late final _ma_node_set_state_timePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_node>, ffi.Int32,
+              ma_uint64)>>('ma_node_set_state_time');
+  late final _ma_node_set_state_time = _ma_node_set_state_timePtr
+      .asFunction<int Function(ffi.Pointer<ma_node>, int, int)>();
+
+  int ma_node_get_state_time(
+    ffi.Pointer<ma_node> pNode,
+    int state,
+  ) {
+    return _ma_node_get_state_time(
+      pNode,
+      state,
+    );
+  }
+
+  late final _ma_node_get_state_timePtr = _lookup<
+      ffi.NativeFunction<
+          ma_uint64 Function(
+              ffi.Pointer<ma_node>, ffi.Int32)>>('ma_node_get_state_time');
+  late final _ma_node_get_state_time = _ma_node_get_state_timePtr
+      .asFunction<int Function(ffi.Pointer<ma_node>, int)>();
+
+  int ma_node_get_state_by_time(
+    ffi.Pointer<ma_node> pNode,
+    int globalTime,
+  ) {
+    return _ma_node_get_state_by_time(
+      pNode,
+      globalTime,
+    );
+  }
+
+  late final _ma_node_get_state_by_timePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node>, ma_uint64)>>('ma_node_get_state_by_time');
+  late final _ma_node_get_state_by_time = _ma_node_get_state_by_timePtr
+      .asFunction<int Function(ffi.Pointer<ma_node>, int)>();
+
+  int ma_node_get_state_by_time_range(
+    ffi.Pointer<ma_node> pNode,
+    int globalTimeBeg,
+    int globalTimeEnd,
+  ) {
+    return _ma_node_get_state_by_time_range(
+      pNode,
+      globalTimeBeg,
+      globalTimeEnd,
+    );
+  }
+
+  late final _ma_node_get_state_by_time_rangePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_node>, ma_uint64,
+              ma_uint64)>>('ma_node_get_state_by_time_range');
+  late final _ma_node_get_state_by_time_range =
+      _ma_node_get_state_by_time_rangePtr
+          .asFunction<int Function(ffi.Pointer<ma_node>, int, int)>();
+
+  int ma_node_get_time(
+    ffi.Pointer<ma_node> pNode,
+  ) {
+    return _ma_node_get_time(
+      pNode,
+    );
+  }
+
+  late final _ma_node_get_timePtr =
+      _lookup<ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_node>)>>(
+          'ma_node_get_time');
+  late final _ma_node_get_time =
+      _ma_node_get_timePtr.asFunction<int Function(ffi.Pointer<ma_node>)>();
+
+  int ma_node_set_time(
+    ffi.Pointer<ma_node> pNode,
+    int localTime,
+  ) {
+    return _ma_node_set_time(
+      pNode,
+      localTime,
+    );
+  }
+
+  late final _ma_node_set_timePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node>, ma_uint64)>>('ma_node_set_time');
+  late final _ma_node_set_time = _ma_node_set_timePtr
+      .asFunction<int Function(ffi.Pointer<ma_node>, int)>();
+
+  ma_node_graph_config ma_node_graph_config_init(
+    int channels,
+  ) {
+    return _ma_node_graph_config_init(
+      channels,
+    );
+  }
+
+  late final _ma_node_graph_config_initPtr =
+      _lookup<ffi.NativeFunction<ma_node_graph_config Function(ma_uint32)>>(
+          'ma_node_graph_config_init');
+  late final _ma_node_graph_config_init = _ma_node_graph_config_initPtr
+      .asFunction<ma_node_graph_config Function(int)>();
+
+  int ma_node_graph_init(
+    ffi.Pointer<ma_node_graph_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+  ) {
+    return _ma_node_graph_init(
+      pConfig,
+      pAllocationCallbacks,
+      pNodeGraph,
+    );
+  }
+
+  late final _ma_node_graph_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_node_graph>)>>('ma_node_graph_init');
+  late final _ma_node_graph_init = _ma_node_graph_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_node_graph_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_node_graph>)>();
+
+  void ma_node_graph_uninit(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_node_graph_uninit(
+      pNodeGraph,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_node_graph_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_node_graph_uninit');
+  late final _ma_node_graph_uninit = _ma_node_graph_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_node_graph>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ffi.Pointer<ma_node> ma_node_graph_get_endpoint(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+  ) {
+    return _ma_node_graph_get_endpoint(
+      pNodeGraph,
+    );
+  }
+
+  late final _ma_node_graph_get_endpointPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_node> Function(
+              ffi.Pointer<ma_node_graph>)>>('ma_node_graph_get_endpoint');
+  late final _ma_node_graph_get_endpoint = _ma_node_graph_get_endpointPtr
+      .asFunction<ffi.Pointer<ma_node> Function(ffi.Pointer<ma_node_graph>)>();
+
+  int ma_node_graph_read_pcm_frames(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ffi.Void> pFramesOut,
+    int frameCount,
+    ffi.Pointer<ma_uint64> pFramesRead,
+  ) {
+    return _ma_node_graph_read_pcm_frames(
+      pNodeGraph,
+      pFramesOut,
+      frameCount,
+      pFramesRead,
+    );
+  }
+
+  late final _ma_node_graph_read_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>>('ma_node_graph_read_pcm_frames');
+  late final _ma_node_graph_read_pcm_frames =
+      _ma_node_graph_read_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_node_graph>, ffi.Pointer<ffi.Void>, int,
+              ffi.Pointer<ma_uint64>)>();
+
+  int ma_node_graph_get_channels(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+  ) {
+    return _ma_node_graph_get_channels(
+      pNodeGraph,
+    );
+  }
+
+  late final _ma_node_graph_get_channelsPtr = _lookup<
+          ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_node_graph>)>>(
+      'ma_node_graph_get_channels');
+  late final _ma_node_graph_get_channels = _ma_node_graph_get_channelsPtr
+      .asFunction<int Function(ffi.Pointer<ma_node_graph>)>();
+
+  int ma_node_graph_get_time(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+  ) {
+    return _ma_node_graph_get_time(
+      pNodeGraph,
+    );
+  }
+
+  late final _ma_node_graph_get_timePtr = _lookup<
+          ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_node_graph>)>>(
+      'ma_node_graph_get_time');
+  late final _ma_node_graph_get_time = _ma_node_graph_get_timePtr
+      .asFunction<int Function(ffi.Pointer<ma_node_graph>)>();
+
+  int ma_node_graph_set_time(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    int globalTime,
+  ) {
+    return _ma_node_graph_set_time(
+      pNodeGraph,
+      globalTime,
+    );
+  }
+
+  late final _ma_node_graph_set_timePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_node_graph>,
+              ma_uint64)>>('ma_node_graph_set_time');
+  late final _ma_node_graph_set_time = _ma_node_graph_set_timePtr
+      .asFunction<int Function(ffi.Pointer<ma_node_graph>, int)>();
+
+  ma_data_source_node_config ma_data_source_node_config_init(
+    ffi.Pointer<ma_data_source> pDataSource,
+  ) {
+    return _ma_data_source_node_config_init(
+      pDataSource,
+    );
+  }
+
+  late final _ma_data_source_node_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_data_source_node_config Function(
+              ffi.Pointer<ma_data_source>)>>('ma_data_source_node_config_init');
+  late final _ma_data_source_node_config_init =
+      _ma_data_source_node_config_initPtr.asFunction<
+          ma_data_source_node_config Function(ffi.Pointer<ma_data_source>)>();
+
+  int ma_data_source_node_init(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_data_source_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_data_source_node> pDataSourceNode,
+  ) {
+    return _ma_data_source_node_init(
+      pNodeGraph,
+      pConfig,
+      pAllocationCallbacks,
+      pDataSourceNode,
+    );
+  }
+
+  late final _ma_data_source_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_data_source_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_data_source_node>)>>('ma_data_source_node_init');
+  late final _ma_data_source_node_init =
+      _ma_data_source_node_initPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_data_source_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_data_source_node>)>();
+
+  void ma_data_source_node_uninit(
+    ffi.Pointer<ma_data_source_node> pDataSourceNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_data_source_node_uninit(
+      pDataSourceNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_data_source_node_uninitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_data_source_node>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>(
+      'ma_data_source_node_uninit');
+  late final _ma_data_source_node_uninit =
+      _ma_data_source_node_uninitPtr.asFunction<
+          void Function(ffi.Pointer<ma_data_source_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>();
+
+  int ma_data_source_node_set_looping(
+    ffi.Pointer<ma_data_source_node> pDataSourceNode,
+    int isLooping,
+  ) {
+    return _ma_data_source_node_set_looping(
+      pDataSourceNode,
+      isLooping,
+    );
+  }
+
+  late final _ma_data_source_node_set_loopingPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_data_source_node>,
+              ma_bool32)>>('ma_data_source_node_set_looping');
+  late final _ma_data_source_node_set_looping =
+      _ma_data_source_node_set_loopingPtr
+          .asFunction<int Function(ffi.Pointer<ma_data_source_node>, int)>();
+
+  int ma_data_source_node_is_looping(
+    ffi.Pointer<ma_data_source_node> pDataSourceNode,
+  ) {
+    return _ma_data_source_node_is_looping(
+      pDataSourceNode,
+    );
+  }
+
+  late final _ma_data_source_node_is_loopingPtr = _lookup<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_data_source_node>)>>(
+      'ma_data_source_node_is_looping');
+  late final _ma_data_source_node_is_looping =
+      _ma_data_source_node_is_loopingPtr
+          .asFunction<int Function(ffi.Pointer<ma_data_source_node>)>();
+
+  ma_splitter_node_config ma_splitter_node_config_init(
+    int channels,
+  ) {
+    return _ma_splitter_node_config_init(
+      channels,
+    );
+  }
+
+  late final _ma_splitter_node_config_initPtr =
+      _lookup<ffi.NativeFunction<ma_splitter_node_config Function(ma_uint32)>>(
+          'ma_splitter_node_config_init');
+  late final _ma_splitter_node_config_init = _ma_splitter_node_config_initPtr
+      .asFunction<ma_splitter_node_config Function(int)>();
+
+  int ma_splitter_node_init(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_splitter_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_splitter_node> pSplitterNode,
+  ) {
+    return _ma_splitter_node_init(
+      pNodeGraph,
+      pConfig,
+      pAllocationCallbacks,
+      pSplitterNode,
+    );
+  }
+
+  late final _ma_splitter_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_splitter_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_splitter_node>)>>('ma_splitter_node_init');
+  late final _ma_splitter_node_init = _ma_splitter_node_initPtr.asFunction<
+      int Function(
+          ffi.Pointer<ma_node_graph>,
+          ffi.Pointer<ma_splitter_node_config>,
+          ffi.Pointer<ma_allocation_callbacks>,
+          ffi.Pointer<ma_splitter_node>)>();
+
+  void ma_splitter_node_uninit(
+    ffi.Pointer<ma_splitter_node> pSplitterNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_splitter_node_uninit(
+      pSplitterNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_splitter_node_uninitPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_splitter_node>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>(
+      'ma_splitter_node_uninit');
+  late final _ma_splitter_node_uninit = _ma_splitter_node_uninitPtr.asFunction<
+      void Function(ffi.Pointer<ma_splitter_node>,
+          ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ma_biquad_node_config ma_biquad_node_config_init(
+    int channels,
+    double b0,
+    double b1,
+    double b2,
+    double a0,
+    double a1,
+    double a2,
+  ) {
+    return _ma_biquad_node_config_init(
+      channels,
+      b0,
+      b1,
+      b2,
+      a0,
+      a1,
+      a2,
+    );
+  }
+
+  late final _ma_biquad_node_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_biquad_node_config Function(
+              ma_uint32,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float)>>('ma_biquad_node_config_init');
+  late final _ma_biquad_node_config_init =
+      _ma_biquad_node_config_initPtr.asFunction<
+          ma_biquad_node_config Function(
+              int, double, double, double, double, double, double)>();
+
+  int ma_biquad_node_init(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_biquad_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_biquad_node> pNode,
+  ) {
+    return _ma_biquad_node_init(
+      pNodeGraph,
+      pConfig,
+      pAllocationCallbacks,
+      pNode,
+    );
+  }
+
+  late final _ma_biquad_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_biquad_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_biquad_node>)>>('ma_biquad_node_init');
+  late final _ma_biquad_node_init = _ma_biquad_node_initPtr.asFunction<
+      int Function(
+          ffi.Pointer<ma_node_graph>,
+          ffi.Pointer<ma_biquad_node_config>,
+          ffi.Pointer<ma_allocation_callbacks>,
+          ffi.Pointer<ma_biquad_node>)>();
+
+  int ma_biquad_node_reinit(
+    ffi.Pointer<ma_biquad_config> pConfig,
+    ffi.Pointer<ma_biquad_node> pNode,
+  ) {
+    return _ma_biquad_node_reinit(
+      pConfig,
+      pNode,
+    );
+  }
+
+  late final _ma_biquad_node_reinitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_biquad_config>,
+              ffi.Pointer<ma_biquad_node>)>>('ma_biquad_node_reinit');
+  late final _ma_biquad_node_reinit = _ma_biquad_node_reinitPtr.asFunction<
+      int Function(
+          ffi.Pointer<ma_biquad_config>, ffi.Pointer<ma_biquad_node>)>();
+
+  void ma_biquad_node_uninit(
+    ffi.Pointer<ma_biquad_node> pNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_biquad_node_uninit(
+      pNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_biquad_node_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_biquad_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_biquad_node_uninit');
+  late final _ma_biquad_node_uninit = _ma_biquad_node_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_biquad_node>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ma_lpf_node_config ma_lpf_node_config_init(
+    int channels,
+    int sampleRate,
+    double cutoffFrequency,
+    int order,
+  ) {
+    return _ma_lpf_node_config_init(
+      channels,
+      sampleRate,
+      cutoffFrequency,
+      order,
+    );
+  }
+
+  late final _ma_lpf_node_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_lpf_node_config Function(ma_uint32, ma_uint32, ffi.Double,
+              ma_uint32)>>('ma_lpf_node_config_init');
+  late final _ma_lpf_node_config_init = _ma_lpf_node_config_initPtr
+      .asFunction<ma_lpf_node_config Function(int, int, double, int)>();
+
+  int ma_lpf_node_init(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_lpf_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_lpf_node> pNode,
+  ) {
+    return _ma_lpf_node_init(
+      pNodeGraph,
+      pConfig,
+      pAllocationCallbacks,
+      pNode,
+    );
+  }
+
+  late final _ma_lpf_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_lpf_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_lpf_node>)>>('ma_lpf_node_init');
+  late final _ma_lpf_node_init = _ma_lpf_node_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_node_graph>, ffi.Pointer<ma_lpf_node_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_lpf_node>)>();
+
+  int ma_lpf_node_reinit(
+    ffi.Pointer<ma_lpf_config> pConfig,
+    ffi.Pointer<ma_lpf_node> pNode,
+  ) {
+    return _ma_lpf_node_reinit(
+      pConfig,
+      pNode,
+    );
+  }
+
+  late final _ma_lpf_node_reinitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_lpf_config>,
+              ffi.Pointer<ma_lpf_node>)>>('ma_lpf_node_reinit');
+  late final _ma_lpf_node_reinit = _ma_lpf_node_reinitPtr.asFunction<
+      int Function(ffi.Pointer<ma_lpf_config>, ffi.Pointer<ma_lpf_node>)>();
+
+  void ma_lpf_node_uninit(
+    ffi.Pointer<ma_lpf_node> pNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_lpf_node_uninit(
+      pNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_lpf_node_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_lpf_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_lpf_node_uninit');
+  late final _ma_lpf_node_uninit = _ma_lpf_node_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_lpf_node>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ma_hpf_node_config ma_hpf_node_config_init(
+    int channels,
+    int sampleRate,
+    double cutoffFrequency,
+    int order,
+  ) {
+    return _ma_hpf_node_config_init(
+      channels,
+      sampleRate,
+      cutoffFrequency,
+      order,
+    );
+  }
+
+  late final _ma_hpf_node_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_hpf_node_config Function(ma_uint32, ma_uint32, ffi.Double,
+              ma_uint32)>>('ma_hpf_node_config_init');
+  late final _ma_hpf_node_config_init = _ma_hpf_node_config_initPtr
+      .asFunction<ma_hpf_node_config Function(int, int, double, int)>();
+
+  int ma_hpf_node_init(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_hpf_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_hpf_node> pNode,
+  ) {
+    return _ma_hpf_node_init(
+      pNodeGraph,
+      pConfig,
+      pAllocationCallbacks,
+      pNode,
+    );
+  }
+
+  late final _ma_hpf_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_hpf_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_hpf_node>)>>('ma_hpf_node_init');
+  late final _ma_hpf_node_init = _ma_hpf_node_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_node_graph>, ffi.Pointer<ma_hpf_node_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_hpf_node>)>();
+
+  int ma_hpf_node_reinit(
+    ffi.Pointer<ma_hpf_config> pConfig,
+    ffi.Pointer<ma_hpf_node> pNode,
+  ) {
+    return _ma_hpf_node_reinit(
+      pConfig,
+      pNode,
+    );
+  }
+
+  late final _ma_hpf_node_reinitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hpf_config>,
+              ffi.Pointer<ma_hpf_node>)>>('ma_hpf_node_reinit');
+  late final _ma_hpf_node_reinit = _ma_hpf_node_reinitPtr.asFunction<
+      int Function(ffi.Pointer<ma_hpf_config>, ffi.Pointer<ma_hpf_node>)>();
+
+  void ma_hpf_node_uninit(
+    ffi.Pointer<ma_hpf_node> pNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_hpf_node_uninit(
+      pNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_hpf_node_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_hpf_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_hpf_node_uninit');
+  late final _ma_hpf_node_uninit = _ma_hpf_node_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_hpf_node>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ma_bpf_node_config ma_bpf_node_config_init(
+    int channels,
+    int sampleRate,
+    double cutoffFrequency,
+    int order,
+  ) {
+    return _ma_bpf_node_config_init(
+      channels,
+      sampleRate,
+      cutoffFrequency,
+      order,
+    );
+  }
+
+  late final _ma_bpf_node_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_bpf_node_config Function(ma_uint32, ma_uint32, ffi.Double,
+              ma_uint32)>>('ma_bpf_node_config_init');
+  late final _ma_bpf_node_config_init = _ma_bpf_node_config_initPtr
+      .asFunction<ma_bpf_node_config Function(int, int, double, int)>();
+
+  int ma_bpf_node_init(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_bpf_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_bpf_node> pNode,
+  ) {
+    return _ma_bpf_node_init(
+      pNodeGraph,
+      pConfig,
+      pAllocationCallbacks,
+      pNode,
+    );
+  }
+
+  late final _ma_bpf_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_bpf_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_bpf_node>)>>('ma_bpf_node_init');
+  late final _ma_bpf_node_init = _ma_bpf_node_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_node_graph>, ffi.Pointer<ma_bpf_node_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_bpf_node>)>();
+
+  int ma_bpf_node_reinit(
+    ffi.Pointer<ma_bpf_config> pConfig,
+    ffi.Pointer<ma_bpf_node> pNode,
+  ) {
+    return _ma_bpf_node_reinit(
+      pConfig,
+      pNode,
+    );
+  }
+
+  late final _ma_bpf_node_reinitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_bpf_config>,
+              ffi.Pointer<ma_bpf_node>)>>('ma_bpf_node_reinit');
+  late final _ma_bpf_node_reinit = _ma_bpf_node_reinitPtr.asFunction<
+      int Function(ffi.Pointer<ma_bpf_config>, ffi.Pointer<ma_bpf_node>)>();
+
+  void ma_bpf_node_uninit(
+    ffi.Pointer<ma_bpf_node> pNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_bpf_node_uninit(
+      pNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_bpf_node_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_bpf_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_bpf_node_uninit');
+  late final _ma_bpf_node_uninit = _ma_bpf_node_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_bpf_node>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ma_notch_node_config ma_notch_node_config_init(
+    int channels,
+    int sampleRate,
+    double q,
+    double frequency,
+  ) {
+    return _ma_notch_node_config_init(
+      channels,
+      sampleRate,
+      q,
+      frequency,
+    );
+  }
+
+  late final _ma_notch_node_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_notch_node_config Function(ma_uint32, ma_uint32, ffi.Double,
+              ffi.Double)>>('ma_notch_node_config_init');
+  late final _ma_notch_node_config_init = _ma_notch_node_config_initPtr
+      .asFunction<ma_notch_node_config Function(int, int, double, double)>();
+
+  int ma_notch_node_init(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_notch_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_notch_node> pNode,
+  ) {
+    return _ma_notch_node_init(
+      pNodeGraph,
+      pConfig,
+      pAllocationCallbacks,
+      pNode,
+    );
+  }
+
+  late final _ma_notch_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_notch_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_notch_node>)>>('ma_notch_node_init');
+  late final _ma_notch_node_init = _ma_notch_node_initPtr.asFunction<
+      int Function(
+          ffi.Pointer<ma_node_graph>,
+          ffi.Pointer<ma_notch_node_config>,
+          ffi.Pointer<ma_allocation_callbacks>,
+          ffi.Pointer<ma_notch_node>)>();
+
+  int ma_notch_node_reinit(
+    ffi.Pointer<ma_notch_config> pConfig,
+    ffi.Pointer<ma_notch_node> pNode,
+  ) {
+    return _ma_notch_node_reinit(
+      pConfig,
+      pNode,
+    );
+  }
+
+  late final _ma_notch_node_reinitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_notch_config>,
+              ffi.Pointer<ma_notch_node>)>>('ma_notch_node_reinit');
+  late final _ma_notch_node_reinit = _ma_notch_node_reinitPtr.asFunction<
+      int Function(ffi.Pointer<ma_notch_config>, ffi.Pointer<ma_notch_node>)>();
+
+  void ma_notch_node_uninit(
+    ffi.Pointer<ma_notch_node> pNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_notch_node_uninit(
+      pNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_notch_node_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_notch_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_notch_node_uninit');
+  late final _ma_notch_node_uninit = _ma_notch_node_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_notch_node>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ma_peak_node_config ma_peak_node_config_init(
+    int channels,
+    int sampleRate,
+    double gainDB,
+    double q,
+    double frequency,
+  ) {
+    return _ma_peak_node_config_init(
+      channels,
+      sampleRate,
+      gainDB,
+      q,
+      frequency,
+    );
+  }
+
+  late final _ma_peak_node_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_peak_node_config Function(ma_uint32, ma_uint32, ffi.Double,
+              ffi.Double, ffi.Double)>>('ma_peak_node_config_init');
+  late final _ma_peak_node_config_init =
+      _ma_peak_node_config_initPtr.asFunction<
+          ma_peak_node_config Function(int, int, double, double, double)>();
+
+  int ma_peak_node_init(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_peak_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_peak_node> pNode,
+  ) {
+    return _ma_peak_node_init(
+      pNodeGraph,
+      pConfig,
+      pAllocationCallbacks,
+      pNode,
+    );
+  }
+
+  late final _ma_peak_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_peak_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_peak_node>)>>('ma_peak_node_init');
+  late final _ma_peak_node_init = _ma_peak_node_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_node_graph>, ffi.Pointer<ma_peak_node_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_peak_node>)>();
+
+  int ma_peak_node_reinit(
+    ffi.Pointer<ma_peak_config> pConfig,
+    ffi.Pointer<ma_peak_node> pNode,
+  ) {
+    return _ma_peak_node_reinit(
+      pConfig,
+      pNode,
+    );
+  }
+
+  late final _ma_peak_node_reinitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_peak_config>,
+              ffi.Pointer<ma_peak_node>)>>('ma_peak_node_reinit');
+  late final _ma_peak_node_reinit = _ma_peak_node_reinitPtr.asFunction<
+      int Function(ffi.Pointer<ma_peak_config>, ffi.Pointer<ma_peak_node>)>();
+
+  void ma_peak_node_uninit(
+    ffi.Pointer<ma_peak_node> pNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_peak_node_uninit(
+      pNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_peak_node_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_peak_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_peak_node_uninit');
+  late final _ma_peak_node_uninit = _ma_peak_node_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_peak_node>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ma_loshelf_node_config ma_loshelf_node_config_init(
+    int channels,
+    int sampleRate,
+    double gainDB,
+    double q,
+    double frequency,
+  ) {
+    return _ma_loshelf_node_config_init(
+      channels,
+      sampleRate,
+      gainDB,
+      q,
+      frequency,
+    );
+  }
+
+  late final _ma_loshelf_node_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_loshelf_node_config Function(ma_uint32, ma_uint32, ffi.Double,
+              ffi.Double, ffi.Double)>>('ma_loshelf_node_config_init');
+  late final _ma_loshelf_node_config_init =
+      _ma_loshelf_node_config_initPtr.asFunction<
+          ma_loshelf_node_config Function(int, int, double, double, double)>();
+
+  int ma_loshelf_node_init(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_loshelf_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_loshelf_node> pNode,
+  ) {
+    return _ma_loshelf_node_init(
+      pNodeGraph,
+      pConfig,
+      pAllocationCallbacks,
+      pNode,
+    );
+  }
+
+  late final _ma_loshelf_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_loshelf_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_loshelf_node>)>>('ma_loshelf_node_init');
+  late final _ma_loshelf_node_init = _ma_loshelf_node_initPtr.asFunction<
+      int Function(
+          ffi.Pointer<ma_node_graph>,
+          ffi.Pointer<ma_loshelf_node_config>,
+          ffi.Pointer<ma_allocation_callbacks>,
+          ffi.Pointer<ma_loshelf_node>)>();
+
+  int ma_loshelf_node_reinit(
+    ffi.Pointer<ma_loshelf_config> pConfig,
+    ffi.Pointer<ma_loshelf_node> pNode,
+  ) {
+    return _ma_loshelf_node_reinit(
+      pConfig,
+      pNode,
+    );
+  }
+
+  late final _ma_loshelf_node_reinitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_loshelf_config>,
+              ffi.Pointer<ma_loshelf_node>)>>('ma_loshelf_node_reinit');
+  late final _ma_loshelf_node_reinit = _ma_loshelf_node_reinitPtr.asFunction<
+      int Function(
+          ffi.Pointer<ma_loshelf_config>, ffi.Pointer<ma_loshelf_node>)>();
+
+  void ma_loshelf_node_uninit(
+    ffi.Pointer<ma_loshelf_node> pNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_loshelf_node_uninit(
+      pNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_loshelf_node_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_loshelf_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_loshelf_node_uninit');
+  late final _ma_loshelf_node_uninit = _ma_loshelf_node_uninitPtr.asFunction<
+      void Function(ffi.Pointer<ma_loshelf_node>,
+          ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ma_hishelf_node_config ma_hishelf_node_config_init(
+    int channels,
+    int sampleRate,
+    double gainDB,
+    double q,
+    double frequency,
+  ) {
+    return _ma_hishelf_node_config_init(
+      channels,
+      sampleRate,
+      gainDB,
+      q,
+      frequency,
+    );
+  }
+
+  late final _ma_hishelf_node_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_hishelf_node_config Function(ma_uint32, ma_uint32, ffi.Double,
+              ffi.Double, ffi.Double)>>('ma_hishelf_node_config_init');
+  late final _ma_hishelf_node_config_init =
+      _ma_hishelf_node_config_initPtr.asFunction<
+          ma_hishelf_node_config Function(int, int, double, double, double)>();
+
+  int ma_hishelf_node_init(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_hishelf_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_hishelf_node> pNode,
+  ) {
+    return _ma_hishelf_node_init(
+      pNodeGraph,
+      pConfig,
+      pAllocationCallbacks,
+      pNode,
+    );
+  }
+
+  late final _ma_hishelf_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_hishelf_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_hishelf_node>)>>('ma_hishelf_node_init');
+  late final _ma_hishelf_node_init = _ma_hishelf_node_initPtr.asFunction<
+      int Function(
+          ffi.Pointer<ma_node_graph>,
+          ffi.Pointer<ma_hishelf_node_config>,
+          ffi.Pointer<ma_allocation_callbacks>,
+          ffi.Pointer<ma_hishelf_node>)>();
+
+  int ma_hishelf_node_reinit(
+    ffi.Pointer<ma_hishelf_config> pConfig,
+    ffi.Pointer<ma_hishelf_node> pNode,
+  ) {
+    return _ma_hishelf_node_reinit(
+      pConfig,
+      pNode,
+    );
+  }
+
+  late final _ma_hishelf_node_reinitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hishelf_config>,
+              ffi.Pointer<ma_hishelf_node>)>>('ma_hishelf_node_reinit');
+  late final _ma_hishelf_node_reinit = _ma_hishelf_node_reinitPtr.asFunction<
+      int Function(
+          ffi.Pointer<ma_hishelf_config>, ffi.Pointer<ma_hishelf_node>)>();
+
+  void ma_hishelf_node_uninit(
+    ffi.Pointer<ma_hishelf_node> pNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_hishelf_node_uninit(
+      pNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_hishelf_node_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_hishelf_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_hishelf_node_uninit');
+  late final _ma_hishelf_node_uninit = _ma_hishelf_node_uninitPtr.asFunction<
+      void Function(ffi.Pointer<ma_hishelf_node>,
+          ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ma_delay_node_config ma_delay_node_config_init(
+    int channels,
+    int sampleRate,
+    int delayInFrames,
+    double decay,
+  ) {
+    return _ma_delay_node_config_init(
+      channels,
+      sampleRate,
+      delayInFrames,
+      decay,
+    );
+  }
+
+  late final _ma_delay_node_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_delay_node_config Function(ma_uint32, ma_uint32, ma_uint32,
+              ffi.Float)>>('ma_delay_node_config_init');
+  late final _ma_delay_node_config_init = _ma_delay_node_config_initPtr
+      .asFunction<ma_delay_node_config Function(int, int, int, double)>();
+
+  int ma_delay_node_init(
+    ffi.Pointer<ma_node_graph> pNodeGraph,
+    ffi.Pointer<ma_delay_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_delay_node> pDelayNode,
+  ) {
+    return _ma_delay_node_init(
+      pNodeGraph,
+      pConfig,
+      pAllocationCallbacks,
+      pDelayNode,
+    );
+  }
+
+  late final _ma_delay_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_delay_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_delay_node>)>>('ma_delay_node_init');
+  late final _ma_delay_node_init = _ma_delay_node_initPtr.asFunction<
+      int Function(
+          ffi.Pointer<ma_node_graph>,
+          ffi.Pointer<ma_delay_node_config>,
+          ffi.Pointer<ma_allocation_callbacks>,
+          ffi.Pointer<ma_delay_node>)>();
+
+  void ma_delay_node_uninit(
+    ffi.Pointer<ma_delay_node> pDelayNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_delay_node_uninit(
+      pDelayNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_delay_node_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_delay_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_delay_node_uninit');
+  late final _ma_delay_node_uninit = _ma_delay_node_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_delay_node>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  void ma_delay_node_set_wet(
+    ffi.Pointer<ma_delay_node> pDelayNode,
+    double value,
+  ) {
+    return _ma_delay_node_set_wet(
+      pDelayNode,
+      value,
+    );
+  }
+
+  late final _ma_delay_node_set_wetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_delay_node>, ffi.Float)>>('ma_delay_node_set_wet');
+  late final _ma_delay_node_set_wet = _ma_delay_node_set_wetPtr
+      .asFunction<void Function(ffi.Pointer<ma_delay_node>, double)>();
+
+  double ma_delay_node_get_wet(
+    ffi.Pointer<ma_delay_node> pDelayNode,
+  ) {
+    return _ma_delay_node_get_wet(
+      pDelayNode,
+    );
+  }
+
+  late final _ma_delay_node_get_wetPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_delay_node>)>>(
+      'ma_delay_node_get_wet');
+  late final _ma_delay_node_get_wet = _ma_delay_node_get_wetPtr
+      .asFunction<double Function(ffi.Pointer<ma_delay_node>)>();
+
+  void ma_delay_node_set_dry(
+    ffi.Pointer<ma_delay_node> pDelayNode,
+    double value,
+  ) {
+    return _ma_delay_node_set_dry(
+      pDelayNode,
+      value,
+    );
+  }
+
+  late final _ma_delay_node_set_dryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_delay_node>, ffi.Float)>>('ma_delay_node_set_dry');
+  late final _ma_delay_node_set_dry = _ma_delay_node_set_dryPtr
+      .asFunction<void Function(ffi.Pointer<ma_delay_node>, double)>();
+
+  double ma_delay_node_get_dry(
+    ffi.Pointer<ma_delay_node> pDelayNode,
+  ) {
+    return _ma_delay_node_get_dry(
+      pDelayNode,
+    );
+  }
+
+  late final _ma_delay_node_get_dryPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_delay_node>)>>(
+      'ma_delay_node_get_dry');
+  late final _ma_delay_node_get_dry = _ma_delay_node_get_dryPtr
+      .asFunction<double Function(ffi.Pointer<ma_delay_node>)>();
+
+  void ma_delay_node_set_decay(
+    ffi.Pointer<ma_delay_node> pDelayNode,
+    double value,
+  ) {
+    return _ma_delay_node_set_decay(
+      pDelayNode,
+      value,
+    );
+  }
+
+  late final _ma_delay_node_set_decayPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_delay_node>,
+              ffi.Float)>>('ma_delay_node_set_decay');
+  late final _ma_delay_node_set_decay = _ma_delay_node_set_decayPtr
+      .asFunction<void Function(ffi.Pointer<ma_delay_node>, double)>();
+
+  double ma_delay_node_get_decay(
+    ffi.Pointer<ma_delay_node> pDelayNode,
+  ) {
+    return _ma_delay_node_get_decay(
+      pDelayNode,
+    );
+  }
+
+  late final _ma_delay_node_get_decayPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_delay_node>)>>(
+      'ma_delay_node_get_decay');
+  late final _ma_delay_node_get_decay = _ma_delay_node_get_decayPtr
+      .asFunction<double Function(ffi.Pointer<ma_delay_node>)>();
+
+  ma_engine_node_config ma_engine_node_config_init(
+    ffi.Pointer<ma_engine> pEngine,
+    int type,
+    int flags,
+  ) {
+    return _ma_engine_node_config_init(
+      pEngine,
+      type,
+      flags,
+    );
+  }
+
+  late final _ma_engine_node_config_initPtr = _lookup<
+      ffi.NativeFunction<
+          ma_engine_node_config Function(ffi.Pointer<ma_engine>, ffi.Int32,
+              ma_uint32)>>('ma_engine_node_config_init');
+  late final _ma_engine_node_config_init =
+      _ma_engine_node_config_initPtr.asFunction<
+          ma_engine_node_config Function(ffi.Pointer<ma_engine>, int, int)>();
+
+  int ma_engine_node_get_heap_size(
+    ffi.Pointer<ma_engine_node_config> pConfig,
+    ffi.Pointer<size_t> pHeapSizeInBytes,
+  ) {
+    return _ma_engine_node_get_heap_size(
+      pConfig,
+      pHeapSizeInBytes,
+    );
+  }
+
+  late final _ma_engine_node_get_heap_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_engine_node_config>,
+              ffi.Pointer<size_t>)>>('ma_engine_node_get_heap_size');
+  late final _ma_engine_node_get_heap_size =
+      _ma_engine_node_get_heap_sizePtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_engine_node_config>, ffi.Pointer<size_t>)>();
+
+  int ma_engine_node_init_preallocated(
+    ffi.Pointer<ma_engine_node_config> pConfig,
+    ffi.Pointer<ffi.Void> pHeap,
+    ffi.Pointer<ma_engine_node> pEngineNode,
+  ) {
+    return _ma_engine_node_init_preallocated(
+      pConfig,
+      pHeap,
+      pEngineNode,
+    );
+  }
+
+  late final _ma_engine_node_init_preallocatedPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_engine_node_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_engine_node>)>>(
+      'ma_engine_node_init_preallocated');
+  late final _ma_engine_node_init_preallocated =
+      _ma_engine_node_init_preallocatedPtr.asFunction<
+          int Function(ffi.Pointer<ma_engine_node_config>,
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ma_engine_node>)>();
+
+  int ma_engine_node_init(
+    ffi.Pointer<ma_engine_node_config> pConfig,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+    ffi.Pointer<ma_engine_node> pEngineNode,
+  ) {
+    return _ma_engine_node_init(
+      pConfig,
+      pAllocationCallbacks,
+      pEngineNode,
+    );
+  }
+
+  late final _ma_engine_node_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_engine_node>)>>('ma_engine_node_init');
+  late final _ma_engine_node_init = _ma_engine_node_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_engine_node_config>,
+          ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_engine_node>)>();
+
+  void ma_engine_node_uninit(
+    ffi.Pointer<ma_engine_node> pEngineNode,
+    ffi.Pointer<ma_allocation_callbacks> pAllocationCallbacks,
+  ) {
+    return _ma_engine_node_uninit(
+      pEngineNode,
+      pAllocationCallbacks,
+    );
+  }
+
+  late final _ma_engine_node_uninitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_engine_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>>('ma_engine_node_uninit');
+  late final _ma_engine_node_uninit = _ma_engine_node_uninitPtr.asFunction<
+      void Function(
+          ffi.Pointer<ma_engine_node>, ffi.Pointer<ma_allocation_callbacks>)>();
+
+  ma_sound_config ma_sound_config_init() {
+    return _ma_sound_config_init();
+  }
+
+  late final _ma_sound_config_initPtr =
+      _lookup<ffi.NativeFunction<ma_sound_config Function()>>(
+          'ma_sound_config_init');
+  late final _ma_sound_config_init =
+      _ma_sound_config_initPtr.asFunction<ma_sound_config Function()>();
+
+  ma_sound_group_config ma_sound_group_config_init() {
+    return _ma_sound_group_config_init();
+  }
+
+  late final _ma_sound_group_config_initPtr =
+      _lookup<ffi.NativeFunction<ma_sound_group_config Function()>>(
+          'ma_sound_group_config_init');
+  late final _ma_sound_group_config_init = _ma_sound_group_config_initPtr
+      .asFunction<ma_sound_group_config Function()>();
+
+  ma_engine_config ma_engine_config_init() {
+    return _ma_engine_config_init();
+  }
+
+  late final _ma_engine_config_initPtr =
+      _lookup<ffi.NativeFunction<ma_engine_config Function()>>(
+          'ma_engine_config_init');
+  late final _ma_engine_config_init =
+      _ma_engine_config_initPtr.asFunction<ma_engine_config Function()>();
+
+  int ma_engine_init(
+    ffi.Pointer<ma_engine_config> pConfig,
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_init(
+      pConfig,
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_engine_config>,
+              ffi.Pointer<ma_engine>)>>('ma_engine_init');
+  late final _ma_engine_init = _ma_engine_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_engine_config>, ffi.Pointer<ma_engine>)>();
+
+  void ma_engine_uninit(
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_uninit(
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_uninitPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_engine>)>>(
+          'ma_engine_uninit');
+  late final _ma_engine_uninit =
+      _ma_engine_uninitPtr.asFunction<void Function(ffi.Pointer<ma_engine>)>();
+
+  int ma_engine_read_pcm_frames(
+    ffi.Pointer<ma_engine> pEngine,
+    ffi.Pointer<ffi.Void> pFramesOut,
+    int frameCount,
+    ffi.Pointer<ma_uint64> pFramesRead,
+  ) {
+    return _ma_engine_read_pcm_frames(
+      pEngine,
+      pFramesOut,
+      frameCount,
+      pFramesRead,
+    );
+  }
+
+  late final _ma_engine_read_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_engine>, ffi.Pointer<ffi.Void>,
+              ma_uint64, ffi.Pointer<ma_uint64>)>>('ma_engine_read_pcm_frames');
+  late final _ma_engine_read_pcm_frames =
+      _ma_engine_read_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_engine>, ffi.Pointer<ffi.Void>, int,
+              ffi.Pointer<ma_uint64>)>();
+
+  ffi.Pointer<ma_node_graph> ma_engine_get_node_graph(
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_get_node_graph(
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_get_node_graphPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_node_graph> Function(
+              ffi.Pointer<ma_engine>)>>('ma_engine_get_node_graph');
+  late final _ma_engine_get_node_graph =
+      _ma_engine_get_node_graphPtr.asFunction<
+          ffi.Pointer<ma_node_graph> Function(ffi.Pointer<ma_engine>)>();
+
+  ffi.Pointer<ma_resource_manager> ma_engine_get_resource_manager(
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_get_resource_manager(
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_get_resource_managerPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_resource_manager> Function(
+              ffi.Pointer<ma_engine>)>>('ma_engine_get_resource_manager');
+  late final _ma_engine_get_resource_manager =
+      _ma_engine_get_resource_managerPtr.asFunction<
+          ffi.Pointer<ma_resource_manager> Function(ffi.Pointer<ma_engine>)>();
+
+  ffi.Pointer<ma_device> ma_engine_get_device(
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_get_device(
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_get_devicePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_device> Function(
+              ffi.Pointer<ma_engine>)>>('ma_engine_get_device');
+  late final _ma_engine_get_device = _ma_engine_get_devicePtr
+      .asFunction<ffi.Pointer<ma_device> Function(ffi.Pointer<ma_engine>)>();
+
+  ffi.Pointer<ma_log> ma_engine_get_log(
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_get_log(
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_get_logPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_log> Function(
+              ffi.Pointer<ma_engine>)>>('ma_engine_get_log');
+  late final _ma_engine_get_log = _ma_engine_get_logPtr
+      .asFunction<ffi.Pointer<ma_log> Function(ffi.Pointer<ma_engine>)>();
+
+  ffi.Pointer<ma_node> ma_engine_get_endpoint(
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_get_endpoint(
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_get_endpointPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_node> Function(
+              ffi.Pointer<ma_engine>)>>('ma_engine_get_endpoint');
+  late final _ma_engine_get_endpoint = _ma_engine_get_endpointPtr
+      .asFunction<ffi.Pointer<ma_node> Function(ffi.Pointer<ma_engine>)>();
+
+  int ma_engine_get_time(
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_get_time(
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_get_timePtr =
+      _lookup<ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_engine>)>>(
+          'ma_engine_get_time');
+  late final _ma_engine_get_time =
+      _ma_engine_get_timePtr.asFunction<int Function(ffi.Pointer<ma_engine>)>();
+
+  int ma_engine_set_time(
+    ffi.Pointer<ma_engine> pEngine,
+    int globalTime,
+  ) {
+    return _ma_engine_set_time(
+      pEngine,
+      globalTime,
+    );
+  }
+
+  late final _ma_engine_set_timePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>, ma_uint64)>>('ma_engine_set_time');
+  late final _ma_engine_set_time = _ma_engine_set_timePtr
+      .asFunction<int Function(ffi.Pointer<ma_engine>, int)>();
+
+  int ma_engine_get_channels(
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_get_channels(
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_get_channelsPtr =
+      _lookup<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_engine>)>>(
+          'ma_engine_get_channels');
+  late final _ma_engine_get_channels = _ma_engine_get_channelsPtr
+      .asFunction<int Function(ffi.Pointer<ma_engine>)>();
+
+  int ma_engine_get_sample_rate(
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_get_sample_rate(
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_get_sample_ratePtr =
+      _lookup<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_engine>)>>(
+          'ma_engine_get_sample_rate');
+  late final _ma_engine_get_sample_rate = _ma_engine_get_sample_ratePtr
+      .asFunction<int Function(ffi.Pointer<ma_engine>)>();
+
+  int ma_engine_start(
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_start(
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_startPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_engine>)>>(
+          'ma_engine_start');
+  late final _ma_engine_start =
+      _ma_engine_startPtr.asFunction<int Function(ffi.Pointer<ma_engine>)>();
+
+  int ma_engine_stop(
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_stop(
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_stopPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_engine>)>>(
+          'ma_engine_stop');
+  late final _ma_engine_stop =
+      _ma_engine_stopPtr.asFunction<int Function(ffi.Pointer<ma_engine>)>();
+
+  int ma_engine_set_volume(
+    ffi.Pointer<ma_engine> pEngine,
+    double volume,
+  ) {
+    return _ma_engine_set_volume(
+      pEngine,
+      volume,
+    );
+  }
+
+  late final _ma_engine_set_volumePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>, ffi.Float)>>('ma_engine_set_volume');
+  late final _ma_engine_set_volume = _ma_engine_set_volumePtr
+      .asFunction<int Function(ffi.Pointer<ma_engine>, double)>();
+
+  int ma_engine_set_gain_db(
+    ffi.Pointer<ma_engine> pEngine,
+    double gainDB,
+  ) {
+    return _ma_engine_set_gain_db(
+      pEngine,
+      gainDB,
+    );
+  }
+
+  late final _ma_engine_set_gain_dbPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>, ffi.Float)>>('ma_engine_set_gain_db');
+  late final _ma_engine_set_gain_db = _ma_engine_set_gain_dbPtr
+      .asFunction<int Function(ffi.Pointer<ma_engine>, double)>();
+
+  int ma_engine_get_listener_count(
+    ffi.Pointer<ma_engine> pEngine,
+  ) {
+    return _ma_engine_get_listener_count(
+      pEngine,
+    );
+  }
+
+  late final _ma_engine_get_listener_countPtr =
+      _lookup<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_engine>)>>(
+          'ma_engine_get_listener_count');
+  late final _ma_engine_get_listener_count = _ma_engine_get_listener_countPtr
+      .asFunction<int Function(ffi.Pointer<ma_engine>)>();
+
+  int ma_engine_find_closest_listener(
+    ffi.Pointer<ma_engine> pEngine,
+    double absolutePosX,
+    double absolutePosY,
+    double absolutePosZ,
+  ) {
+    return _ma_engine_find_closest_listener(
+      pEngine,
+      absolutePosX,
+      absolutePosY,
+      absolutePosZ,
+    );
+  }
+
+  late final _ma_engine_find_closest_listenerPtr = _lookup<
+      ffi.NativeFunction<
+          ma_uint32 Function(ffi.Pointer<ma_engine>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_engine_find_closest_listener');
+  late final _ma_engine_find_closest_listener =
+      _ma_engine_find_closest_listenerPtr.asFunction<
+          int Function(ffi.Pointer<ma_engine>, double, double, double)>();
+
+  void ma_engine_listener_set_position(
+    ffi.Pointer<ma_engine> pEngine,
+    int listenerIndex,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_engine_listener_set_position(
+      pEngine,
+      listenerIndex,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_engine_listener_set_positionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_engine>, ma_uint32, ffi.Float,
+              ffi.Float, ffi.Float)>>('ma_engine_listener_set_position');
+  late final _ma_engine_listener_set_position =
+      _ma_engine_listener_set_positionPtr.asFunction<
+          void Function(ffi.Pointer<ma_engine>, int, double, double, double)>();
+
+  ma_vec3f ma_engine_listener_get_position(
+    ffi.Pointer<ma_engine> pEngine,
+    int listenerIndex,
+  ) {
+    return _ma_engine_listener_get_position(
+      pEngine,
+      listenerIndex,
+    );
+  }
+
+  late final _ma_engine_listener_get_positionPtr = _lookup<
+      ffi.NativeFunction<
+          ma_vec3f Function(ffi.Pointer<ma_engine>,
+              ma_uint32)>>('ma_engine_listener_get_position');
+  late final _ma_engine_listener_get_position =
+      _ma_engine_listener_get_positionPtr
+          .asFunction<ma_vec3f Function(ffi.Pointer<ma_engine>, int)>();
+
+  void ma_engine_listener_set_direction(
+    ffi.Pointer<ma_engine> pEngine,
+    int listenerIndex,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_engine_listener_set_direction(
+      pEngine,
+      listenerIndex,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_engine_listener_set_directionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_engine>, ma_uint32, ffi.Float,
+              ffi.Float, ffi.Float)>>('ma_engine_listener_set_direction');
+  late final _ma_engine_listener_set_direction =
+      _ma_engine_listener_set_directionPtr.asFunction<
+          void Function(ffi.Pointer<ma_engine>, int, double, double, double)>();
+
+  ma_vec3f ma_engine_listener_get_direction(
+    ffi.Pointer<ma_engine> pEngine,
+    int listenerIndex,
+  ) {
+    return _ma_engine_listener_get_direction(
+      pEngine,
+      listenerIndex,
+    );
+  }
+
+  late final _ma_engine_listener_get_directionPtr = _lookup<
+      ffi.NativeFunction<
+          ma_vec3f Function(ffi.Pointer<ma_engine>,
+              ma_uint32)>>('ma_engine_listener_get_direction');
+  late final _ma_engine_listener_get_direction =
+      _ma_engine_listener_get_directionPtr
+          .asFunction<ma_vec3f Function(ffi.Pointer<ma_engine>, int)>();
+
+  void ma_engine_listener_set_velocity(
+    ffi.Pointer<ma_engine> pEngine,
+    int listenerIndex,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_engine_listener_set_velocity(
+      pEngine,
+      listenerIndex,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_engine_listener_set_velocityPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_engine>, ma_uint32, ffi.Float,
+              ffi.Float, ffi.Float)>>('ma_engine_listener_set_velocity');
+  late final _ma_engine_listener_set_velocity =
+      _ma_engine_listener_set_velocityPtr.asFunction<
+          void Function(ffi.Pointer<ma_engine>, int, double, double, double)>();
+
+  ma_vec3f ma_engine_listener_get_velocity(
+    ffi.Pointer<ma_engine> pEngine,
+    int listenerIndex,
+  ) {
+    return _ma_engine_listener_get_velocity(
+      pEngine,
+      listenerIndex,
+    );
+  }
+
+  late final _ma_engine_listener_get_velocityPtr = _lookup<
+      ffi.NativeFunction<
+          ma_vec3f Function(ffi.Pointer<ma_engine>,
+              ma_uint32)>>('ma_engine_listener_get_velocity');
+  late final _ma_engine_listener_get_velocity =
+      _ma_engine_listener_get_velocityPtr
+          .asFunction<ma_vec3f Function(ffi.Pointer<ma_engine>, int)>();
+
+  void ma_engine_listener_set_cone(
+    ffi.Pointer<ma_engine> pEngine,
+    int listenerIndex,
+    double innerAngleInRadians,
+    double outerAngleInRadians,
+    double outerGain,
+  ) {
+    return _ma_engine_listener_set_cone(
+      pEngine,
+      listenerIndex,
+      innerAngleInRadians,
+      outerAngleInRadians,
+      outerGain,
+    );
+  }
+
+  late final _ma_engine_listener_set_conePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_engine>, ma_uint32, ffi.Float,
+              ffi.Float, ffi.Float)>>('ma_engine_listener_set_cone');
+  late final _ma_engine_listener_set_cone =
+      _ma_engine_listener_set_conePtr.asFunction<
+          void Function(ffi.Pointer<ma_engine>, int, double, double, double)>();
+
+  void ma_engine_listener_get_cone(
+    ffi.Pointer<ma_engine> pEngine,
+    int listenerIndex,
+    ffi.Pointer<ffi.Float> pInnerAngleInRadians,
+    ffi.Pointer<ffi.Float> pOuterAngleInRadians,
+    ffi.Pointer<ffi.Float> pOuterGain,
+  ) {
+    return _ma_engine_listener_get_cone(
+      pEngine,
+      listenerIndex,
+      pInnerAngleInRadians,
+      pOuterAngleInRadians,
+      pOuterGain,
+    );
+  }
+
+  late final _ma_engine_listener_get_conePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_engine>,
+              ma_uint32,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>>('ma_engine_listener_get_cone');
+  late final _ma_engine_listener_get_cone =
+      _ma_engine_listener_get_conePtr.asFunction<
+          void Function(ffi.Pointer<ma_engine>, int, ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>)>();
+
+  void ma_engine_listener_set_world_up(
+    ffi.Pointer<ma_engine> pEngine,
+    int listenerIndex,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_engine_listener_set_world_up(
+      pEngine,
+      listenerIndex,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_engine_listener_set_world_upPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_engine>, ma_uint32, ffi.Float,
+              ffi.Float, ffi.Float)>>('ma_engine_listener_set_world_up');
+  late final _ma_engine_listener_set_world_up =
+      _ma_engine_listener_set_world_upPtr.asFunction<
+          void Function(ffi.Pointer<ma_engine>, int, double, double, double)>();
+
+  ma_vec3f ma_engine_listener_get_world_up(
+    ffi.Pointer<ma_engine> pEngine,
+    int listenerIndex,
+  ) {
+    return _ma_engine_listener_get_world_up(
+      pEngine,
+      listenerIndex,
+    );
+  }
+
+  late final _ma_engine_listener_get_world_upPtr = _lookup<
+      ffi.NativeFunction<
+          ma_vec3f Function(ffi.Pointer<ma_engine>,
+              ma_uint32)>>('ma_engine_listener_get_world_up');
+  late final _ma_engine_listener_get_world_up =
+      _ma_engine_listener_get_world_upPtr
+          .asFunction<ma_vec3f Function(ffi.Pointer<ma_engine>, int)>();
+
+  void ma_engine_listener_set_enabled(
+    ffi.Pointer<ma_engine> pEngine,
+    int listenerIndex,
+    int isEnabled,
+  ) {
+    return _ma_engine_listener_set_enabled(
+      pEngine,
+      listenerIndex,
+      isEnabled,
+    );
+  }
+
+  late final _ma_engine_listener_set_enabledPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_engine>, ma_uint32,
+              ma_bool32)>>('ma_engine_listener_set_enabled');
+  late final _ma_engine_listener_set_enabled =
+      _ma_engine_listener_set_enabledPtr
+          .asFunction<void Function(ffi.Pointer<ma_engine>, int, int)>();
+
+  int ma_engine_listener_is_enabled(
+    ffi.Pointer<ma_engine> pEngine,
+    int listenerIndex,
+  ) {
+    return _ma_engine_listener_is_enabled(
+      pEngine,
+      listenerIndex,
+    );
+  }
+
+  late final _ma_engine_listener_is_enabledPtr = _lookup<
+      ffi.NativeFunction<
+          ma_bool32 Function(ffi.Pointer<ma_engine>,
+              ma_uint32)>>('ma_engine_listener_is_enabled');
+  late final _ma_engine_listener_is_enabled = _ma_engine_listener_is_enabledPtr
+      .asFunction<int Function(ffi.Pointer<ma_engine>, int)>();
+
+  int ma_engine_play_sound_ex(
+    ffi.Pointer<ma_engine> pEngine,
+    ffi.Pointer<ffi.Int8> pFilePath,
+    ffi.Pointer<ma_node> pNode,
+    int nodeInputBusIndex,
+  ) {
+    return _ma_engine_play_sound_ex(
+      pEngine,
+      pFilePath,
+      pNode,
+      nodeInputBusIndex,
+    );
+  }
+
+  late final _ma_engine_play_sound_exPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_engine>, ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ma_node>, ma_uint32)>>('ma_engine_play_sound_ex');
+  late final _ma_engine_play_sound_ex = _ma_engine_play_sound_exPtr.asFunction<
+      int Function(ffi.Pointer<ma_engine>, ffi.Pointer<ffi.Int8>,
+          ffi.Pointer<ma_node>, int)>();
+
+  int ma_engine_play_sound(
+    ffi.Pointer<ma_engine> pEngine,
+    ffi.Pointer<ffi.Int8> pFilePath,
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_engine_play_sound(
+      pEngine,
+      pFilePath,
+      pGroup,
+    );
+  }
+
+  late final _ma_engine_play_soundPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_engine>, ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ma_sound_group>)>>('ma_engine_play_sound');
+  late final _ma_engine_play_sound = _ma_engine_play_soundPtr.asFunction<
+      int Function(ffi.Pointer<ma_engine>, ffi.Pointer<ffi.Int8>,
+          ffi.Pointer<ma_sound_group>)>();
+
+  int ma_sound_init_from_file(
+    ffi.Pointer<ma_engine> pEngine,
+    ffi.Pointer<ffi.Int8> pFilePath,
+    int flags,
+    ffi.Pointer<ma_sound_group> pGroup,
+    ffi.Pointer<ma_fence> pDoneFence,
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_init_from_file(
+      pEngine,
+      pFilePath,
+      flags,
+      pGroup,
+      pDoneFence,
+      pSound,
+    );
+  }
+
+  late final _ma_sound_init_from_filePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<ffi.Int8>,
+              ma_uint32,
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ma_fence>,
+              ffi.Pointer<ma_sound>)>>('ma_sound_init_from_file');
+  late final _ma_sound_init_from_file = _ma_sound_init_from_filePtr.asFunction<
+      int Function(
+          ffi.Pointer<ma_engine>,
+          ffi.Pointer<ffi.Int8>,
+          int,
+          ffi.Pointer<ma_sound_group>,
+          ffi.Pointer<ma_fence>,
+          ffi.Pointer<ma_sound>)>();
+
+  int ma_sound_init_from_file_w(
+    ffi.Pointer<ma_engine> pEngine,
+    ffi.Pointer<wchar_t> pFilePath,
+    int flags,
+    ffi.Pointer<ma_sound_group> pGroup,
+    ffi.Pointer<ma_fence> pDoneFence,
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_init_from_file_w(
+      pEngine,
+      pFilePath,
+      flags,
+      pGroup,
+      pDoneFence,
+      pSound,
+    );
+  }
+
+  late final _ma_sound_init_from_file_wPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<wchar_t>,
+              ma_uint32,
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ma_fence>,
+              ffi.Pointer<ma_sound>)>>('ma_sound_init_from_file_w');
+  late final _ma_sound_init_from_file_w =
+      _ma_sound_init_from_file_wPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<wchar_t>,
+              int,
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ma_fence>,
+              ffi.Pointer<ma_sound>)>();
+
+  int ma_sound_init_copy(
+    ffi.Pointer<ma_engine> pEngine,
+    ffi.Pointer<ma_sound> pExistingSound,
+    int flags,
+    ffi.Pointer<ma_sound_group> pGroup,
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_init_copy(
+      pEngine,
+      pExistingSound,
+      flags,
+      pGroup,
+      pSound,
+    );
+  }
+
+  late final _ma_sound_init_copyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<ma_sound>,
+              ma_uint32,
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ma_sound>)>>('ma_sound_init_copy');
+  late final _ma_sound_init_copy = _ma_sound_init_copyPtr.asFunction<
+      int Function(ffi.Pointer<ma_engine>, ffi.Pointer<ma_sound>, int,
+          ffi.Pointer<ma_sound_group>, ffi.Pointer<ma_sound>)>();
+
+  int ma_sound_init_from_data_source(
+    ffi.Pointer<ma_engine> pEngine,
+    ffi.Pointer<ma_data_source> pDataSource,
+    int flags,
+    ffi.Pointer<ma_sound_group> pGroup,
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_init_from_data_source(
+      pEngine,
+      pDataSource,
+      flags,
+      pGroup,
+      pSound,
+    );
+  }
+
+  late final _ma_sound_init_from_data_sourcePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<ma_data_source>,
+              ma_uint32,
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ma_sound>)>>('ma_sound_init_from_data_source');
+  late final _ma_sound_init_from_data_source =
+      _ma_sound_init_from_data_sourcePtr.asFunction<
+          int Function(ffi.Pointer<ma_engine>, ffi.Pointer<ma_data_source>, int,
+              ffi.Pointer<ma_sound_group>, ffi.Pointer<ma_sound>)>();
+
+  int ma_sound_init_ex(
+    ffi.Pointer<ma_engine> pEngine,
+    ffi.Pointer<ma_sound_config> pConfig,
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_init_ex(
+      pEngine,
+      pConfig,
+      pSound,
+    );
+  }
+
+  late final _ma_sound_init_exPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<ma_sound_config>,
+              ffi.Pointer<ma_sound>)>>('ma_sound_init_ex');
+  late final _ma_sound_init_ex = _ma_sound_init_exPtr.asFunction<
+      int Function(ffi.Pointer<ma_engine>, ffi.Pointer<ma_sound_config>,
+          ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_uninit(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_uninit(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_uninitPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_uninit');
+  late final _ma_sound_uninit =
+      _ma_sound_uninitPtr.asFunction<void Function(ffi.Pointer<ma_sound>)>();
+
+  ffi.Pointer<ma_engine> ma_sound_get_engine(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_engine(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_enginePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_engine> Function(
+              ffi.Pointer<ma_sound>)>>('ma_sound_get_engine');
+  late final _ma_sound_get_engine = _ma_sound_get_enginePtr
+      .asFunction<ffi.Pointer<ma_engine> Function(ffi.Pointer<ma_sound>)>();
+
+  ffi.Pointer<ma_data_source> ma_sound_get_data_source(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_data_source(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_data_sourcePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_data_source> Function(
+              ffi.Pointer<ma_sound>)>>('ma_sound_get_data_source');
+  late final _ma_sound_get_data_source =
+      _ma_sound_get_data_sourcePtr.asFunction<
+          ffi.Pointer<ma_data_source> Function(ffi.Pointer<ma_sound>)>();
+
+  int ma_sound_start(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_start(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_startPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_start');
+  late final _ma_sound_start =
+      _ma_sound_startPtr.asFunction<int Function(ffi.Pointer<ma_sound>)>();
+
+  int ma_sound_stop(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_stop(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_stopPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_stop');
+  late final _ma_sound_stop =
+      _ma_sound_stopPtr.asFunction<int Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_volume(
+    ffi.Pointer<ma_sound> pSound,
+    double volume,
+  ) {
+    return _ma_sound_set_volume(
+      pSound,
+      volume,
+    );
+  }
+
+  late final _ma_sound_set_volumePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>, ffi.Float)>>('ma_sound_set_volume');
+  late final _ma_sound_set_volume = _ma_sound_set_volumePtr
+      .asFunction<void Function(ffi.Pointer<ma_sound>, double)>();
+
+  double ma_sound_get_volume(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_volume(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_volumePtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_volume');
+  late final _ma_sound_get_volume = _ma_sound_get_volumePtr
+      .asFunction<double Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_pan(
+    ffi.Pointer<ma_sound> pSound,
+    double pan,
+  ) {
+    return _ma_sound_set_pan(
+      pSound,
+      pan,
+    );
+  }
+
+  late final _ma_sound_set_panPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>, ffi.Float)>>('ma_sound_set_pan');
+  late final _ma_sound_set_pan = _ma_sound_set_panPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound>, double)>();
+
+  double ma_sound_get_pan(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_pan(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_panPtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_pan');
+  late final _ma_sound_get_pan =
+      _ma_sound_get_panPtr.asFunction<double Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_pan_mode(
+    ffi.Pointer<ma_sound> pSound,
+    int panMode,
+  ) {
+    return _ma_sound_set_pan_mode(
+      pSound,
+      panMode,
+    );
+  }
+
+  late final _ma_sound_set_pan_modePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>, ffi.Int32)>>('ma_sound_set_pan_mode');
+  late final _ma_sound_set_pan_mode = _ma_sound_set_pan_modePtr
+      .asFunction<void Function(ffi.Pointer<ma_sound>, int)>();
+
+  int ma_sound_get_pan_mode(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_pan_mode(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_pan_modePtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_pan_mode');
+  late final _ma_sound_get_pan_mode = _ma_sound_get_pan_modePtr
+      .asFunction<int Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_pitch(
+    ffi.Pointer<ma_sound> pSound,
+    double pitch,
+  ) {
+    return _ma_sound_set_pitch(
+      pSound,
+      pitch,
+    );
+  }
+
+  late final _ma_sound_set_pitchPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>, ffi.Float)>>('ma_sound_set_pitch');
+  late final _ma_sound_set_pitch = _ma_sound_set_pitchPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound>, double)>();
+
+  double ma_sound_get_pitch(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_pitch(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_pitchPtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_pitch');
+  late final _ma_sound_get_pitch = _ma_sound_get_pitchPtr
+      .asFunction<double Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_spatialization_enabled(
+    ffi.Pointer<ma_sound> pSound,
+    int enabled,
+  ) {
+    return _ma_sound_set_spatialization_enabled(
+      pSound,
+      enabled,
+    );
+  }
+
+  late final _ma_sound_set_spatialization_enabledPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>,
+              ma_bool32)>>('ma_sound_set_spatialization_enabled');
+  late final _ma_sound_set_spatialization_enabled =
+      _ma_sound_set_spatialization_enabledPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound>, int)>();
+
+  int ma_sound_is_spatialization_enabled(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_is_spatialization_enabled(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_is_spatialization_enabledPtr =
+      _lookup<ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_is_spatialization_enabled');
+  late final _ma_sound_is_spatialization_enabled =
+      _ma_sound_is_spatialization_enabledPtr
+          .asFunction<int Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_pinned_listener_index(
+    ffi.Pointer<ma_sound> pSound,
+    int listenerIndex,
+  ) {
+    return _ma_sound_set_pinned_listener_index(
+      pSound,
+      listenerIndex,
+    );
+  }
+
+  late final _ma_sound_set_pinned_listener_indexPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>,
+              ma_uint32)>>('ma_sound_set_pinned_listener_index');
+  late final _ma_sound_set_pinned_listener_index =
+      _ma_sound_set_pinned_listener_indexPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound>, int)>();
+
+  int ma_sound_get_pinned_listener_index(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_pinned_listener_index(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_pinned_listener_indexPtr =
+      _lookup<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_pinned_listener_index');
+  late final _ma_sound_get_pinned_listener_index =
+      _ma_sound_get_pinned_listener_indexPtr
+          .asFunction<int Function(ffi.Pointer<ma_sound>)>();
+
+  int ma_sound_get_listener_index(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_listener_index(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_listener_indexPtr =
+      _lookup<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_listener_index');
+  late final _ma_sound_get_listener_index = _ma_sound_get_listener_indexPtr
+      .asFunction<int Function(ffi.Pointer<ma_sound>)>();
+
+  ma_vec3f ma_sound_get_direction_to_listener(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_direction_to_listener(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_direction_to_listenerPtr =
+      _lookup<ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_direction_to_listener');
+  late final _ma_sound_get_direction_to_listener =
+      _ma_sound_get_direction_to_listenerPtr
+          .asFunction<ma_vec3f Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_position(
+    ffi.Pointer<ma_sound> pSound,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_sound_set_position(
+      pSound,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_sound_set_positionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_sound_set_position');
+  late final _ma_sound_set_position = _ma_sound_set_positionPtr.asFunction<
+      void Function(ffi.Pointer<ma_sound>, double, double, double)>();
+
+  ma_vec3f ma_sound_get_position(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_position(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_positionPtr =
+      _lookup<ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_position');
+  late final _ma_sound_get_position = _ma_sound_get_positionPtr
+      .asFunction<ma_vec3f Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_direction(
+    ffi.Pointer<ma_sound> pSound,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_sound_set_direction(
+      pSound,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_sound_set_directionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_sound_set_direction');
+  late final _ma_sound_set_direction = _ma_sound_set_directionPtr.asFunction<
+      void Function(ffi.Pointer<ma_sound>, double, double, double)>();
+
+  ma_vec3f ma_sound_get_direction(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_direction(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_directionPtr =
+      _lookup<ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_direction');
+  late final _ma_sound_get_direction = _ma_sound_get_directionPtr
+      .asFunction<ma_vec3f Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_velocity(
+    ffi.Pointer<ma_sound> pSound,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_sound_set_velocity(
+      pSound,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_sound_set_velocityPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_sound_set_velocity');
+  late final _ma_sound_set_velocity = _ma_sound_set_velocityPtr.asFunction<
+      void Function(ffi.Pointer<ma_sound>, double, double, double)>();
+
+  ma_vec3f ma_sound_get_velocity(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_velocity(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_velocityPtr =
+      _lookup<ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_velocity');
+  late final _ma_sound_get_velocity = _ma_sound_get_velocityPtr
+      .asFunction<ma_vec3f Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_attenuation_model(
+    ffi.Pointer<ma_sound> pSound,
+    int attenuationModel,
+  ) {
+    return _ma_sound_set_attenuation_model(
+      pSound,
+      attenuationModel,
+    );
+  }
+
+  late final _ma_sound_set_attenuation_modelPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>,
+              ffi.Int32)>>('ma_sound_set_attenuation_model');
+  late final _ma_sound_set_attenuation_model =
+      _ma_sound_set_attenuation_modelPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound>, int)>();
+
+  int ma_sound_get_attenuation_model(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_attenuation_model(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_attenuation_modelPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_attenuation_model');
+  late final _ma_sound_get_attenuation_model =
+      _ma_sound_get_attenuation_modelPtr
+          .asFunction<int Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_positioning(
+    ffi.Pointer<ma_sound> pSound,
+    int positioning,
+  ) {
+    return _ma_sound_set_positioning(
+      pSound,
+      positioning,
+    );
+  }
+
+  late final _ma_sound_set_positioningPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>, ffi.Int32)>>('ma_sound_set_positioning');
+  late final _ma_sound_set_positioning = _ma_sound_set_positioningPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound>, int)>();
+
+  int ma_sound_get_positioning(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_positioning(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_positioningPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_positioning');
+  late final _ma_sound_get_positioning = _ma_sound_get_positioningPtr
+      .asFunction<int Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_rolloff(
+    ffi.Pointer<ma_sound> pSound,
+    double rolloff,
+  ) {
+    return _ma_sound_set_rolloff(
+      pSound,
+      rolloff,
+    );
+  }
+
+  late final _ma_sound_set_rolloffPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>, ffi.Float)>>('ma_sound_set_rolloff');
+  late final _ma_sound_set_rolloff = _ma_sound_set_rolloffPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound>, double)>();
+
+  double ma_sound_get_rolloff(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_rolloff(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_rolloffPtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_rolloff');
+  late final _ma_sound_get_rolloff = _ma_sound_get_rolloffPtr
+      .asFunction<double Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_min_gain(
+    ffi.Pointer<ma_sound> pSound,
+    double minGain,
+  ) {
+    return _ma_sound_set_min_gain(
+      pSound,
+      minGain,
+    );
+  }
+
+  late final _ma_sound_set_min_gainPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>, ffi.Float)>>('ma_sound_set_min_gain');
+  late final _ma_sound_set_min_gain = _ma_sound_set_min_gainPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound>, double)>();
+
+  double ma_sound_get_min_gain(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_min_gain(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_min_gainPtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_min_gain');
+  late final _ma_sound_get_min_gain = _ma_sound_get_min_gainPtr
+      .asFunction<double Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_max_gain(
+    ffi.Pointer<ma_sound> pSound,
+    double maxGain,
+  ) {
+    return _ma_sound_set_max_gain(
+      pSound,
+      maxGain,
+    );
+  }
+
+  late final _ma_sound_set_max_gainPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>, ffi.Float)>>('ma_sound_set_max_gain');
+  late final _ma_sound_set_max_gain = _ma_sound_set_max_gainPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound>, double)>();
+
+  double ma_sound_get_max_gain(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_max_gain(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_max_gainPtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_max_gain');
+  late final _ma_sound_get_max_gain = _ma_sound_get_max_gainPtr
+      .asFunction<double Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_min_distance(
+    ffi.Pointer<ma_sound> pSound,
+    double minDistance,
+  ) {
+    return _ma_sound_set_min_distance(
+      pSound,
+      minDistance,
+    );
+  }
+
+  late final _ma_sound_set_min_distancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>, ffi.Float)>>('ma_sound_set_min_distance');
+  late final _ma_sound_set_min_distance = _ma_sound_set_min_distancePtr
+      .asFunction<void Function(ffi.Pointer<ma_sound>, double)>();
+
+  double ma_sound_get_min_distance(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_min_distance(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_min_distancePtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_min_distance');
+  late final _ma_sound_get_min_distance = _ma_sound_get_min_distancePtr
+      .asFunction<double Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_max_distance(
+    ffi.Pointer<ma_sound> pSound,
+    double maxDistance,
+  ) {
+    return _ma_sound_set_max_distance(
+      pSound,
+      maxDistance,
+    );
+  }
+
+  late final _ma_sound_set_max_distancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>, ffi.Float)>>('ma_sound_set_max_distance');
+  late final _ma_sound_set_max_distance = _ma_sound_set_max_distancePtr
+      .asFunction<void Function(ffi.Pointer<ma_sound>, double)>();
+
+  double ma_sound_get_max_distance(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_max_distance(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_max_distancePtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_max_distance');
+  late final _ma_sound_get_max_distance = _ma_sound_get_max_distancePtr
+      .asFunction<double Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_cone(
+    ffi.Pointer<ma_sound> pSound,
+    double innerAngleInRadians,
+    double outerAngleInRadians,
+    double outerGain,
+  ) {
+    return _ma_sound_set_cone(
+      pSound,
+      innerAngleInRadians,
+      outerAngleInRadians,
+      outerGain,
+    );
+  }
+
+  late final _ma_sound_set_conePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_sound_set_cone');
+  late final _ma_sound_set_cone = _ma_sound_set_conePtr.asFunction<
+      void Function(ffi.Pointer<ma_sound>, double, double, double)>();
+
+  void ma_sound_get_cone(
+    ffi.Pointer<ma_sound> pSound,
+    ffi.Pointer<ffi.Float> pInnerAngleInRadians,
+    ffi.Pointer<ffi.Float> pOuterAngleInRadians,
+    ffi.Pointer<ffi.Float> pOuterGain,
+  ) {
+    return _ma_sound_get_cone(
+      pSound,
+      pInnerAngleInRadians,
+      pOuterAngleInRadians,
+      pOuterGain,
+    );
+  }
+
+  late final _ma_sound_get_conePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>>('ma_sound_get_cone');
+  late final _ma_sound_get_cone = _ma_sound_get_conePtr.asFunction<
+      void Function(ffi.Pointer<ma_sound>, ffi.Pointer<ffi.Float>,
+          ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>)>();
+
+  void ma_sound_set_doppler_factor(
+    ffi.Pointer<ma_sound> pSound,
+    double dopplerFactor,
+  ) {
+    return _ma_sound_set_doppler_factor(
+      pSound,
+      dopplerFactor,
+    );
+  }
+
+  late final _ma_sound_set_doppler_factorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>,
+              ffi.Float)>>('ma_sound_set_doppler_factor');
+  late final _ma_sound_set_doppler_factor = _ma_sound_set_doppler_factorPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound>, double)>();
+
+  double ma_sound_get_doppler_factor(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_doppler_factor(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_doppler_factorPtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_doppler_factor');
+  late final _ma_sound_get_doppler_factor = _ma_sound_get_doppler_factorPtr
+      .asFunction<double Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_directional_attenuation_factor(
+    ffi.Pointer<ma_sound> pSound,
+    double directionalAttenuationFactor,
+  ) {
+    return _ma_sound_set_directional_attenuation_factor(
+      pSound,
+      directionalAttenuationFactor,
+    );
+  }
+
+  late final _ma_sound_set_directional_attenuation_factorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>,
+              ffi.Float)>>('ma_sound_set_directional_attenuation_factor');
+  late final _ma_sound_set_directional_attenuation_factor =
+      _ma_sound_set_directional_attenuation_factorPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound>, double)>();
+
+  double ma_sound_get_directional_attenuation_factor(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_directional_attenuation_factor(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_directional_attenuation_factorPtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_directional_attenuation_factor');
+  late final _ma_sound_get_directional_attenuation_factor =
+      _ma_sound_get_directional_attenuation_factorPtr
+          .asFunction<double Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_fade_in_pcm_frames(
+    ffi.Pointer<ma_sound> pSound,
+    double volumeBeg,
+    double volumeEnd,
+    int fadeLengthInFrames,
+  ) {
+    return _ma_sound_set_fade_in_pcm_frames(
+      pSound,
+      volumeBeg,
+      volumeEnd,
+      fadeLengthInFrames,
+    );
+  }
+
+  late final _ma_sound_set_fade_in_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float, ffi.Float,
+              ma_uint64)>>('ma_sound_set_fade_in_pcm_frames');
+  late final _ma_sound_set_fade_in_pcm_frames =
+      _ma_sound_set_fade_in_pcm_framesPtr.asFunction<
+          void Function(ffi.Pointer<ma_sound>, double, double, int)>();
+
+  void ma_sound_set_fade_in_milliseconds(
+    ffi.Pointer<ma_sound> pSound,
+    double volumeBeg,
+    double volumeEnd,
+    int fadeLengthInMilliseconds,
+  ) {
+    return _ma_sound_set_fade_in_milliseconds(
+      pSound,
+      volumeBeg,
+      volumeEnd,
+      fadeLengthInMilliseconds,
+    );
+  }
+
+  late final _ma_sound_set_fade_in_millisecondsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float, ffi.Float,
+              ma_uint64)>>('ma_sound_set_fade_in_milliseconds');
+  late final _ma_sound_set_fade_in_milliseconds =
+      _ma_sound_set_fade_in_millisecondsPtr.asFunction<
+          void Function(ffi.Pointer<ma_sound>, double, double, int)>();
+
+  double ma_sound_get_current_fade_volume(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_current_fade_volume(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_current_fade_volumePtr =
+      _lookup<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_current_fade_volume');
+  late final _ma_sound_get_current_fade_volume =
+      _ma_sound_get_current_fade_volumePtr
+          .asFunction<double Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_start_time_in_pcm_frames(
+    ffi.Pointer<ma_sound> pSound,
+    int absoluteGlobalTimeInFrames,
+  ) {
+    return _ma_sound_set_start_time_in_pcm_frames(
+      pSound,
+      absoluteGlobalTimeInFrames,
+    );
+  }
+
+  late final _ma_sound_set_start_time_in_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>,
+              ma_uint64)>>('ma_sound_set_start_time_in_pcm_frames');
+  late final _ma_sound_set_start_time_in_pcm_frames =
+      _ma_sound_set_start_time_in_pcm_framesPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound>, int)>();
+
+  void ma_sound_set_start_time_in_milliseconds(
+    ffi.Pointer<ma_sound> pSound,
+    int absoluteGlobalTimeInMilliseconds,
+  ) {
+    return _ma_sound_set_start_time_in_milliseconds(
+      pSound,
+      absoluteGlobalTimeInMilliseconds,
+    );
+  }
+
+  late final _ma_sound_set_start_time_in_millisecondsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>,
+              ma_uint64)>>('ma_sound_set_start_time_in_milliseconds');
+  late final _ma_sound_set_start_time_in_milliseconds =
+      _ma_sound_set_start_time_in_millisecondsPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound>, int)>();
+
+  void ma_sound_set_stop_time_in_pcm_frames(
+    ffi.Pointer<ma_sound> pSound,
+    int absoluteGlobalTimeInFrames,
+  ) {
+    return _ma_sound_set_stop_time_in_pcm_frames(
+      pSound,
+      absoluteGlobalTimeInFrames,
+    );
+  }
+
+  late final _ma_sound_set_stop_time_in_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>,
+              ma_uint64)>>('ma_sound_set_stop_time_in_pcm_frames');
+  late final _ma_sound_set_stop_time_in_pcm_frames =
+      _ma_sound_set_stop_time_in_pcm_framesPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound>, int)>();
+
+  void ma_sound_set_stop_time_in_milliseconds(
+    ffi.Pointer<ma_sound> pSound,
+    int absoluteGlobalTimeInMilliseconds,
+  ) {
+    return _ma_sound_set_stop_time_in_milliseconds(
+      pSound,
+      absoluteGlobalTimeInMilliseconds,
+    );
+  }
+
+  late final _ma_sound_set_stop_time_in_millisecondsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound>,
+              ma_uint64)>>('ma_sound_set_stop_time_in_milliseconds');
+  late final _ma_sound_set_stop_time_in_milliseconds =
+      _ma_sound_set_stop_time_in_millisecondsPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound>, int)>();
+
+  int ma_sound_is_playing(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_is_playing(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_is_playingPtr =
+      _lookup<ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_is_playing');
+  late final _ma_sound_is_playing =
+      _ma_sound_is_playingPtr.asFunction<int Function(ffi.Pointer<ma_sound>)>();
+
+  int ma_sound_get_time_in_pcm_frames(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_get_time_in_pcm_frames(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_get_time_in_pcm_framesPtr =
+      _lookup<ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_get_time_in_pcm_frames');
+  late final _ma_sound_get_time_in_pcm_frames =
+      _ma_sound_get_time_in_pcm_framesPtr
+          .asFunction<int Function(ffi.Pointer<ma_sound>)>();
+
+  void ma_sound_set_looping(
+    ffi.Pointer<ma_sound> pSound,
+    int isLooping,
+  ) {
+    return _ma_sound_set_looping(
+      pSound,
+      isLooping,
+    );
+  }
+
+  late final _ma_sound_set_loopingPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>, ma_bool32)>>('ma_sound_set_looping');
+  late final _ma_sound_set_looping = _ma_sound_set_loopingPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound>, int)>();
+
+  int ma_sound_is_looping(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_is_looping(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_is_loopingPtr =
+      _lookup<ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_is_looping');
+  late final _ma_sound_is_looping =
+      _ma_sound_is_loopingPtr.asFunction<int Function(ffi.Pointer<ma_sound>)>();
+
+  int ma_sound_at_end(
+    ffi.Pointer<ma_sound> pSound,
+  ) {
+    return _ma_sound_at_end(
+      pSound,
+    );
+  }
+
+  late final _ma_sound_at_endPtr =
+      _lookup<ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_sound>)>>(
+          'ma_sound_at_end');
+  late final _ma_sound_at_end =
+      _ma_sound_at_endPtr.asFunction<int Function(ffi.Pointer<ma_sound>)>();
+
+  int ma_sound_seek_to_pcm_frame(
+    ffi.Pointer<ma_sound> pSound,
+    int frameIndex,
+  ) {
+    return _ma_sound_seek_to_pcm_frame(
+      pSound,
+      frameIndex,
+    );
+  }
+
+  late final _ma_sound_seek_to_pcm_framePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_sound>, ma_uint64)>>('ma_sound_seek_to_pcm_frame');
+  late final _ma_sound_seek_to_pcm_frame = _ma_sound_seek_to_pcm_framePtr
+      .asFunction<int Function(ffi.Pointer<ma_sound>, int)>();
+
+  int ma_sound_get_data_format(
+    ffi.Pointer<ma_sound> pSound,
+    ffi.Pointer<ffi.Int32> pFormat,
+    ffi.Pointer<ma_uint32> pChannels,
+    ffi.Pointer<ma_uint32> pSampleRate,
+    ffi.Pointer<ma_channel> pChannelMap,
+    int channelMapCap,
+  ) {
+    return _ma_sound_get_data_format(
+      pSound,
+      pFormat,
+      pChannels,
+      pSampleRate,
+      pChannelMap,
+      channelMapCap,
+    );
+  }
+
+  late final _ma_sound_get_data_formatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_sound>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>>('ma_sound_get_data_format');
+  late final _ma_sound_get_data_format =
+      _ma_sound_get_data_formatPtr.asFunction<
+          int Function(
+              ffi.Pointer<ma_sound>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              int)>();
+
+  int ma_sound_get_cursor_in_pcm_frames(
+    ffi.Pointer<ma_sound> pSound,
+    ffi.Pointer<ma_uint64> pCursor,
+  ) {
+    return _ma_sound_get_cursor_in_pcm_frames(
+      pSound,
+      pCursor,
+    );
+  }
+
+  late final _ma_sound_get_cursor_in_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_sound>,
+              ffi.Pointer<ma_uint64>)>>('ma_sound_get_cursor_in_pcm_frames');
+  late final _ma_sound_get_cursor_in_pcm_frames =
+      _ma_sound_get_cursor_in_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_sound>, ffi.Pointer<ma_uint64>)>();
+
+  int ma_sound_get_length_in_pcm_frames(
+    ffi.Pointer<ma_sound> pSound,
+    ffi.Pointer<ma_uint64> pLength,
+  ) {
+    return _ma_sound_get_length_in_pcm_frames(
+      pSound,
+      pLength,
+    );
+  }
+
+  late final _ma_sound_get_length_in_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_sound>,
+              ffi.Pointer<ma_uint64>)>>('ma_sound_get_length_in_pcm_frames');
+  late final _ma_sound_get_length_in_pcm_frames =
+      _ma_sound_get_length_in_pcm_framesPtr.asFunction<
+          int Function(ffi.Pointer<ma_sound>, ffi.Pointer<ma_uint64>)>();
+
+  int ma_sound_get_cursor_in_seconds(
+    ffi.Pointer<ma_sound> pSound,
+    ffi.Pointer<ffi.Float> pCursor,
+  ) {
+    return _ma_sound_get_cursor_in_seconds(
+      pSound,
+      pCursor,
+    );
+  }
+
+  late final _ma_sound_get_cursor_in_secondsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_sound>,
+              ffi.Pointer<ffi.Float>)>>('ma_sound_get_cursor_in_seconds');
+  late final _ma_sound_get_cursor_in_seconds =
+      _ma_sound_get_cursor_in_secondsPtr.asFunction<
+          int Function(ffi.Pointer<ma_sound>, ffi.Pointer<ffi.Float>)>();
+
+  int ma_sound_get_length_in_seconds(
+    ffi.Pointer<ma_sound> pSound,
+    ffi.Pointer<ffi.Float> pLength,
+  ) {
+    return _ma_sound_get_length_in_seconds(
+      pSound,
+      pLength,
+    );
+  }
+
+  late final _ma_sound_get_length_in_secondsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_sound>,
+              ffi.Pointer<ffi.Float>)>>('ma_sound_get_length_in_seconds');
+  late final _ma_sound_get_length_in_seconds =
+      _ma_sound_get_length_in_secondsPtr.asFunction<
+          int Function(ffi.Pointer<ma_sound>, ffi.Pointer<ffi.Float>)>();
+
+  int ma_sound_group_init(
+    ffi.Pointer<ma_engine> pEngine,
+    int flags,
+    ffi.Pointer<ma_sound_group> pParentGroup,
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_init(
+      pEngine,
+      flags,
+      pParentGroup,
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ma_uint32,
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ma_sound_group>)>>('ma_sound_group_init');
+  late final _ma_sound_group_init = _ma_sound_group_initPtr.asFunction<
+      int Function(ffi.Pointer<ma_engine>, int, ffi.Pointer<ma_sound_group>,
+          ffi.Pointer<ma_sound_group>)>();
+
+  int ma_sound_group_init_ex(
+    ffi.Pointer<ma_engine> pEngine,
+    ffi.Pointer<ma_sound_group_config> pConfig,
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_init_ex(
+      pEngine,
+      pConfig,
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_init_exPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<ma_sound_group_config>,
+              ffi.Pointer<ma_sound_group>)>>('ma_sound_group_init_ex');
+  late final _ma_sound_group_init_ex = _ma_sound_group_init_exPtr.asFunction<
+      int Function(ffi.Pointer<ma_engine>, ffi.Pointer<ma_sound_group_config>,
+          ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_uninit(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_uninit(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_uninitPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_uninit');
+  late final _ma_sound_group_uninit = _ma_sound_group_uninitPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound_group>)>();
+
+  ffi.Pointer<ma_engine> ma_sound_group_get_engine(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_engine(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_enginePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_engine> Function(
+              ffi.Pointer<ma_sound_group>)>>('ma_sound_group_get_engine');
+  late final _ma_sound_group_get_engine =
+      _ma_sound_group_get_enginePtr.asFunction<
+          ffi.Pointer<ma_engine> Function(ffi.Pointer<ma_sound_group>)>();
+
+  int ma_sound_group_start(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_start(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_startPtr = _lookup<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_start');
+  late final _ma_sound_group_start = _ma_sound_group_startPtr
+      .asFunction<int Function(ffi.Pointer<ma_sound_group>)>();
+
+  int ma_sound_group_stop(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_stop(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_stopPtr = _lookup<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_stop');
+  late final _ma_sound_group_stop = _ma_sound_group_stopPtr
+      .asFunction<int Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_volume(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double volume,
+  ) {
+    return _ma_sound_group_set_volume(
+      pGroup,
+      volume,
+    );
+  }
+
+  late final _ma_sound_group_set_volumePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Float)>>('ma_sound_group_set_volume');
+  late final _ma_sound_group_set_volume = _ma_sound_group_set_volumePtr
+      .asFunction<void Function(ffi.Pointer<ma_sound_group>, double)>();
+
+  double ma_sound_group_get_volume(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_volume(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_volumePtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_volume');
+  late final _ma_sound_group_get_volume = _ma_sound_group_get_volumePtr
+      .asFunction<double Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_pan(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double pan,
+  ) {
+    return _ma_sound_group_set_pan(
+      pGroup,
+      pan,
+    );
+  }
+
+  late final _ma_sound_group_set_panPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Float)>>('ma_sound_group_set_pan');
+  late final _ma_sound_group_set_pan = _ma_sound_group_set_panPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound_group>, double)>();
+
+  double ma_sound_group_get_pan(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_pan(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_panPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_pan');
+  late final _ma_sound_group_get_pan = _ma_sound_group_get_panPtr
+      .asFunction<double Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_pan_mode(
+    ffi.Pointer<ma_sound_group> pGroup,
+    int panMode,
+  ) {
+    return _ma_sound_group_set_pan_mode(
+      pGroup,
+      panMode,
+    );
+  }
+
+  late final _ma_sound_group_set_pan_modePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Int32)>>('ma_sound_group_set_pan_mode');
+  late final _ma_sound_group_set_pan_mode = _ma_sound_group_set_pan_modePtr
+      .asFunction<void Function(ffi.Pointer<ma_sound_group>, int)>();
+
+  int ma_sound_group_get_pan_mode(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_pan_mode(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_pan_modePtr = _lookup<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_pan_mode');
+  late final _ma_sound_group_get_pan_mode = _ma_sound_group_get_pan_modePtr
+      .asFunction<int Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_pitch(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double pitch,
+  ) {
+    return _ma_sound_group_set_pitch(
+      pGroup,
+      pitch,
+    );
+  }
+
+  late final _ma_sound_group_set_pitchPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Float)>>('ma_sound_group_set_pitch');
+  late final _ma_sound_group_set_pitch = _ma_sound_group_set_pitchPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound_group>, double)>();
+
+  double ma_sound_group_get_pitch(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_pitch(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_pitchPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_pitch');
+  late final _ma_sound_group_get_pitch = _ma_sound_group_get_pitchPtr
+      .asFunction<double Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_spatialization_enabled(
+    ffi.Pointer<ma_sound_group> pGroup,
+    int enabled,
+  ) {
+    return _ma_sound_group_set_spatialization_enabled(
+      pGroup,
+      enabled,
+    );
+  }
+
+  late final _ma_sound_group_set_spatialization_enabledPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ma_bool32)>>('ma_sound_group_set_spatialization_enabled');
+  late final _ma_sound_group_set_spatialization_enabled =
+      _ma_sound_group_set_spatialization_enabledPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound_group>, int)>();
+
+  int ma_sound_group_is_spatialization_enabled(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_is_spatialization_enabled(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_is_spatialization_enabledPtr = _lookup<
+          ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_is_spatialization_enabled');
+  late final _ma_sound_group_is_spatialization_enabled =
+      _ma_sound_group_is_spatialization_enabledPtr
+          .asFunction<int Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_pinned_listener_index(
+    ffi.Pointer<ma_sound_group> pGroup,
+    int listenerIndex,
+  ) {
+    return _ma_sound_group_set_pinned_listener_index(
+      pGroup,
+      listenerIndex,
+    );
+  }
+
+  late final _ma_sound_group_set_pinned_listener_indexPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ma_uint32)>>('ma_sound_group_set_pinned_listener_index');
+  late final _ma_sound_group_set_pinned_listener_index =
+      _ma_sound_group_set_pinned_listener_indexPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound_group>, int)>();
+
+  int ma_sound_group_get_pinned_listener_index(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_pinned_listener_index(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_pinned_listener_indexPtr = _lookup<
+          ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_pinned_listener_index');
+  late final _ma_sound_group_get_pinned_listener_index =
+      _ma_sound_group_get_pinned_listener_indexPtr
+          .asFunction<int Function(ffi.Pointer<ma_sound_group>)>();
+
+  int ma_sound_group_get_listener_index(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_listener_index(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_listener_indexPtr = _lookup<
+          ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_listener_index');
+  late final _ma_sound_group_get_listener_index =
+      _ma_sound_group_get_listener_indexPtr
+          .asFunction<int Function(ffi.Pointer<ma_sound_group>)>();
+
+  ma_vec3f ma_sound_group_get_direction_to_listener(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_direction_to_listener(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_direction_to_listenerPtr = _lookup<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_direction_to_listener');
+  late final _ma_sound_group_get_direction_to_listener =
+      _ma_sound_group_get_direction_to_listenerPtr
+          .asFunction<ma_vec3f Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_position(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_sound_group_set_position(
+      pGroup,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_sound_group_set_positionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_sound_group_set_position');
+  late final _ma_sound_group_set_position =
+      _ma_sound_group_set_positionPtr.asFunction<
+          void Function(ffi.Pointer<ma_sound_group>, double, double, double)>();
+
+  ma_vec3f ma_sound_group_get_position(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_position(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_positionPtr = _lookup<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_position');
+  late final _ma_sound_group_get_position = _ma_sound_group_get_positionPtr
+      .asFunction<ma_vec3f Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_direction(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_sound_group_set_direction(
+      pGroup,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_sound_group_set_directionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_sound_group_set_direction');
+  late final _ma_sound_group_set_direction =
+      _ma_sound_group_set_directionPtr.asFunction<
+          void Function(ffi.Pointer<ma_sound_group>, double, double, double)>();
+
+  ma_vec3f ma_sound_group_get_direction(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_direction(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_directionPtr = _lookup<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_direction');
+  late final _ma_sound_group_get_direction = _ma_sound_group_get_directionPtr
+      .asFunction<ma_vec3f Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_velocity(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double x,
+    double y,
+    double z,
+  ) {
+    return _ma_sound_group_set_velocity(
+      pGroup,
+      x,
+      y,
+      z,
+    );
+  }
+
+  late final _ma_sound_group_set_velocityPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_sound_group_set_velocity');
+  late final _ma_sound_group_set_velocity =
+      _ma_sound_group_set_velocityPtr.asFunction<
+          void Function(ffi.Pointer<ma_sound_group>, double, double, double)>();
+
+  ma_vec3f ma_sound_group_get_velocity(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_velocity(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_velocityPtr = _lookup<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_velocity');
+  late final _ma_sound_group_get_velocity = _ma_sound_group_get_velocityPtr
+      .asFunction<ma_vec3f Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_attenuation_model(
+    ffi.Pointer<ma_sound_group> pGroup,
+    int attenuationModel,
+  ) {
+    return _ma_sound_group_set_attenuation_model(
+      pGroup,
+      attenuationModel,
+    );
+  }
+
+  late final _ma_sound_group_set_attenuation_modelPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Int32)>>('ma_sound_group_set_attenuation_model');
+  late final _ma_sound_group_set_attenuation_model =
+      _ma_sound_group_set_attenuation_modelPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound_group>, int)>();
+
+  int ma_sound_group_get_attenuation_model(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_attenuation_model(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_attenuation_modelPtr = _lookup<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_attenuation_model');
+  late final _ma_sound_group_get_attenuation_model =
+      _ma_sound_group_get_attenuation_modelPtr
+          .asFunction<int Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_positioning(
+    ffi.Pointer<ma_sound_group> pGroup,
+    int positioning,
+  ) {
+    return _ma_sound_group_set_positioning(
+      pGroup,
+      positioning,
+    );
+  }
+
+  late final _ma_sound_group_set_positioningPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Int32)>>('ma_sound_group_set_positioning');
+  late final _ma_sound_group_set_positioning =
+      _ma_sound_group_set_positioningPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound_group>, int)>();
+
+  int ma_sound_group_get_positioning(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_positioning(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_positioningPtr = _lookup<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_positioning');
+  late final _ma_sound_group_get_positioning =
+      _ma_sound_group_get_positioningPtr
+          .asFunction<int Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_rolloff(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double rolloff,
+  ) {
+    return _ma_sound_group_set_rolloff(
+      pGroup,
+      rolloff,
+    );
+  }
+
+  late final _ma_sound_group_set_rolloffPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Float)>>('ma_sound_group_set_rolloff');
+  late final _ma_sound_group_set_rolloff = _ma_sound_group_set_rolloffPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound_group>, double)>();
+
+  double ma_sound_group_get_rolloff(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_rolloff(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_rolloffPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_rolloff');
+  late final _ma_sound_group_get_rolloff = _ma_sound_group_get_rolloffPtr
+      .asFunction<double Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_min_gain(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double minGain,
+  ) {
+    return _ma_sound_group_set_min_gain(
+      pGroup,
+      minGain,
+    );
+  }
+
+  late final _ma_sound_group_set_min_gainPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Float)>>('ma_sound_group_set_min_gain');
+  late final _ma_sound_group_set_min_gain = _ma_sound_group_set_min_gainPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound_group>, double)>();
+
+  double ma_sound_group_get_min_gain(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_min_gain(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_min_gainPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_min_gain');
+  late final _ma_sound_group_get_min_gain = _ma_sound_group_get_min_gainPtr
+      .asFunction<double Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_max_gain(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double maxGain,
+  ) {
+    return _ma_sound_group_set_max_gain(
+      pGroup,
+      maxGain,
+    );
+  }
+
+  late final _ma_sound_group_set_max_gainPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Float)>>('ma_sound_group_set_max_gain');
+  late final _ma_sound_group_set_max_gain = _ma_sound_group_set_max_gainPtr
+      .asFunction<void Function(ffi.Pointer<ma_sound_group>, double)>();
+
+  double ma_sound_group_get_max_gain(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_max_gain(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_max_gainPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_max_gain');
+  late final _ma_sound_group_get_max_gain = _ma_sound_group_get_max_gainPtr
+      .asFunction<double Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_min_distance(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double minDistance,
+  ) {
+    return _ma_sound_group_set_min_distance(
+      pGroup,
+      minDistance,
+    );
+  }
+
+  late final _ma_sound_group_set_min_distancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Float)>>('ma_sound_group_set_min_distance');
+  late final _ma_sound_group_set_min_distance =
+      _ma_sound_group_set_min_distancePtr
+          .asFunction<void Function(ffi.Pointer<ma_sound_group>, double)>();
+
+  double ma_sound_group_get_min_distance(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_min_distance(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_min_distancePtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_min_distance');
+  late final _ma_sound_group_get_min_distance =
+      _ma_sound_group_get_min_distancePtr
+          .asFunction<double Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_max_distance(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double maxDistance,
+  ) {
+    return _ma_sound_group_set_max_distance(
+      pGroup,
+      maxDistance,
+    );
+  }
+
+  late final _ma_sound_group_set_max_distancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Float)>>('ma_sound_group_set_max_distance');
+  late final _ma_sound_group_set_max_distance =
+      _ma_sound_group_set_max_distancePtr
+          .asFunction<void Function(ffi.Pointer<ma_sound_group>, double)>();
+
+  double ma_sound_group_get_max_distance(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_max_distance(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_max_distancePtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_max_distance');
+  late final _ma_sound_group_get_max_distance =
+      _ma_sound_group_get_max_distancePtr
+          .asFunction<double Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_cone(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double innerAngleInRadians,
+    double outerAngleInRadians,
+    double outerGain,
+  ) {
+    return _ma_sound_group_set_cone(
+      pGroup,
+      innerAngleInRadians,
+      outerAngleInRadians,
+      outerGain,
+    );
+  }
+
+  late final _ma_sound_group_set_conePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float, ffi.Float,
+              ffi.Float)>>('ma_sound_group_set_cone');
+  late final _ma_sound_group_set_cone = _ma_sound_group_set_conePtr.asFunction<
+      void Function(ffi.Pointer<ma_sound_group>, double, double, double)>();
+
+  void ma_sound_group_get_cone(
+    ffi.Pointer<ma_sound_group> pGroup,
+    ffi.Pointer<ffi.Float> pInnerAngleInRadians,
+    ffi.Pointer<ffi.Float> pOuterAngleInRadians,
+    ffi.Pointer<ffi.Float> pOuterGain,
+  ) {
+    return _ma_sound_group_get_cone(
+      pGroup,
+      pInnerAngleInRadians,
+      pOuterAngleInRadians,
+      pOuterGain,
+    );
+  }
+
+  late final _ma_sound_group_get_conePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>>('ma_sound_group_get_cone');
+  late final _ma_sound_group_get_cone = _ma_sound_group_get_conePtr.asFunction<
+      void Function(ffi.Pointer<ma_sound_group>, ffi.Pointer<ffi.Float>,
+          ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>)>();
+
+  void ma_sound_group_set_doppler_factor(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double dopplerFactor,
+  ) {
+    return _ma_sound_group_set_doppler_factor(
+      pGroup,
+      dopplerFactor,
+    );
+  }
+
+  late final _ma_sound_group_set_doppler_factorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Float)>>('ma_sound_group_set_doppler_factor');
+  late final _ma_sound_group_set_doppler_factor =
+      _ma_sound_group_set_doppler_factorPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound_group>, double)>();
+
+  double ma_sound_group_get_doppler_factor(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_doppler_factor(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_doppler_factorPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_doppler_factor');
+  late final _ma_sound_group_get_doppler_factor =
+      _ma_sound_group_get_doppler_factorPtr
+          .asFunction<double Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_directional_attenuation_factor(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double directionalAttenuationFactor,
+  ) {
+    return _ma_sound_group_set_directional_attenuation_factor(
+      pGroup,
+      directionalAttenuationFactor,
+    );
+  }
+
+  late final _ma_sound_group_set_directional_attenuation_factorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ffi.Float)>>('ma_sound_group_set_directional_attenuation_factor');
+  late final _ma_sound_group_set_directional_attenuation_factor =
+      _ma_sound_group_set_directional_attenuation_factorPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound_group>, double)>();
+
+  double ma_sound_group_get_directional_attenuation_factor(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_directional_attenuation_factor(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_directional_attenuation_factorPtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_directional_attenuation_factor');
+  late final _ma_sound_group_get_directional_attenuation_factor =
+      _ma_sound_group_get_directional_attenuation_factorPtr
+          .asFunction<double Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_fade_in_pcm_frames(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double volumeBeg,
+    double volumeEnd,
+    int fadeLengthInFrames,
+  ) {
+    return _ma_sound_group_set_fade_in_pcm_frames(
+      pGroup,
+      volumeBeg,
+      volumeEnd,
+      fadeLengthInFrames,
+    );
+  }
+
+  late final _ma_sound_group_set_fade_in_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float, ffi.Float,
+              ma_uint64)>>('ma_sound_group_set_fade_in_pcm_frames');
+  late final _ma_sound_group_set_fade_in_pcm_frames =
+      _ma_sound_group_set_fade_in_pcm_framesPtr.asFunction<
+          void Function(ffi.Pointer<ma_sound_group>, double, double, int)>();
+
+  void ma_sound_group_set_fade_in_milliseconds(
+    ffi.Pointer<ma_sound_group> pGroup,
+    double volumeBeg,
+    double volumeEnd,
+    int fadeLengthInMilliseconds,
+  ) {
+    return _ma_sound_group_set_fade_in_milliseconds(
+      pGroup,
+      volumeBeg,
+      volumeEnd,
+      fadeLengthInMilliseconds,
+    );
+  }
+
+  late final _ma_sound_group_set_fade_in_millisecondsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float, ffi.Float,
+              ma_uint64)>>('ma_sound_group_set_fade_in_milliseconds');
+  late final _ma_sound_group_set_fade_in_milliseconds =
+      _ma_sound_group_set_fade_in_millisecondsPtr.asFunction<
+          void Function(ffi.Pointer<ma_sound_group>, double, double, int)>();
+
+  double ma_sound_group_get_current_fade_volume(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_current_fade_volume(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_current_fade_volumePtr = _lookup<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_current_fade_volume');
+  late final _ma_sound_group_get_current_fade_volume =
+      _ma_sound_group_get_current_fade_volumePtr
+          .asFunction<double Function(ffi.Pointer<ma_sound_group>)>();
+
+  void ma_sound_group_set_start_time_in_pcm_frames(
+    ffi.Pointer<ma_sound_group> pGroup,
+    int absoluteGlobalTimeInFrames,
+  ) {
+    return _ma_sound_group_set_start_time_in_pcm_frames(
+      pGroup,
+      absoluteGlobalTimeInFrames,
+    );
+  }
+
+  late final _ma_sound_group_set_start_time_in_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ma_uint64)>>('ma_sound_group_set_start_time_in_pcm_frames');
+  late final _ma_sound_group_set_start_time_in_pcm_frames =
+      _ma_sound_group_set_start_time_in_pcm_framesPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound_group>, int)>();
+
+  void ma_sound_group_set_start_time_in_milliseconds(
+    ffi.Pointer<ma_sound_group> pGroup,
+    int absoluteGlobalTimeInMilliseconds,
+  ) {
+    return _ma_sound_group_set_start_time_in_milliseconds(
+      pGroup,
+      absoluteGlobalTimeInMilliseconds,
+    );
+  }
+
+  late final _ma_sound_group_set_start_time_in_millisecondsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ma_uint64)>>('ma_sound_group_set_start_time_in_milliseconds');
+  late final _ma_sound_group_set_start_time_in_milliseconds =
+      _ma_sound_group_set_start_time_in_millisecondsPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound_group>, int)>();
+
+  void ma_sound_group_set_stop_time_in_pcm_frames(
+    ffi.Pointer<ma_sound_group> pGroup,
+    int absoluteGlobalTimeInFrames,
+  ) {
+    return _ma_sound_group_set_stop_time_in_pcm_frames(
+      pGroup,
+      absoluteGlobalTimeInFrames,
+    );
+  }
+
+  late final _ma_sound_group_set_stop_time_in_pcm_framesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ma_uint64)>>('ma_sound_group_set_stop_time_in_pcm_frames');
+  late final _ma_sound_group_set_stop_time_in_pcm_frames =
+      _ma_sound_group_set_stop_time_in_pcm_framesPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound_group>, int)>();
+
+  void ma_sound_group_set_stop_time_in_milliseconds(
+    ffi.Pointer<ma_sound_group> pGroup,
+    int absoluteGlobalTimeInMilliseconds,
+  ) {
+    return _ma_sound_group_set_stop_time_in_milliseconds(
+      pGroup,
+      absoluteGlobalTimeInMilliseconds,
+    );
+  }
+
+  late final _ma_sound_group_set_stop_time_in_millisecondsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>,
+              ma_uint64)>>('ma_sound_group_set_stop_time_in_milliseconds');
+  late final _ma_sound_group_set_stop_time_in_milliseconds =
+      _ma_sound_group_set_stop_time_in_millisecondsPtr
+          .asFunction<void Function(ffi.Pointer<ma_sound_group>, int)>();
+
+  int ma_sound_group_is_playing(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_is_playing(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_is_playingPtr = _lookup<
+          ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_is_playing');
+  late final _ma_sound_group_is_playing = _ma_sound_group_is_playingPtr
+      .asFunction<int Function(ffi.Pointer<ma_sound_group>)>();
+
+  int ma_sound_group_get_time_in_pcm_frames(
+    ffi.Pointer<ma_sound_group> pGroup,
+  ) {
+    return _ma_sound_group_get_time_in_pcm_frames(
+      pGroup,
+    );
+  }
+
+  late final _ma_sound_group_get_time_in_pcm_framesPtr = _lookup<
+          ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_sound_group>)>>(
+      'ma_sound_group_get_time_in_pcm_frames');
+  late final _ma_sound_group_get_time_in_pcm_frames =
+      _ma_sound_group_get_time_in_pcm_framesPtr
+          .asFunction<int Function(ffi.Pointer<ma_sound_group>)>();
+
+  late final addresses = _SymbolAddresses(this);
+}
+
+class _SymbolAddresses {
+  final MiniAudioFfi _library;
+  _SymbolAddresses(this._library);
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_uint32>, ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>)>> get ma_version =>
+      _library._ma_versionPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Pointer<ffi.Int8> Function()>>
+      get ma_version_string => _library._ma_version_stringPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_log_callback Function(
+                  ma_log_callback_proc, ffi.Pointer<ffi.Void>)>>
+      get ma_log_callback_init => _library._ma_log_callback_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_allocation_callbacks>, ffi.Pointer<ma_log>)>>
+      get ma_log_init => _library._ma_log_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_log>)>>
+      get ma_log_uninit => _library._ma_log_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_log>, ma_log_callback)>>
+      get ma_log_register_callback => _library._ma_log_register_callbackPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_log>, ma_log_callback)>>
+      get ma_log_unregister_callback => _library._ma_log_unregister_callbackPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_log>, ma_uint32, ffi.Pointer<ffi.Int8>)>>
+      get ma_log_post => _library._ma_log_postPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_log>,
+              ma_uint32,
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<__va_list_tag>)>> get ma_log_postv =>
+      _library._ma_log_postvPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_log>, ma_uint32, ffi.Pointer<ffi.Int8>)>>
+      get ma_log_postf => _library._ma_log_postfPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ma_biquad_config Function(
+              ffi.Int32,
+              ma_uint32,
+              ffi.Double,
+              ffi.Double,
+              ffi.Double,
+              ffi.Double,
+              ffi.Double,
+              ffi.Double)>> get ma_biquad_config_init =>
+      _library._ma_biquad_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_biquad_config>, ffi.Pointer<size_t>)>>
+      get ma_biquad_get_heap_size => _library._ma_biquad_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_biquad_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_biquad>)>> get ma_biquad_init_preallocated =>
+      _library._ma_biquad_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_biquad_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_biquad>)>> get ma_biquad_init =>
+      _library._ma_biquad_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_biquad>,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_biquad_uninit =>
+      _library._ma_biquad_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_biquad_config>, ffi.Pointer<ma_biquad>)>>
+      get ma_biquad_reinit => _library._ma_biquad_reinitPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_biquad>)>>
+      get ma_biquad_clear_cache => _library._ma_biquad_clear_cachePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_biquad>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_biquad_process_pcm_frames =>
+      _library._ma_biquad_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_biquad>)>>
+      get ma_biquad_get_latency => _library._ma_biquad_get_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_lpf1_config Function(
+                  ffi.Int32, ma_uint32, ma_uint32, ffi.Double)>>
+      get ma_lpf1_config_init => _library._ma_lpf1_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_lpf2_config Function(
+                  ffi.Int32, ma_uint32, ma_uint32, ffi.Double, ffi.Double)>>
+      get ma_lpf2_config_init => _library._ma_lpf2_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_lpf1_config>, ffi.Pointer<size_t>)>>
+      get ma_lpf1_get_heap_size => _library._ma_lpf1_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_lpf1_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_lpf1>)>> get ma_lpf1_init_preallocated =>
+      _library._ma_lpf1_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_lpf1_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_lpf1>)>> get ma_lpf1_init =>
+      _library._ma_lpf1_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_lpf1>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_lpf1_uninit => _library._ma_lpf1_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_lpf1_config>, ffi.Pointer<ma_lpf1>)>>
+      get ma_lpf1_reinit => _library._ma_lpf1_reinitPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_lpf1>)>>
+      get ma_lpf1_clear_cache => _library._ma_lpf1_clear_cachePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_lpf1>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_lpf1_process_pcm_frames =>
+      _library._ma_lpf1_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_lpf1>)>>
+      get ma_lpf1_get_latency => _library._ma_lpf1_get_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_lpf2_config>, ffi.Pointer<size_t>)>>
+      get ma_lpf2_get_heap_size => _library._ma_lpf2_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_lpf2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_lpf2>)>> get ma_lpf2_init_preallocated =>
+      _library._ma_lpf2_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_lpf2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_lpf2>)>> get ma_lpf2_init =>
+      _library._ma_lpf2_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_lpf2>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_lpf2_uninit => _library._ma_lpf2_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_lpf2_config>, ffi.Pointer<ma_lpf2>)>>
+      get ma_lpf2_reinit => _library._ma_lpf2_reinitPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_lpf2>)>>
+      get ma_lpf2_clear_cache => _library._ma_lpf2_clear_cachePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_lpf2>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_lpf2_process_pcm_frames =>
+      _library._ma_lpf2_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_lpf2>)>>
+      get ma_lpf2_get_latency => _library._ma_lpf2_get_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_lpf_config Function(
+                  ffi.Int32, ma_uint32, ma_uint32, ffi.Double, ma_uint32)>>
+      get ma_lpf_config_init => _library._ma_lpf_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_lpf_config>, ffi.Pointer<size_t>)>>
+      get ma_lpf_get_heap_size => _library._ma_lpf_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_lpf_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_lpf>)>> get ma_lpf_init_preallocated =>
+      _library._ma_lpf_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_lpf_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_lpf>)>> get ma_lpf_init =>
+      _library._ma_lpf_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_lpf>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_lpf_uninit => _library._ma_lpf_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_lpf_config>, ffi.Pointer<ma_lpf>)>>
+      get ma_lpf_reinit => _library._ma_lpf_reinitPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_lpf>)>>
+      get ma_lpf_clear_cache => _library._ma_lpf_clear_cachePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_lpf>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_lpf_process_pcm_frames =>
+      _library._ma_lpf_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_lpf>)>>
+      get ma_lpf_get_latency => _library._ma_lpf_get_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_hpf1_config Function(
+                  ffi.Int32, ma_uint32, ma_uint32, ffi.Double)>>
+      get ma_hpf1_config_init => _library._ma_hpf1_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_hpf2_config Function(
+                  ffi.Int32, ma_uint32, ma_uint32, ffi.Double, ffi.Double)>>
+      get ma_hpf2_config_init => _library._ma_hpf2_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_hpf1_config>, ffi.Pointer<size_t>)>>
+      get ma_hpf1_get_heap_size => _library._ma_hpf1_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hpf1_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_hpf1>)>> get ma_hpf1_init_preallocated =>
+      _library._ma_hpf1_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hpf1_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_hpf1>)>> get ma_hpf1_init =>
+      _library._ma_hpf1_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_hpf1>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_hpf1_uninit => _library._ma_hpf1_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_hpf1_config>, ffi.Pointer<ma_hpf1>)>>
+      get ma_hpf1_reinit => _library._ma_hpf1_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hpf1>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_hpf1_process_pcm_frames =>
+      _library._ma_hpf1_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_hpf1>)>>
+      get ma_hpf1_get_latency => _library._ma_hpf1_get_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_hpf2_config>, ffi.Pointer<size_t>)>>
+      get ma_hpf2_get_heap_size => _library._ma_hpf2_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hpf2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_hpf2>)>> get ma_hpf2_init_preallocated =>
+      _library._ma_hpf2_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hpf2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_hpf2>)>> get ma_hpf2_init =>
+      _library._ma_hpf2_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_hpf2>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_hpf2_uninit => _library._ma_hpf2_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_hpf2_config>, ffi.Pointer<ma_hpf2>)>>
+      get ma_hpf2_reinit => _library._ma_hpf2_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hpf2>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_hpf2_process_pcm_frames =>
+      _library._ma_hpf2_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_hpf2>)>>
+      get ma_hpf2_get_latency => _library._ma_hpf2_get_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_hpf_config Function(
+                  ffi.Int32, ma_uint32, ma_uint32, ffi.Double, ma_uint32)>>
+      get ma_hpf_config_init => _library._ma_hpf_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_hpf_config>, ffi.Pointer<size_t>)>>
+      get ma_hpf_get_heap_size => _library._ma_hpf_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hpf_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_hpf>)>> get ma_hpf_init_preallocated =>
+      _library._ma_hpf_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hpf_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_hpf>)>> get ma_hpf_init =>
+      _library._ma_hpf_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_hpf>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_hpf_uninit => _library._ma_hpf_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_hpf_config>, ffi.Pointer<ma_hpf>)>>
+      get ma_hpf_reinit => _library._ma_hpf_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hpf>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_hpf_process_pcm_frames =>
+      _library._ma_hpf_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_hpf>)>>
+      get ma_hpf_get_latency => _library._ma_hpf_get_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bpf2_config Function(
+                  ffi.Int32, ma_uint32, ma_uint32, ffi.Double, ffi.Double)>>
+      get ma_bpf2_config_init => _library._ma_bpf2_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_bpf2_config>, ffi.Pointer<size_t>)>>
+      get ma_bpf2_get_heap_size => _library._ma_bpf2_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_bpf2_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_bpf2>)>> get ma_bpf2_init_preallocated =>
+      _library._ma_bpf2_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_bpf2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_bpf2>)>> get ma_bpf2_init =>
+      _library._ma_bpf2_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_bpf2>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_bpf2_uninit => _library._ma_bpf2_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_bpf2_config>, ffi.Pointer<ma_bpf2>)>>
+      get ma_bpf2_reinit => _library._ma_bpf2_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_bpf2>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_bpf2_process_pcm_frames =>
+      _library._ma_bpf2_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_bpf2>)>>
+      get ma_bpf2_get_latency => _library._ma_bpf2_get_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bpf_config Function(
+                  ffi.Int32, ma_uint32, ma_uint32, ffi.Double, ma_uint32)>>
+      get ma_bpf_config_init => _library._ma_bpf_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_bpf_config>, ffi.Pointer<size_t>)>>
+      get ma_bpf_get_heap_size => _library._ma_bpf_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_bpf_config>, ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_bpf>)>> get ma_bpf_init_preallocated =>
+      _library._ma_bpf_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_bpf_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_bpf>)>> get ma_bpf_init =>
+      _library._ma_bpf_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_bpf>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_bpf_uninit => _library._ma_bpf_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_bpf_config>, ffi.Pointer<ma_bpf>)>>
+      get ma_bpf_reinit => _library._ma_bpf_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_bpf>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_bpf_process_pcm_frames =>
+      _library._ma_bpf_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_bpf>)>>
+      get ma_bpf_get_latency => _library._ma_bpf_get_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_notch2_config Function(
+                  ffi.Int32, ma_uint32, ma_uint32, ffi.Double, ffi.Double)>>
+      get ma_notch2_config_init => _library._ma_notch2_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_notch2_config>, ffi.Pointer<size_t>)>>
+      get ma_notch2_get_heap_size => _library._ma_notch2_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_notch2_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_notch2>)>> get ma_notch2_init_preallocated =>
+      _library._ma_notch2_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_notch2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_notch2>)>> get ma_notch2_init =>
+      _library._ma_notch2_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_notch2>,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_notch2_uninit =>
+      _library._ma_notch2_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_notch2_config>, ffi.Pointer<ma_notch2>)>>
+      get ma_notch2_reinit => _library._ma_notch2_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_notch2>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_notch2_process_pcm_frames =>
+      _library._ma_notch2_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_notch2>)>>
+      get ma_notch2_get_latency => _library._ma_notch2_get_latencyPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ma_peak2_config Function(
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32,
+              ffi.Double,
+              ffi.Double,
+              ffi.Double)>> get ma_peak2_config_init =>
+      _library._ma_peak2_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_peak2_config>, ffi.Pointer<size_t>)>>
+      get ma_peak2_get_heap_size => _library._ma_peak2_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_peak2_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_peak2>)>> get ma_peak2_init_preallocated =>
+      _library._ma_peak2_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_peak2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_peak2>)>> get ma_peak2_init =>
+      _library._ma_peak2_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_peak2>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_peak2_uninit => _library._ma_peak2_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_peak2_config>, ffi.Pointer<ma_peak2>)>>
+      get ma_peak2_reinit => _library._ma_peak2_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_peak2>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_peak2_process_pcm_frames =>
+      _library._ma_peak2_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_peak2>)>>
+      get ma_peak2_get_latency => _library._ma_peak2_get_latencyPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ma_loshelf2_config Function(
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32,
+              ffi.Double,
+              ffi.Double,
+              ffi.Double)>> get ma_loshelf2_config_init =>
+      _library._ma_loshelf2_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_loshelf2_config>, ffi.Pointer<size_t>)>>
+      get ma_loshelf2_get_heap_size => _library._ma_loshelf2_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_loshelf2_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_loshelf2>)>> get ma_loshelf2_init_preallocated =>
+      _library._ma_loshelf2_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_loshelf2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_loshelf2>)>> get ma_loshelf2_init =>
+      _library._ma_loshelf2_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_loshelf2>,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_loshelf2_uninit =>
+      _library._ma_loshelf2_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_loshelf2_config>, ffi.Pointer<ma_loshelf2>)>>
+      get ma_loshelf2_reinit => _library._ma_loshelf2_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_loshelf2>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_loshelf2_process_pcm_frames =>
+      _library._ma_loshelf2_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_loshelf2>)>>
+      get ma_loshelf2_get_latency => _library._ma_loshelf2_get_latencyPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ma_hishelf2_config Function(
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32,
+              ffi.Double,
+              ffi.Double,
+              ffi.Double)>> get ma_hishelf2_config_init =>
+      _library._ma_hishelf2_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_hishelf2_config>, ffi.Pointer<size_t>)>>
+      get ma_hishelf2_get_heap_size => _library._ma_hishelf2_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hishelf2_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_hishelf2>)>> get ma_hishelf2_init_preallocated =>
+      _library._ma_hishelf2_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hishelf2_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_hishelf2>)>> get ma_hishelf2_init =>
+      _library._ma_hishelf2_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_hishelf2>,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_hishelf2_uninit =>
+      _library._ma_hishelf2_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_hishelf2_config>, ffi.Pointer<ma_hishelf2>)>>
+      get ma_hishelf2_reinit => _library._ma_hishelf2_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_hishelf2>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_hishelf2_process_pcm_frames =>
+      _library._ma_hishelf2_process_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_hishelf2>)>>
+      get ma_hishelf2_get_latency => _library._ma_hishelf2_get_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_delay_config Function(
+                  ma_uint32, ma_uint32, ma_uint32, ffi.Float)>>
+      get ma_delay_config_init => _library._ma_delay_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_delay_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_delay>)>> get ma_delay_init =>
+      _library._ma_delay_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_delay>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_delay_uninit => _library._ma_delay_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_delay>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint32)>> get ma_delay_process_pcm_frames =>
+      _library._ma_delay_process_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_delay>, ffi.Float)>>
+      get ma_delay_set_wet => _library._ma_delay_set_wetPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_delay>)>>
+      get ma_delay_get_wet => _library._ma_delay_get_wetPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_delay>, ffi.Float)>>
+      get ma_delay_set_dry => _library._ma_delay_set_dryPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_delay>)>>
+      get ma_delay_get_dry => _library._ma_delay_get_dryPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_delay>, ffi.Float)>>
+      get ma_delay_set_decay => _library._ma_delay_set_decayPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_delay>)>>
+      get ma_delay_get_decay => _library._ma_delay_get_decayPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_gainer_config Function(ma_uint32, ma_uint32)>>
+      get ma_gainer_config_init => _library._ma_gainer_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_gainer_config>, ffi.Pointer<size_t>)>>
+      get ma_gainer_get_heap_size => _library._ma_gainer_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_gainer_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_gainer>)>> get ma_gainer_init_preallocated =>
+      _library._ma_gainer_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_gainer_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_gainer>)>> get ma_gainer_init =>
+      _library._ma_gainer_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_gainer>,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_gainer_uninit =>
+      _library._ma_gainer_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_gainer>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_gainer_process_pcm_frames =>
+      _library._ma_gainer_process_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_gainer>, ffi.Float)>>
+      get ma_gainer_set_gain => _library._ma_gainer_set_gainPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_gainer>, ffi.Pointer<ffi.Float>)>>
+      get ma_gainer_set_gains => _library._ma_gainer_set_gainsPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_panner_config Function(ffi.Int32, ma_uint32)>>
+      get ma_panner_config_init => _library._ma_panner_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_panner_config>, ffi.Pointer<ma_panner>)>>
+      get ma_panner_init => _library._ma_panner_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_panner>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_panner_process_pcm_frames =>
+      _library._ma_panner_process_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_panner>, ffi.Int32)>>
+      get ma_panner_set_mode => _library._ma_panner_set_modePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_panner>)>>
+      get ma_panner_get_mode => _library._ma_panner_get_modePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_panner>, ffi.Float)>>
+      get ma_panner_set_pan => _library._ma_panner_set_panPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_panner>)>>
+      get ma_panner_get_pan => _library._ma_panner_get_panPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_fader_config Function(ffi.Int32, ma_uint32, ma_uint32)>>
+      get ma_fader_config_init => _library._ma_fader_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_fader_config>, ffi.Pointer<ma_fader>)>>
+      get ma_fader_init => _library._ma_fader_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_fader>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_fader_process_pcm_frames =>
+      _library._ma_fader_process_pcm_framesPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_fader>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>)>> get ma_fader_get_data_format =>
+      _library._ma_fader_get_data_formatPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_fader>, ffi.Float, ffi.Float, ma_uint64)>>
+      get ma_fader_set_fade => _library._ma_fader_set_fadePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_fader>)>>
+      get ma_fader_get_current_volume =>
+          _library._ma_fader_get_current_volumePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_spatializer_listener_config Function(ma_uint32)>>
+      get ma_spatializer_listener_config_init =>
+          _library._ma_spatializer_listener_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_spatializer_listener_config>,
+                  ffi.Pointer<size_t>)>>
+      get ma_spatializer_listener_get_heap_size =>
+          _library._ma_spatializer_listener_get_heap_sizePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_spatializer_listener_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_spatializer_listener>)>>
+      get ma_spatializer_listener_init_preallocated =>
+          _library._ma_spatializer_listener_init_preallocatedPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_spatializer_listener_config>,
+                  ffi.Pointer<ma_allocation_callbacks>,
+                  ffi.Pointer<ma_spatializer_listener>)>>
+      get ma_spatializer_listener_init =>
+          _library._ma_spatializer_listener_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_spatializer_listener>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_spatializer_listener_uninit =>
+          _library._ma_spatializer_listener_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_channel> Function(
+                  ffi.Pointer<ma_spatializer_listener>)>>
+      get ma_spatializer_listener_get_channel_map =>
+          _library._ma_spatializer_listener_get_channel_mapPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_spatializer_listener>,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float)>> get ma_spatializer_listener_set_cone =>
+      _library._ma_spatializer_listener_set_conePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_spatializer_listener>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>> get ma_spatializer_listener_get_cone =>
+      _library._ma_spatializer_listener_get_conePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_spatializer_listener>,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float)>> get ma_spatializer_listener_set_position =>
+      _library._ma_spatializer_listener_set_positionPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_vec3f Function(ffi.Pointer<ma_spatializer_listener>)>>
+      get ma_spatializer_listener_get_position =>
+          _library._ma_spatializer_listener_get_positionPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_spatializer_listener>,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float)>> get ma_spatializer_listener_set_direction =>
+      _library._ma_spatializer_listener_set_directionPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_vec3f Function(ffi.Pointer<ma_spatializer_listener>)>>
+      get ma_spatializer_listener_get_direction =>
+          _library._ma_spatializer_listener_get_directionPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_spatializer_listener>,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float)>> get ma_spatializer_listener_set_velocity =>
+      _library._ma_spatializer_listener_set_velocityPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_vec3f Function(ffi.Pointer<ma_spatializer_listener>)>>
+      get ma_spatializer_listener_get_velocity =>
+          _library._ma_spatializer_listener_get_velocityPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_spatializer_listener>, ffi.Float)>>
+      get ma_spatializer_listener_set_speed_of_sound =>
+          _library._ma_spatializer_listener_set_speed_of_soundPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Float Function(ffi.Pointer<ma_spatializer_listener>)>>
+      get ma_spatializer_listener_get_speed_of_sound =>
+          _library._ma_spatializer_listener_get_speed_of_soundPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_spatializer_listener>,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float)>> get ma_spatializer_listener_set_world_up =>
+      _library._ma_spatializer_listener_set_world_upPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_vec3f Function(ffi.Pointer<ma_spatializer_listener>)>>
+      get ma_spatializer_listener_get_world_up =>
+          _library._ma_spatializer_listener_get_world_upPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_spatializer_listener>, ma_bool32)>>
+      get ma_spatializer_listener_set_enabled =>
+          _library._ma_spatializer_listener_set_enabledPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_spatializer_listener>)>>
+      get ma_spatializer_listener_is_enabled =>
+          _library._ma_spatializer_listener_is_enabledPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_spatializer_config Function(ma_uint32, ma_uint32)>>
+      get ma_spatializer_config_init => _library._ma_spatializer_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_spatializer_config>, ffi.Pointer<size_t>)>>
+      get ma_spatializer_get_heap_size =>
+          _library._ma_spatializer_get_heap_sizePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_spatializer_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_init_preallocated =>
+          _library._ma_spatializer_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_spatializer_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_spatializer>)>> get ma_spatializer_init =>
+      _library._ma_spatializer_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_spatializer>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_spatializer_uninit => _library._ma_spatializer_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_spatializer>,
+              ffi.Pointer<ma_spatializer_listener>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_spatializer_process_pcm_frames =>
+      _library._ma_spatializer_process_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_input_channels =>
+          _library._ma_spatializer_get_input_channelsPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_output_channels =>
+          _library._ma_spatializer_get_output_channelsPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Int32)>>
+      get ma_spatializer_set_attenuation_model =>
+          _library._ma_spatializer_set_attenuation_modelPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_attenuation_model =>
+          _library._ma_spatializer_get_attenuation_modelPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Int32)>>
+      get ma_spatializer_set_positioning =>
+          _library._ma_spatializer_set_positioningPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_positioning =>
+          _library._ma_spatializer_get_positioningPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float)>>
+      get ma_spatializer_set_rolloff => _library._ma_spatializer_set_rolloffPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_rolloff => _library._ma_spatializer_get_rolloffPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float)>>
+      get ma_spatializer_set_min_gain =>
+          _library._ma_spatializer_set_min_gainPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_min_gain =>
+          _library._ma_spatializer_get_min_gainPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float)>>
+      get ma_spatializer_set_max_gain =>
+          _library._ma_spatializer_set_max_gainPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_max_gain =>
+          _library._ma_spatializer_get_max_gainPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float)>>
+      get ma_spatializer_set_min_distance =>
+          _library._ma_spatializer_set_min_distancePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_min_distance =>
+          _library._ma_spatializer_get_min_distancePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float)>>
+      get ma_spatializer_set_max_distance =>
+          _library._ma_spatializer_set_max_distancePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_max_distance =>
+          _library._ma_spatializer_get_max_distancePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float, ffi.Float,
+              ffi.Float)>> get ma_spatializer_set_cone =>
+      _library._ma_spatializer_set_conePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_spatializer>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>> get ma_spatializer_get_cone =>
+      _library._ma_spatializer_get_conePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float)>>
+      get ma_spatializer_set_doppler_factor =>
+          _library._ma_spatializer_set_doppler_factorPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_doppler_factor =>
+          _library._ma_spatializer_get_doppler_factorPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float)>>
+      get ma_spatializer_set_directional_attenuation_factor =>
+          _library._ma_spatializer_set_directional_attenuation_factorPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_directional_attenuation_factor =>
+          _library._ma_spatializer_get_directional_attenuation_factorPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float, ffi.Float,
+              ffi.Float)>> get ma_spatializer_set_position =>
+      _library._ma_spatializer_set_positionPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_position =>
+          _library._ma_spatializer_get_positionPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float, ffi.Float,
+              ffi.Float)>> get ma_spatializer_set_direction =>
+      _library._ma_spatializer_set_directionPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_direction =>
+          _library._ma_spatializer_get_directionPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_spatializer>, ffi.Float, ffi.Float,
+              ffi.Float)>> get ma_spatializer_set_velocity =>
+      _library._ma_spatializer_set_velocityPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_spatializer>)>>
+      get ma_spatializer_get_velocity =>
+          _library._ma_spatializer_get_velocityPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_spatializer>,
+                  ffi.Pointer<ma_spatializer_listener>,
+                  ffi.Pointer<ma_vec3f>,
+                  ffi.Pointer<ma_vec3f>)>>
+      get ma_spatializer_get_relative_position_and_direction =>
+          _library._ma_spatializer_get_relative_position_and_directionPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_linear_resampler_config Function(
+                  ffi.Int32, ma_uint32, ma_uint32, ma_uint32)>>
+      get ma_linear_resampler_config_init =>
+          _library._ma_linear_resampler_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_linear_resampler_config>,
+              ffi.Pointer<size_t>)>> get ma_linear_resampler_get_heap_size =>
+      _library._ma_linear_resampler_get_heap_sizePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_linear_resampler_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_linear_resampler>)>>
+      get ma_linear_resampler_init_preallocated =>
+          _library._ma_linear_resampler_init_preallocatedPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_linear_resampler_config>,
+                  ffi.Pointer<ma_allocation_callbacks>,
+                  ffi.Pointer<ma_linear_resampler>)>>
+      get ma_linear_resampler_init => _library._ma_linear_resampler_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_linear_resampler>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_linear_resampler_uninit => _library._ma_linear_resampler_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_linear_resampler>,
+                  ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ma_uint64>,
+                  ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_linear_resampler_process_pcm_frames =>
+          _library._ma_linear_resampler_process_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_linear_resampler>, ma_uint32, ma_uint32)>>
+      get ma_linear_resampler_set_rate =>
+          _library._ma_linear_resampler_set_ratePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_linear_resampler>, ffi.Float)>>
+      get ma_linear_resampler_set_rate_ratio =>
+          _library._ma_linear_resampler_set_rate_ratioPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint64 Function(ffi.Pointer<ma_linear_resampler>)>>
+      get ma_linear_resampler_get_input_latency =>
+          _library._ma_linear_resampler_get_input_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint64 Function(ffi.Pointer<ma_linear_resampler>)>>
+      get ma_linear_resampler_get_output_latency =>
+          _library._ma_linear_resampler_get_output_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_linear_resampler>, ma_uint64,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_linear_resampler_get_required_input_frame_count =>
+          _library._ma_linear_resampler_get_required_input_frame_countPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_linear_resampler>, ma_uint64,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_linear_resampler_get_expected_output_frame_count =>
+          _library._ma_linear_resampler_get_expected_output_frame_countPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_linear_resampler>)>>
+      get ma_linear_resampler_reset => _library._ma_linear_resampler_resetPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_resampler_config Function(
+                  ffi.Int32, ma_uint32, ma_uint32, ma_uint32, ffi.Int32)>>
+      get ma_resampler_config_init => _library._ma_resampler_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resampler_config>, ffi.Pointer<size_t>)>>
+      get ma_resampler_get_heap_size => _library._ma_resampler_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resampler_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_resampler>)>> get ma_resampler_init_preallocated =>
+      _library._ma_resampler_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resampler_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_resampler>)>> get ma_resampler_init =>
+      _library._ma_resampler_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_resampler>,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_resampler_uninit =>
+      _library._ma_resampler_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resampler>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_uint64>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_uint64>)>> get ma_resampler_process_pcm_frames =>
+      _library._ma_resampler_process_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resampler>, ma_uint32, ma_uint32)>>
+      get ma_resampler_set_rate => _library._ma_resampler_set_ratePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resampler>, ffi.Float)>>
+      get ma_resampler_set_rate_ratio =>
+          _library._ma_resampler_set_rate_ratioPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_resampler>)>>
+      get ma_resampler_get_input_latency =>
+          _library._ma_resampler_get_input_latencyPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_resampler>)>>
+      get ma_resampler_get_output_latency =>
+          _library._ma_resampler_get_output_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resampler>, ma_uint64,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_resampler_get_required_input_frame_count =>
+          _library._ma_resampler_get_required_input_frame_countPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resampler>, ma_uint64,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_resampler_get_expected_output_frame_count =>
+          _library._ma_resampler_get_expected_output_frame_countPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_resampler>)>>
+      get ma_resampler_reset => _library._ma_resampler_resetPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ma_channel_converter_config Function(
+              ffi.Int32,
+              ma_uint32,
+              ffi.Pointer<ma_channel>,
+              ma_uint32,
+              ffi.Pointer<ma_channel>,
+              ffi.Int32)>> get ma_channel_converter_config_init =>
+      _library._ma_channel_converter_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_channel_converter_config>,
+              ffi.Pointer<size_t>)>> get ma_channel_converter_get_heap_size =>
+      _library._ma_channel_converter_get_heap_sizePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_channel_converter_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_channel_converter>)>>
+      get ma_channel_converter_init_preallocated =>
+          _library._ma_channel_converter_init_preallocatedPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_channel_converter_config>,
+                  ffi.Pointer<ma_allocation_callbacks>,
+                  ffi.Pointer<ma_channel_converter>)>>
+      get ma_channel_converter_init => _library._ma_channel_converter_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_channel_converter>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_channel_converter_uninit =>
+          _library._ma_channel_converter_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_channel_converter>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_channel_converter_process_pcm_frames =>
+      _library._ma_channel_converter_process_pcm_framesPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_channel_converter>,
+              ffi.Pointer<ma_channel>,
+              size_t)>> get ma_channel_converter_get_input_channel_map =>
+      _library._ma_channel_converter_get_input_channel_mapPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_channel_converter>,
+              ffi.Pointer<ma_channel>,
+              size_t)>> get ma_channel_converter_get_output_channel_map =>
+      _library._ma_channel_converter_get_output_channel_mapPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_data_converter_config Function()>>
+      get ma_data_converter_config_init_default =>
+          _library._ma_data_converter_config_init_defaultPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ma_data_converter_config Function(
+              ffi.Int32,
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32,
+              ma_uint32,
+              ma_uint32)>> get ma_data_converter_config_init =>
+      _library._ma_data_converter_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_converter_config>, ffi.Pointer<size_t>)>>
+      get ma_data_converter_get_heap_size =>
+          _library._ma_data_converter_get_heap_sizePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_data_converter_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_data_converter>)>>
+      get ma_data_converter_init_preallocated =>
+          _library._ma_data_converter_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_data_converter_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_data_converter>)>> get ma_data_converter_init =>
+      _library._ma_data_converter_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_data_converter>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_data_converter_uninit => _library._ma_data_converter_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_converter>,
+                  ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ma_uint64>,
+                  ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_data_converter_process_pcm_frames =>
+          _library._ma_data_converter_process_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_converter>, ma_uint32, ma_uint32)>>
+      get ma_data_converter_set_rate => _library._ma_data_converter_set_ratePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_data_converter>, ffi.Float)>>
+      get ma_data_converter_set_rate_ratio =>
+          _library._ma_data_converter_set_rate_ratioPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint64 Function(ffi.Pointer<ma_data_converter>)>>
+      get ma_data_converter_get_input_latency =>
+          _library._ma_data_converter_get_input_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint64 Function(ffi.Pointer<ma_data_converter>)>>
+      get ma_data_converter_get_output_latency =>
+          _library._ma_data_converter_get_output_latencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_data_converter>, ma_uint64,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_data_converter_get_required_input_frame_count =>
+          _library._ma_data_converter_get_required_input_frame_countPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_data_converter>, ma_uint64,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_data_converter_get_expected_output_frame_count =>
+          _library._ma_data_converter_get_expected_output_frame_countPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_data_converter>,
+              ffi.Pointer<ma_channel>,
+              size_t)>> get ma_data_converter_get_input_channel_map =>
+      _library._ma_data_converter_get_input_channel_mapPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_data_converter>,
+              ffi.Pointer<ma_channel>,
+              size_t)>> get ma_data_converter_get_output_channel_map =>
+      _library._ma_data_converter_get_output_channel_mapPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_data_converter>)>>
+      get ma_data_converter_reset => _library._ma_data_converter_resetPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_u8_to_s16 =>
+      _library._ma_pcm_u8_to_s16Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_u8_to_s24 =>
+      _library._ma_pcm_u8_to_s24Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_u8_to_s32 =>
+      _library._ma_pcm_u8_to_s32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_u8_to_f32 =>
+      _library._ma_pcm_u8_to_f32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_s16_to_u8 =>
+      _library._ma_pcm_s16_to_u8Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_s16_to_s24 =>
+      _library._ma_pcm_s16_to_s24Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_s16_to_s32 =>
+      _library._ma_pcm_s16_to_s32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_s16_to_f32 =>
+      _library._ma_pcm_s16_to_f32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_s24_to_u8 =>
+      _library._ma_pcm_s24_to_u8Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_s24_to_s16 =>
+      _library._ma_pcm_s24_to_s16Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_s24_to_s32 =>
+      _library._ma_pcm_s24_to_s32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_s24_to_f32 =>
+      _library._ma_pcm_s24_to_f32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_s32_to_u8 =>
+      _library._ma_pcm_s32_to_u8Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_s32_to_s16 =>
+      _library._ma_pcm_s32_to_s16Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_s32_to_s24 =>
+      _library._ma_pcm_s32_to_s24Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_s32_to_f32 =>
+      _library._ma_pcm_s32_to_f32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_f32_to_u8 =>
+      _library._ma_pcm_f32_to_u8Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_f32_to_s16 =>
+      _library._ma_pcm_f32_to_s16Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_f32_to_s24 =>
+      _library._ma_pcm_f32_to_s24Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_f32_to_s32 =>
+      _library._ma_pcm_f32_to_s32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Int32,
+              ffi.Pointer<ffi.Void>,
+              ffi.Int32,
+              ma_uint64,
+              ffi.Int32)>> get ma_pcm_convert => _library._ma_pcm_convertPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Int32,
+              ffi.Pointer<ffi.Void>,
+              ffi.Int32,
+              ma_uint64,
+              ma_uint32,
+              ffi.Int32)>> get ma_convert_pcm_frames_format =>
+      _library._ma_convert_pcm_frames_formatPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Int32, ma_uint32, ma_uint64,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Pointer<ffi.Void>>)>>
+      get ma_deinterleave_pcm_frames => _library._ma_deinterleave_pcm_framesPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int32,
+              ma_uint32,
+              ma_uint64,
+              ffi.Pointer<ffi.Pointer<ffi.Void>>,
+              ffi.Pointer<ffi.Void>)>> get ma_interleave_pcm_frames =>
+      _library._ma_interleave_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_channel Function(
+                  ffi.Pointer<ma_channel>, ma_uint32, ma_uint32)>>
+      get ma_channel_map_get_channel => _library._ma_channel_map_get_channelPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_channel>, ma_uint32)>>
+      get ma_channel_map_init_blank => _library._ma_channel_map_init_blankPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Int32, ffi.Pointer<ma_channel>, size_t, ma_uint32)>>
+      get ma_channel_map_init_standard =>
+          _library._ma_channel_map_init_standardPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_channel>, ffi.Pointer<ma_channel>, ma_uint32)>>
+      get ma_channel_map_copy => _library._ma_channel_map_copyPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_channel>,
+              size_t,
+              ffi.Pointer<ma_channel>,
+              ma_uint32)>> get ma_channel_map_copy_or_default =>
+      _library._ma_channel_map_copy_or_defaultPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_channel>, ma_uint32)>>
+      get ma_channel_map_is_valid => _library._ma_channel_map_is_validPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bool32 Function(
+                  ffi.Pointer<ma_channel>, ffi.Pointer<ma_channel>, ma_uint32)>>
+      get ma_channel_map_is_equal => _library._ma_channel_map_is_equalPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_channel>, ma_uint32)>>
+      get ma_channel_map_is_blank => _library._ma_channel_map_is_blankPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bool32 Function(
+                  ma_uint32, ffi.Pointer<ma_channel>, ma_channel)>>
+      get ma_channel_map_contains_channel_position =>
+          _library._ma_channel_map_contains_channel_positionPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ma_uint64 Function(
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32)>> get ma_convert_frames =>
+      _library._ma_convert_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint64 Function(
+                  ffi.Pointer<ffi.Void>,
+                  ma_uint64,
+                  ffi.Pointer<ffi.Void>,
+                  ma_uint64,
+                  ffi.Pointer<ma_data_converter_config>)>>
+      get ma_convert_frames_ex => _library._ma_convert_frames_exPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              size_t,
+              size_t,
+              size_t,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_rb>)>> get ma_rb_init_ex =>
+      _library._ma_rb_init_exPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              size_t,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_rb>)>> get ma_rb_init => _library._ma_rb_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_rb>)>>
+      get ma_rb_uninit => _library._ma_rb_uninitPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_rb>)>>
+      get ma_rb_reset => _library._ma_rb_resetPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_rb>, ffi.Pointer<size_t>,
+              ffi.Pointer<ffi.Pointer<ffi.Void>>)>> get ma_rb_acquire_read =>
+      _library._ma_rb_acquire_readPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_rb>, size_t)>>
+      get ma_rb_commit_read => _library._ma_rb_commit_readPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_rb>, ffi.Pointer<size_t>,
+              ffi.Pointer<ffi.Pointer<ffi.Void>>)>> get ma_rb_acquire_write =>
+      _library._ma_rb_acquire_writePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_rb>, size_t)>>
+      get ma_rb_commit_write => _library._ma_rb_commit_writePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_rb>, size_t)>>
+      get ma_rb_seek_read => _library._ma_rb_seek_readPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_rb>, size_t)>>
+      get ma_rb_seek_write => _library._ma_rb_seek_writePtr;
+  ffi.Pointer<ffi.NativeFunction<ma_int32 Function(ffi.Pointer<ma_rb>)>>
+      get ma_rb_pointer_distance => _library._ma_rb_pointer_distancePtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_rb>)>>
+      get ma_rb_available_read => _library._ma_rb_available_readPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_rb>)>>
+      get ma_rb_available_write => _library._ma_rb_available_writePtr;
+  ffi.Pointer<ffi.NativeFunction<size_t Function(ffi.Pointer<ma_rb>)>>
+      get ma_rb_get_subbuffer_size => _library._ma_rb_get_subbuffer_sizePtr;
+  ffi.Pointer<ffi.NativeFunction<size_t Function(ffi.Pointer<ma_rb>)>>
+      get ma_rb_get_subbuffer_stride => _library._ma_rb_get_subbuffer_stridePtr;
+  ffi.Pointer<ffi.NativeFunction<size_t Function(ffi.Pointer<ma_rb>, size_t)>>
+      get ma_rb_get_subbuffer_offset => _library._ma_rb_get_subbuffer_offsetPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ffi.Void> Function(
+                  ffi.Pointer<ma_rb>, size_t, ffi.Pointer<ffi.Void>)>>
+      get ma_rb_get_subbuffer_ptr => _library._ma_rb_get_subbuffer_ptrPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32,
+              ma_uint32,
+              ma_uint32,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_pcm_rb>)>> get ma_pcm_rb_init_ex =>
+      _library._ma_pcm_rb_init_exPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_pcm_rb>)>> get ma_pcm_rb_init =>
+      _library._ma_pcm_rb_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_pcm_rb>)>>
+      get ma_pcm_rb_uninit => _library._ma_pcm_rb_uninitPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_pcm_rb>)>>
+      get ma_pcm_rb_reset => _library._ma_pcm_rb_resetPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_pcm_rb>, ffi.Pointer<ma_uint32>,
+                  ffi.Pointer<ffi.Pointer<ffi.Void>>)>>
+      get ma_pcm_rb_acquire_read => _library._ma_pcm_rb_acquire_readPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_pcm_rb>, ma_uint32)>>
+      get ma_pcm_rb_commit_read => _library._ma_pcm_rb_commit_readPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_pcm_rb>, ffi.Pointer<ma_uint32>,
+                  ffi.Pointer<ffi.Pointer<ffi.Void>>)>>
+      get ma_pcm_rb_acquire_write => _library._ma_pcm_rb_acquire_writePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_pcm_rb>, ma_uint32)>>
+      get ma_pcm_rb_commit_write => _library._ma_pcm_rb_commit_writePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_pcm_rb>, ma_uint32)>>
+      get ma_pcm_rb_seek_read => _library._ma_pcm_rb_seek_readPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_pcm_rb>, ma_uint32)>>
+      get ma_pcm_rb_seek_write => _library._ma_pcm_rb_seek_writePtr;
+  ffi.Pointer<ffi.NativeFunction<ma_int32 Function(ffi.Pointer<ma_pcm_rb>)>>
+      get ma_pcm_rb_pointer_distance => _library._ma_pcm_rb_pointer_distancePtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_pcm_rb>)>>
+      get ma_pcm_rb_available_read => _library._ma_pcm_rb_available_readPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_pcm_rb>)>>
+      get ma_pcm_rb_available_write => _library._ma_pcm_rb_available_writePtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_pcm_rb>)>>
+      get ma_pcm_rb_get_subbuffer_size =>
+          _library._ma_pcm_rb_get_subbuffer_sizePtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_pcm_rb>)>>
+      get ma_pcm_rb_get_subbuffer_stride =>
+          _library._ma_pcm_rb_get_subbuffer_stridePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint32 Function(ffi.Pointer<ma_pcm_rb>, ma_uint32)>>
+      get ma_pcm_rb_get_subbuffer_offset =>
+          _library._ma_pcm_rb_get_subbuffer_offsetPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ffi.Void> Function(
+                  ffi.Pointer<ma_pcm_rb>, ma_uint32, ffi.Pointer<ffi.Void>)>>
+      get ma_pcm_rb_get_subbuffer_ptr =>
+          _library._ma_pcm_rb_get_subbuffer_ptrPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32,
+              ma_uint32,
+              ma_uint32,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_duplex_rb>)>> get ma_duplex_rb_init =>
+      _library._ma_duplex_rb_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_duplex_rb>)>>
+      get ma_duplex_rb_uninit => _library._ma_duplex_rb_uninitPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Pointer<ffi.Int8> Function(ffi.Int32)>>
+      get ma_result_description => _library._ma_result_descriptionPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              size_t, ffi.Pointer<ma_allocation_callbacks>)>> get ma_malloc =>
+      _library._ma_mallocPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              size_t, ffi.Pointer<ma_allocation_callbacks>)>> get ma_calloc =>
+      _library._ma_callocPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, size_t,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_realloc =>
+      _library._ma_reallocPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_free => _library._ma_freePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ffi.Void> Function(
+                  size_t, size_t, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_aligned_malloc => _library._ma_aligned_mallocPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_aligned_free => _library._ma_aligned_freePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Pointer<ffi.Int8> Function(ffi.Int32)>>
+      get ma_get_format_name => _library._ma_get_format_namePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Float,
+              ma_uint32)>> get ma_blend_f32 => _library._ma_blend_f32Ptr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Int32)>>
+      get ma_get_bytes_per_sample => _library._ma_get_bytes_per_samplePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Pointer<ffi.Int8> Function(ma_uint32)>>
+      get ma_log_level_to_string => _library._ma_log_level_to_stringPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_spinlock>)>>
+      get ma_spinlock_lock => _library._ma_spinlock_lockPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_spinlock>)>>
+      get ma_spinlock_lock_noyield => _library._ma_spinlock_lock_noyieldPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_spinlock>)>>
+      get ma_spinlock_unlock => _library._ma_spinlock_unlockPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_mutex>)>>
+      get ma_mutex_init => _library._ma_mutex_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_mutex>)>>
+      get ma_mutex_uninit => _library._ma_mutex_uninitPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_mutex>)>>
+      get ma_mutex_lock => _library._ma_mutex_lockPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_mutex>)>>
+      get ma_mutex_unlock => _library._ma_mutex_unlockPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_event>)>>
+      get ma_event_init => _library._ma_event_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_event>)>>
+      get ma_event_uninit => _library._ma_event_uninitPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_event>)>>
+      get ma_event_wait => _library._ma_event_waitPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_event>)>>
+      get ma_event_signal => _library._ma_event_signalPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_fence>)>>
+      get ma_fence_init => _library._ma_fence_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_fence>)>>
+      get ma_fence_uninit => _library._ma_fence_uninitPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_fence>)>>
+      get ma_fence_acquire => _library._ma_fence_acquirePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_fence>)>>
+      get ma_fence_release => _library._ma_fence_releasePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_fence>)>>
+      get ma_fence_wait => _library._ma_fence_waitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_async_notification>)>>
+      get ma_async_notification_signal =>
+          _library._ma_async_notification_signalPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_async_notification_poll>)>>
+      get ma_async_notification_poll_init =>
+          _library._ma_async_notification_poll_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_async_notification_poll>)>>
+      get ma_async_notification_poll_is_signalled =>
+          _library._ma_async_notification_poll_is_signalledPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_async_notification_event>)>>
+      get ma_async_notification_event_init =>
+          _library._ma_async_notification_event_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_async_notification_event>)>>
+      get ma_async_notification_event_uninit =>
+          _library._ma_async_notification_event_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_async_notification_event>)>>
+      get ma_async_notification_event_wait =>
+          _library._ma_async_notification_event_waitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_async_notification_event>)>>
+      get ma_async_notification_event_signal =>
+          _library._ma_async_notification_event_signalPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_slot_allocator_config Function(ma_uint32)>>
+      get ma_slot_allocator_config_init =>
+          _library._ma_slot_allocator_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_slot_allocator_config>, ffi.Pointer<size_t>)>>
+      get ma_slot_allocator_get_heap_size =>
+          _library._ma_slot_allocator_get_heap_sizePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_slot_allocator_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_slot_allocator>)>>
+      get ma_slot_allocator_init_preallocated =>
+          _library._ma_slot_allocator_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_slot_allocator_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_slot_allocator>)>> get ma_slot_allocator_init =>
+      _library._ma_slot_allocator_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_slot_allocator>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_slot_allocator_uninit => _library._ma_slot_allocator_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_slot_allocator>, ffi.Pointer<ma_uint64>)>>
+      get ma_slot_allocator_alloc => _library._ma_slot_allocator_allocPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_slot_allocator>, ma_uint64)>>
+      get ma_slot_allocator_free => _library._ma_slot_allocator_freePtr;
+  ffi.Pointer<ffi.NativeFunction<ma_job Function(ma_uint16)>> get ma_job_init =>
+      _library._ma_job_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_job>)>>
+      get ma_job_process => _library._ma_job_processPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_job_queue_config Function(ma_uint32, ma_uint32)>>
+      get ma_job_queue_config_init => _library._ma_job_queue_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_job_queue_config>, ffi.Pointer<size_t>)>>
+      get ma_job_queue_get_heap_size => _library._ma_job_queue_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_job_queue_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_job_queue>)>> get ma_job_queue_init_preallocated =>
+      _library._ma_job_queue_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_job_queue_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_job_queue>)>> get ma_job_queue_init =>
+      _library._ma_job_queue_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_job_queue>,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_job_queue_uninit =>
+      _library._ma_job_queue_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_job_queue>, ffi.Pointer<ma_job>)>>
+      get ma_job_queue_post => _library._ma_job_queue_postPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_job_queue>, ffi.Pointer<ma_job>)>>
+      get ma_job_queue_next => _library._ma_job_queue_nextPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_device_job_thread_config Function()>>
+      get ma_device_job_thread_config_init =>
+          _library._ma_device_job_thread_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_device_job_thread_config>,
+                  ffi.Pointer<ma_allocation_callbacks>,
+                  ffi.Pointer<ma_device_job_thread>)>>
+      get ma_device_job_thread_init => _library._ma_device_job_thread_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_device_job_thread>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_device_job_thread_uninit =>
+          _library._ma_device_job_thread_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_device_job_thread>, ffi.Pointer<ma_job>)>>
+      get ma_device_job_thread_post => _library._ma_device_job_thread_postPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_device_job_thread>, ffi.Pointer<ma_job>)>>
+      get ma_device_job_thread_next => _library._ma_device_job_thread_nextPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_context_config Function()>>
+      get ma_context_config_init => _library._ma_context_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Int32>,
+              ma_uint32,
+              ffi.Pointer<ma_context_config>,
+              ffi.Pointer<ma_context>)>> get ma_context_init =>
+      _library._ma_context_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_context>)>>
+      get ma_context_uninit => _library._ma_context_uninitPtr;
+  ffi.Pointer<ffi.NativeFunction<size_t Function()>> get ma_context_sizeof =>
+      _library._ma_context_sizeofPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_log> Function(ffi.Pointer<ma_context>)>>
+      get ma_context_get_log => _library._ma_context_get_logPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_context>,
+              ma_enum_devices_callback_proc,
+              ffi.Pointer<ffi.Void>)>> get ma_context_enumerate_devices =>
+      _library._ma_context_enumerate_devicesPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_context>,
+              ffi.Pointer<ffi.Pointer<ma_device_info>>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ffi.Pointer<ma_device_info>>,
+              ffi.Pointer<ma_uint32>)>> get ma_context_get_devices =>
+      _library._ma_context_get_devicesPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_context>,
+              ffi.Int32,
+              ffi.Pointer<ma_device_id>,
+              ffi.Pointer<ma_device_info>)>> get ma_context_get_device_info =>
+      _library._ma_context_get_device_infoPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_context>)>>
+      get ma_context_is_loopback_supported =>
+          _library._ma_context_is_loopback_supportedPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_device_config Function(ffi.Int32)>>
+      get ma_device_config_init => _library._ma_device_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_context>,
+              ffi.Pointer<ma_device_config>,
+              ffi.Pointer<ma_device>)>> get ma_device_init =>
+      _library._ma_device_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Int32>,
+              ma_uint32,
+              ffi.Pointer<ma_context_config>,
+              ffi.Pointer<ma_device_config>,
+              ffi.Pointer<ma_device>)>> get ma_device_init_ex =>
+      _library._ma_device_init_exPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_device>)>>
+      get ma_device_uninit => _library._ma_device_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_context> Function(ffi.Pointer<ma_device>)>>
+      get ma_device_get_context => _library._ma_device_get_contextPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_log> Function(ffi.Pointer<ma_device>)>>
+      get ma_device_get_log => _library._ma_device_get_logPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_device>, ffi.Int32,
+              ffi.Pointer<ma_device_info>)>> get ma_device_get_info =>
+      _library._ma_device_get_infoPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_device>,
+              ffi.Int32,
+              ffi.Pointer<ffi.Int8>,
+              size_t,
+              ffi.Pointer<size_t>)>> get ma_device_get_name =>
+      _library._ma_device_get_namePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_device>)>>
+      get ma_device_start => _library._ma_device_startPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_device>)>>
+      get ma_device_stop => _library._ma_device_stopPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_device>)>>
+      get ma_device_is_started => _library._ma_device_is_startedPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_device>)>>
+      get ma_device_get_state => _library._ma_device_get_statePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_device>,
+              ffi.Int32,
+              ffi.Pointer<ma_device_descriptor>,
+              ffi.Pointer<ma_device_descriptor>)>> get ma_device_post_init =>
+      _library._ma_device_post_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_device>, ffi.Float)>>
+      get ma_device_set_master_volume =>
+          _library._ma_device_set_master_volumePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_device>, ffi.Pointer<ffi.Float>)>>
+      get ma_device_get_master_volume =>
+          _library._ma_device_get_master_volumePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_device>, ffi.Float)>>
+      get ma_device_set_master_volume_db =>
+          _library._ma_device_set_master_volume_dbPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_device>, ffi.Pointer<ffi.Float>)>>
+      get ma_device_get_master_volume_db =>
+          _library._ma_device_get_master_volume_dbPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_device>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint32)>> get ma_device_handle_backend_data_callback =>
+      _library._ma_device_handle_backend_data_callbackPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint32 Function(
+                  ffi.Pointer<ma_device_descriptor>, ma_uint32, ffi.Int32)>>
+      get ma_calculate_buffer_size_in_frames_from_descriptor =>
+          _library._ma_calculate_buffer_size_in_frames_from_descriptorPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Pointer<ffi.Int8> Function(ffi.Int32)>>
+      get ma_get_backend_name => _library._ma_get_backend_namePtr;
+  ffi.Pointer<ffi.NativeFunction<ma_bool32 Function(ffi.Int32)>>
+      get ma_is_backend_enabled => _library._ma_is_backend_enabledPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ffi.Int32>, size_t, ffi.Pointer<size_t>)>>
+      get ma_get_enabled_backends => _library._ma_get_enabled_backendsPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_bool32 Function(ffi.Int32)>>
+      get ma_is_loopback_supported => _library._ma_is_loopback_supportedPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ma_uint32, ma_uint32)>>
+      get ma_calculate_buffer_size_in_milliseconds_from_frames =>
+          _library._ma_calculate_buffer_size_in_milliseconds_from_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ma_uint32, ma_uint32)>>
+      get ma_calculate_buffer_size_in_frames_from_milliseconds =>
+          _library._ma_calculate_buffer_size_in_frames_from_millisecondsPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32,
+              ma_uint32)>> get ma_copy_pcm_frames =>
+      _library._ma_copy_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ffi.Void>, ma_uint64, ffi.Int32, ma_uint32)>>
+      get ma_silence_pcm_frames => _library._ma_silence_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ffi.Void> Function(
+                  ffi.Pointer<ffi.Void>, ma_uint64, ffi.Int32, ma_uint32)>>
+      get ma_offset_pcm_frames_ptr => _library._ma_offset_pcm_frames_ptrPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ffi.Void> Function(
+                  ffi.Pointer<ffi.Void>, ma_uint64, ffi.Int32, ma_uint32)>>
+      get ma_offset_pcm_frames_const_ptr =>
+          _library._ma_offset_pcm_frames_const_ptrPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_uint8>, ffi.Pointer<ma_int16>, ma_uint64)>>
+      get ma_clip_samples_u8 => _library._ma_clip_samples_u8Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_int16>, ffi.Pointer<ma_int32>, ma_uint64)>>
+      get ma_clip_samples_s16 => _library._ma_clip_samples_s16Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_uint8>, ffi.Pointer<ma_int64>, ma_uint64)>>
+      get ma_clip_samples_s24 => _library._ma_clip_samples_s24Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_int32>, ffi.Pointer<ma_int64>, ma_uint64)>>
+      get ma_clip_samples_s32 => _library._ma_clip_samples_s32Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>, ma_uint64)>>
+      get ma_clip_samples_f32 => _library._ma_clip_samples_f32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32,
+              ma_uint32)>> get ma_clip_pcm_frames =>
+      _library._ma_clip_pcm_framesPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_uint8>,
+              ffi.Pointer<ma_uint8>,
+              ma_uint64,
+              ffi.Float)>> get ma_copy_and_apply_volume_factor_u8 =>
+      _library._ma_copy_and_apply_volume_factor_u8Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_int16>,
+              ffi.Pointer<ma_int16>,
+              ma_uint64,
+              ffi.Float)>> get ma_copy_and_apply_volume_factor_s16 =>
+      _library._ma_copy_and_apply_volume_factor_s16Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Float)>> get ma_copy_and_apply_volume_factor_s24 =>
+      _library._ma_copy_and_apply_volume_factor_s24Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_int32>,
+              ffi.Pointer<ma_int32>,
+              ma_uint64,
+              ffi.Float)>> get ma_copy_and_apply_volume_factor_s32 =>
+      _library._ma_copy_and_apply_volume_factor_s32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ma_uint64,
+              ffi.Float)>> get ma_copy_and_apply_volume_factor_f32 =>
+      _library._ma_copy_and_apply_volume_factor_f32Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_uint8>, ma_uint64, ffi.Float)>>
+      get ma_apply_volume_factor_u8 => _library._ma_apply_volume_factor_u8Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_int16>, ma_uint64, ffi.Float)>>
+      get ma_apply_volume_factor_s16 => _library._ma_apply_volume_factor_s16Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ffi.Void>, ma_uint64, ffi.Float)>>
+      get ma_apply_volume_factor_s24 => _library._ma_apply_volume_factor_s24Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_int32>, ma_uint64, ffi.Float)>>
+      get ma_apply_volume_factor_s32 => _library._ma_apply_volume_factor_s32Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ffi.Float>, ma_uint64, ffi.Float)>>
+      get ma_apply_volume_factor_f32 => _library._ma_apply_volume_factor_f32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_uint8>,
+              ffi.Pointer<ma_uint8>,
+              ma_uint64,
+              ma_uint32,
+              ffi.Float)>> get ma_copy_and_apply_volume_factor_pcm_frames_u8 =>
+      _library._ma_copy_and_apply_volume_factor_pcm_frames_u8Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_int16>,
+              ffi.Pointer<ma_int16>,
+              ma_uint64,
+              ma_uint32,
+              ffi.Float)>> get ma_copy_and_apply_volume_factor_pcm_frames_s16 =>
+      _library._ma_copy_and_apply_volume_factor_pcm_frames_s16Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ma_uint32,
+              ffi.Float)>> get ma_copy_and_apply_volume_factor_pcm_frames_s24 =>
+      _library._ma_copy_and_apply_volume_factor_pcm_frames_s24Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_int32>,
+              ffi.Pointer<ma_int32>,
+              ma_uint64,
+              ma_uint32,
+              ffi.Float)>> get ma_copy_and_apply_volume_factor_pcm_frames_s32 =>
+      _library._ma_copy_and_apply_volume_factor_pcm_frames_s32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ma_uint64,
+              ma_uint32,
+              ffi.Float)>> get ma_copy_and_apply_volume_factor_pcm_frames_f32 =>
+      _library._ma_copy_and_apply_volume_factor_pcm_frames_f32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32,
+              ma_uint32,
+              ffi.Float)>> get ma_copy_and_apply_volume_factor_pcm_frames =>
+      _library._ma_copy_and_apply_volume_factor_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_uint8>, ma_uint64, ma_uint32, ffi.Float)>>
+      get ma_apply_volume_factor_pcm_frames_u8 =>
+          _library._ma_apply_volume_factor_pcm_frames_u8Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_int16>, ma_uint64, ma_uint32, ffi.Float)>>
+      get ma_apply_volume_factor_pcm_frames_s16 =>
+          _library._ma_apply_volume_factor_pcm_frames_s16Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ffi.Void>, ma_uint64, ma_uint32, ffi.Float)>>
+      get ma_apply_volume_factor_pcm_frames_s24 =>
+          _library._ma_apply_volume_factor_pcm_frames_s24Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_int32>, ma_uint64, ma_uint32, ffi.Float)>>
+      get ma_apply_volume_factor_pcm_frames_s32 =>
+          _library._ma_apply_volume_factor_pcm_frames_s32Ptr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ffi.Float>, ma_uint64, ma_uint32, ffi.Float)>>
+      get ma_apply_volume_factor_pcm_frames_f32 =>
+          _library._ma_apply_volume_factor_pcm_frames_f32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32,
+              ma_uint32,
+              ffi.Float)>> get ma_apply_volume_factor_pcm_frames =>
+      _library._ma_apply_volume_factor_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>,
+                  ma_uint64, ma_uint32, ffi.Pointer<ffi.Float>)>>
+      get ma_copy_and_apply_volume_factor_per_channel_f32 =>
+          _library._ma_copy_and_apply_volume_factor_per_channel_f32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_uint8>,
+              ffi.Pointer<ma_int16>,
+              ma_uint64,
+              ffi.Float)>> get ma_copy_and_apply_volume_and_clip_samples_u8 =>
+      _library._ma_copy_and_apply_volume_and_clip_samples_u8Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_int16>,
+              ffi.Pointer<ma_int32>,
+              ma_uint64,
+              ffi.Float)>> get ma_copy_and_apply_volume_and_clip_samples_s16 =>
+      _library._ma_copy_and_apply_volume_and_clip_samples_s16Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_uint8>,
+              ffi.Pointer<ma_int64>,
+              ma_uint64,
+              ffi.Float)>> get ma_copy_and_apply_volume_and_clip_samples_s24 =>
+      _library._ma_copy_and_apply_volume_and_clip_samples_s24Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_int32>,
+              ffi.Pointer<ma_int64>,
+              ma_uint64,
+              ffi.Float)>> get ma_copy_and_apply_volume_and_clip_samples_s32 =>
+      _library._ma_copy_and_apply_volume_and_clip_samples_s32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ma_uint64,
+              ffi.Float)>> get ma_copy_and_apply_volume_and_clip_samples_f32 =>
+      _library._ma_copy_and_apply_volume_and_clip_samples_f32Ptr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32,
+              ma_uint32,
+              ffi.Float)>> get ma_copy_and_apply_volume_and_clip_pcm_frames =>
+      _library._ma_copy_and_apply_volume_and_clip_pcm_framesPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Float)>>
+      get ma_volume_linear_to_db => _library._ma_volume_linear_to_dbPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Float)>>
+      get ma_volume_db_to_linear => _library._ma_volume_db_to_linearPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_data_source_config Function()>>
+      get ma_data_source_config_init => _library._ma_data_source_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_data_source_config>,
+              ffi.Pointer<ma_data_source>)>> get ma_data_source_init =>
+      _library._ma_data_source_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_data_source>)>>
+      get ma_data_source_uninit => _library._ma_data_source_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_data_source>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>> get ma_data_source_read_pcm_frames =>
+      _library._ma_data_source_read_pcm_framesPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_data_source>, ma_uint64,
+              ffi.Pointer<ma_uint64>)>> get ma_data_source_seek_pcm_frames =>
+      _library._ma_data_source_seek_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_data_source>, ma_uint64)>>
+      get ma_data_source_seek_to_pcm_frame =>
+          _library._ma_data_source_seek_to_pcm_framePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_data_source>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>> get ma_data_source_get_data_format =>
+      _library._ma_data_source_get_data_formatPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_source>, ffi.Pointer<ma_uint64>)>>
+      get ma_data_source_get_cursor_in_pcm_frames =>
+          _library._ma_data_source_get_cursor_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_source>, ffi.Pointer<ma_uint64>)>>
+      get ma_data_source_get_length_in_pcm_frames =>
+          _library._ma_data_source_get_length_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_source>, ffi.Pointer<ffi.Float>)>>
+      get ma_data_source_get_cursor_in_seconds =>
+          _library._ma_data_source_get_cursor_in_secondsPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_source>, ffi.Pointer<ffi.Float>)>>
+      get ma_data_source_get_length_in_seconds =>
+          _library._ma_data_source_get_length_in_secondsPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_data_source>, ma_bool32)>>
+      get ma_data_source_set_looping => _library._ma_data_source_set_loopingPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_data_source>)>>
+      get ma_data_source_is_looping => _library._ma_data_source_is_loopingPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_source>, ma_uint64, ma_uint64)>>
+      get ma_data_source_set_range_in_pcm_frames =>
+          _library._ma_data_source_set_range_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_data_source>,
+                  ffi.Pointer<ma_uint64>, ffi.Pointer<ma_uint64>)>>
+      get ma_data_source_get_range_in_pcm_frames =>
+          _library._ma_data_source_get_range_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_source>, ma_uint64, ma_uint64)>>
+      get ma_data_source_set_loop_point_in_pcm_frames =>
+          _library._ma_data_source_set_loop_point_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_data_source>,
+                  ffi.Pointer<ma_uint64>, ffi.Pointer<ma_uint64>)>>
+      get ma_data_source_get_loop_point_in_pcm_frames =>
+          _library._ma_data_source_get_loop_point_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_source>, ffi.Pointer<ma_data_source>)>>
+      get ma_data_source_set_current => _library._ma_data_source_set_currentPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_data_source> Function(
+              ffi.Pointer<ma_data_source>)>> get ma_data_source_get_current =>
+      _library._ma_data_source_get_currentPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_source>, ffi.Pointer<ma_data_source>)>>
+      get ma_data_source_set_next => _library._ma_data_source_set_nextPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_data_source> Function(
+              ffi.Pointer<ma_data_source>)>> get ma_data_source_get_next =>
+      _library._ma_data_source_get_nextPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_data_source>, ma_data_source_get_next_proc)>>
+      get ma_data_source_set_next_callback =>
+          _library._ma_data_source_set_next_callbackPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_data_source_get_next_proc Function(
+                  ffi.Pointer<ma_data_source>)>>
+      get ma_data_source_get_next_callback =>
+          _library._ma_data_source_get_next_callbackPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Int32, ma_uint32, ffi.Pointer<ffi.Void>,
+                  ma_uint64, ffi.Pointer<ma_audio_buffer_ref>)>>
+      get ma_audio_buffer_ref_init => _library._ma_audio_buffer_ref_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_audio_buffer_ref>)>>
+      get ma_audio_buffer_ref_uninit => _library._ma_audio_buffer_ref_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_audio_buffer_ref>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64)>> get ma_audio_buffer_ref_set_data =>
+      _library._ma_audio_buffer_ref_set_dataPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ma_uint64 Function(
+              ffi.Pointer<ma_audio_buffer_ref>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ma_bool32)>> get ma_audio_buffer_ref_read_pcm_frames =>
+      _library._ma_audio_buffer_ref_read_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_audio_buffer_ref>, ma_uint64)>>
+      get ma_audio_buffer_ref_seek_to_pcm_frame =>
+          _library._ma_audio_buffer_ref_seek_to_pcm_framePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_audio_buffer_ref>,
+              ffi.Pointer<ffi.Pointer<ffi.Void>>,
+              ffi.Pointer<ma_uint64>)>> get ma_audio_buffer_ref_map =>
+      _library._ma_audio_buffer_ref_mapPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_audio_buffer_ref>, ma_uint64)>>
+      get ma_audio_buffer_ref_unmap => _library._ma_audio_buffer_ref_unmapPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_audio_buffer_ref>)>>
+      get ma_audio_buffer_ref_at_end => _library._ma_audio_buffer_ref_at_endPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_audio_buffer_ref>, ffi.Pointer<ma_uint64>)>>
+      get ma_audio_buffer_ref_get_cursor_in_pcm_frames =>
+          _library._ma_audio_buffer_ref_get_cursor_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_audio_buffer_ref>, ffi.Pointer<ma_uint64>)>>
+      get ma_audio_buffer_ref_get_length_in_pcm_frames =>
+          _library._ma_audio_buffer_ref_get_length_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_audio_buffer_ref>, ffi.Pointer<ma_uint64>)>>
+      get ma_audio_buffer_ref_get_available_frames =>
+          _library._ma_audio_buffer_ref_get_available_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_audio_buffer_config Function(ffi.Int32, ma_uint32, ma_uint64,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_audio_buffer_config_init =>
+          _library._ma_audio_buffer_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_audio_buffer_config>,
+              ffi.Pointer<ma_audio_buffer>)>> get ma_audio_buffer_init =>
+      _library._ma_audio_buffer_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_audio_buffer_config>,
+              ffi.Pointer<ma_audio_buffer>)>> get ma_audio_buffer_init_copy =>
+      _library._ma_audio_buffer_init_copyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_audio_buffer_config>,
+                  ffi.Pointer<ffi.Pointer<ma_audio_buffer>>)>>
+      get ma_audio_buffer_alloc_and_init =>
+          _library._ma_audio_buffer_alloc_and_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_audio_buffer>)>>
+      get ma_audio_buffer_uninit => _library._ma_audio_buffer_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_audio_buffer>)>>
+      get ma_audio_buffer_uninit_and_free =>
+          _library._ma_audio_buffer_uninit_and_freePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ma_uint64 Function(
+              ffi.Pointer<ma_audio_buffer>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ma_bool32)>> get ma_audio_buffer_read_pcm_frames =>
+      _library._ma_audio_buffer_read_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_audio_buffer>, ma_uint64)>>
+      get ma_audio_buffer_seek_to_pcm_frame =>
+          _library._ma_audio_buffer_seek_to_pcm_framePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_audio_buffer>,
+              ffi.Pointer<ffi.Pointer<ffi.Void>>,
+              ffi.Pointer<ma_uint64>)>> get ma_audio_buffer_map =>
+      _library._ma_audio_buffer_mapPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_audio_buffer>, ma_uint64)>>
+      get ma_audio_buffer_unmap => _library._ma_audio_buffer_unmapPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_audio_buffer>)>>
+      get ma_audio_buffer_at_end => _library._ma_audio_buffer_at_endPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_audio_buffer>, ffi.Pointer<ma_uint64>)>>
+      get ma_audio_buffer_get_cursor_in_pcm_frames =>
+          _library._ma_audio_buffer_get_cursor_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_audio_buffer>, ffi.Pointer<ma_uint64>)>>
+      get ma_audio_buffer_get_length_in_pcm_frames =>
+          _library._ma_audio_buffer_get_length_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_audio_buffer>, ffi.Pointer<ma_uint64>)>>
+      get ma_audio_buffer_get_available_frames =>
+          _library._ma_audio_buffer_get_available_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Int32, ma_uint32,
+                  ffi.Pointer<ma_paged_audio_buffer_data>)>>
+      get ma_paged_audio_buffer_data_init =>
+          _library._ma_paged_audio_buffer_data_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_paged_audio_buffer_data>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_paged_audio_buffer_data_uninit =>
+          _library._ma_paged_audio_buffer_data_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_paged_audio_buffer_page> Function(
+                  ffi.Pointer<ma_paged_audio_buffer_data>)>>
+      get ma_paged_audio_buffer_data_get_head =>
+          _library._ma_paged_audio_buffer_data_get_headPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_paged_audio_buffer_page> Function(
+                  ffi.Pointer<ma_paged_audio_buffer_data>)>>
+      get ma_paged_audio_buffer_data_get_tail =>
+          _library._ma_paged_audio_buffer_data_get_tailPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_paged_audio_buffer_data>,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_paged_audio_buffer_data_get_length_in_pcm_frames =>
+          _library._ma_paged_audio_buffer_data_get_length_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_paged_audio_buffer_data>,
+                  ma_uint64,
+                  ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ma_allocation_callbacks>,
+                  ffi.Pointer<ffi.Pointer<ma_paged_audio_buffer_page>>)>>
+      get ma_paged_audio_buffer_data_allocate_page =>
+          _library._ma_paged_audio_buffer_data_allocate_pagePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_paged_audio_buffer_data>,
+                  ffi.Pointer<ma_paged_audio_buffer_page>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_paged_audio_buffer_data_free_page =>
+          _library._ma_paged_audio_buffer_data_free_pagePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_paged_audio_buffer_data>,
+                  ffi.Pointer<ma_paged_audio_buffer_page>)>>
+      get ma_paged_audio_buffer_data_append_page =>
+          _library._ma_paged_audio_buffer_data_append_pagePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_paged_audio_buffer_data>,
+                  ma_uint32,
+                  ffi.Pointer<ffi.Void>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_paged_audio_buffer_data_allocate_and_append_page =>
+          _library._ma_paged_audio_buffer_data_allocate_and_append_pagePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_paged_audio_buffer_config Function(
+                  ffi.Pointer<ma_paged_audio_buffer_data>)>>
+      get ma_paged_audio_buffer_config_init =>
+          _library._ma_paged_audio_buffer_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_paged_audio_buffer_config>,
+                  ffi.Pointer<ma_paged_audio_buffer>)>>
+      get ma_paged_audio_buffer_init => _library._ma_paged_audio_buffer_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_paged_audio_buffer>)>>
+      get ma_paged_audio_buffer_uninit =>
+          _library._ma_paged_audio_buffer_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_paged_audio_buffer>,
+                  ffi.Pointer<ffi.Void>, ma_uint64, ffi.Pointer<ma_uint64>)>>
+      get ma_paged_audio_buffer_read_pcm_frames =>
+          _library._ma_paged_audio_buffer_read_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_paged_audio_buffer>, ma_uint64)>>
+      get ma_paged_audio_buffer_seek_to_pcm_frame =>
+          _library._ma_paged_audio_buffer_seek_to_pcm_framePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_paged_audio_buffer>, ffi.Pointer<ma_uint64>)>>
+      get ma_paged_audio_buffer_get_cursor_in_pcm_frames =>
+          _library._ma_paged_audio_buffer_get_cursor_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_paged_audio_buffer>, ffi.Pointer<ma_uint64>)>>
+      get ma_paged_audio_buffer_get_length_in_pcm_frames =>
+          _library._ma_paged_audio_buffer_get_length_in_pcm_framesPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_vfs>,
+              ffi.Pointer<ffi.Int8>,
+              ma_uint32,
+              ffi.Pointer<ma_vfs_file>)>> get ma_vfs_open =>
+      _library._ma_vfs_openPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_vfs>,
+              ffi.Pointer<wchar_t>,
+              ma_uint32,
+              ffi.Pointer<ma_vfs_file>)>> get ma_vfs_open_w =>
+      _library._ma_vfs_open_wPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_vfs>, ma_vfs_file)>>
+      get ma_vfs_close => _library._ma_vfs_closePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_vfs>,
+              ma_vfs_file,
+              ffi.Pointer<ffi.Void>,
+              size_t,
+              ffi.Pointer<size_t>)>> get ma_vfs_read =>
+      _library._ma_vfs_readPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_vfs>,
+              ma_vfs_file,
+              ffi.Pointer<ffi.Void>,
+              size_t,
+              ffi.Pointer<size_t>)>> get ma_vfs_write =>
+      _library._ma_vfs_writePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_vfs>, ma_vfs_file, ma_int64, ffi.Int32)>>
+      get ma_vfs_seek => _library._ma_vfs_seekPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_vfs>, ma_vfs_file, ffi.Pointer<ma_int64>)>>
+      get ma_vfs_tell => _library._ma_vfs_tellPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_vfs>, ma_vfs_file, ffi.Pointer<ma_file_info>)>>
+      get ma_vfs_info => _library._ma_vfs_infoPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_vfs>,
+                  ffi.Pointer<ffi.Int8>,
+                  ffi.Pointer<ffi.Pointer<ffi.Void>>,
+                  ffi.Pointer<size_t>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_vfs_open_and_read_file => _library._ma_vfs_open_and_read_filePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_default_vfs>,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_default_vfs_init =>
+      _library._ma_default_vfs_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_decoding_backend_config Function(ffi.Int32, ma_uint32)>>
+      get ma_decoding_backend_config_init =>
+          _library._ma_decoding_backend_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_decoder_config Function(ffi.Int32, ma_uint32, ma_uint32)>>
+      get ma_decoder_config_init => _library._ma_decoder_config_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_decoder_config Function()>>
+      get ma_decoder_config_init_default =>
+          _library._ma_decoder_config_init_defaultPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ma_decoder_read_proc,
+              ma_decoder_seek_proc,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_decoder_config>,
+              ffi.Pointer<ma_decoder>)>> get ma_decoder_init =>
+      _library._ma_decoder_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Void>,
+              size_t,
+              ffi.Pointer<ma_decoder_config>,
+              ffi.Pointer<ma_decoder>)>> get ma_decoder_init_memory =>
+      _library._ma_decoder_init_memoryPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_vfs>,
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ma_decoder_config>,
+              ffi.Pointer<ma_decoder>)>> get ma_decoder_init_vfs =>
+      _library._ma_decoder_init_vfsPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_vfs>,
+              ffi.Pointer<wchar_t>,
+              ffi.Pointer<ma_decoder_config>,
+              ffi.Pointer<ma_decoder>)>> get ma_decoder_init_vfs_w =>
+      _library._ma_decoder_init_vfs_wPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ma_decoder_config>,
+              ffi.Pointer<ma_decoder>)>> get ma_decoder_init_file =>
+      _library._ma_decoder_init_filePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<wchar_t>,
+              ffi.Pointer<ma_decoder_config>,
+              ffi.Pointer<ma_decoder>)>> get ma_decoder_init_file_w =>
+      _library._ma_decoder_init_file_wPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_decoder>)>>
+      get ma_decoder_uninit => _library._ma_decoder_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_decoder>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>> get ma_decoder_read_pcm_frames =>
+      _library._ma_decoder_read_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_decoder>, ma_uint64)>>
+      get ma_decoder_seek_to_pcm_frame =>
+          _library._ma_decoder_seek_to_pcm_framePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_decoder>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>> get ma_decoder_get_data_format =>
+      _library._ma_decoder_get_data_formatPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_decoder>, ffi.Pointer<ma_uint64>)>>
+      get ma_decoder_get_cursor_in_pcm_frames =>
+          _library._ma_decoder_get_cursor_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_decoder>, ffi.Pointer<ma_uint64>)>>
+      get ma_decoder_get_length_in_pcm_frames =>
+          _library._ma_decoder_get_length_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_decoder>, ffi.Pointer<ma_uint64>)>>
+      get ma_decoder_get_available_frames =>
+          _library._ma_decoder_get_available_framesPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_vfs>,
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ma_decoder_config>,
+              ffi.Pointer<ma_uint64>,
+              ffi.Pointer<ffi.Pointer<ffi.Void>>)>> get ma_decode_from_vfs =>
+      _library._ma_decode_from_vfsPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ma_decoder_config>,
+              ffi.Pointer<ma_uint64>,
+              ffi.Pointer<ffi.Pointer<ffi.Void>>)>> get ma_decode_file =>
+      _library._ma_decode_filePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Void>,
+              size_t,
+              ffi.Pointer<ma_decoder_config>,
+              ffi.Pointer<ma_uint64>,
+              ffi.Pointer<ffi.Pointer<ffi.Void>>)>> get ma_decode_memory =>
+      _library._ma_decode_memoryPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_encoder_config Function(
+                  ffi.Int32, ffi.Int32, ma_uint32, ma_uint32)>>
+      get ma_encoder_config_init => _library._ma_encoder_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ma_encoder_write_proc,
+              ma_encoder_seek_proc,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_encoder_config>,
+              ffi.Pointer<ma_encoder>)>> get ma_encoder_init =>
+      _library._ma_encoder_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_vfs>,
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ma_encoder_config>,
+              ffi.Pointer<ma_encoder>)>> get ma_encoder_init_vfs =>
+      _library._ma_encoder_init_vfsPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_vfs>,
+              ffi.Pointer<wchar_t>,
+              ffi.Pointer<ma_encoder_config>,
+              ffi.Pointer<ma_encoder>)>> get ma_encoder_init_vfs_w =>
+      _library._ma_encoder_init_vfs_wPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ma_encoder_config>,
+              ffi.Pointer<ma_encoder>)>> get ma_encoder_init_file =>
+      _library._ma_encoder_init_filePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<wchar_t>,
+              ffi.Pointer<ma_encoder_config>,
+              ffi.Pointer<ma_encoder>)>> get ma_encoder_init_file_w =>
+      _library._ma_encoder_init_file_wPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_encoder>)>>
+      get ma_encoder_uninit => _library._ma_encoder_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_encoder>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>> get ma_encoder_write_pcm_frames =>
+      _library._ma_encoder_write_pcm_framesPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ma_waveform_config Function(
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32,
+              ffi.Int32,
+              ffi.Double,
+              ffi.Double)>> get ma_waveform_config_init =>
+      _library._ma_waveform_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_waveform_config>, ffi.Pointer<ma_waveform>)>>
+      get ma_waveform_init => _library._ma_waveform_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_waveform>)>>
+      get ma_waveform_uninit => _library._ma_waveform_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_waveform>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>> get ma_waveform_read_pcm_frames =>
+      _library._ma_waveform_read_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_waveform>, ma_uint64)>>
+      get ma_waveform_seek_to_pcm_frame =>
+          _library._ma_waveform_seek_to_pcm_framePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_waveform>, ffi.Double)>>
+      get ma_waveform_set_amplitude => _library._ma_waveform_set_amplitudePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_waveform>, ffi.Double)>>
+      get ma_waveform_set_frequency => _library._ma_waveform_set_frequencyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_waveform>, ffi.Int32)>>
+      get ma_waveform_set_type => _library._ma_waveform_set_typePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_waveform>, ma_uint32)>>
+      get ma_waveform_set_sample_rate =>
+          _library._ma_waveform_set_sample_ratePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_noise_config Function(
+                  ffi.Int32, ma_uint32, ffi.Int32, ma_int32, ffi.Double)>>
+      get ma_noise_config_init => _library._ma_noise_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_noise_config>, ffi.Pointer<size_t>)>>
+      get ma_noise_get_heap_size => _library._ma_noise_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_noise_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_noise>)>> get ma_noise_init_preallocated =>
+      _library._ma_noise_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_noise_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_noise>)>> get ma_noise_init =>
+      _library._ma_noise_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_noise>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_noise_uninit => _library._ma_noise_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_noise>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>> get ma_noise_read_pcm_frames =>
+      _library._ma_noise_read_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_noise>, ffi.Double)>>
+      get ma_noise_set_amplitude => _library._ma_noise_set_amplitudePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_noise>, ma_int32)>>
+      get ma_noise_set_seed => _library._ma_noise_set_seedPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_noise>, ffi.Int32)>>
+      get ma_noise_set_type => _library._ma_noise_set_typePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_resource_manager_pipeline_notifications Function()>>
+      get ma_resource_manager_pipeline_notifications_init =>
+          _library._ma_resource_manager_pipeline_notifications_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_resource_manager_data_source_config Function()>>
+      get ma_resource_manager_data_source_config_init =>
+          _library._ma_resource_manager_data_source_config_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_resource_manager_config Function()>>
+      get ma_resource_manager_config_init =>
+          _library._ma_resource_manager_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_config>,
+                  ffi.Pointer<ma_resource_manager>)>>
+      get ma_resource_manager_init => _library._ma_resource_manager_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_resource_manager>)>>
+      get ma_resource_manager_uninit => _library._ma_resource_manager_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_log> Function(ffi.Pointer<ma_resource_manager>)>>
+      get ma_resource_manager_get_log =>
+          _library._ma_resource_manager_get_logPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ffi.Int8>,
+              ma_uint32)>> get ma_resource_manager_register_file =>
+      _library._ma_resource_manager_register_filePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<wchar_t>,
+              ma_uint32)>> get ma_resource_manager_register_file_w =>
+      _library._ma_resource_manager_register_file_wPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32)>> get ma_resource_manager_register_decoded_data =>
+      _library._ma_resource_manager_register_decoded_dataPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<wchar_t>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Int32,
+              ma_uint32,
+              ma_uint32)>> get ma_resource_manager_register_decoded_data_w =>
+      _library._ma_resource_manager_register_decoded_data_wPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ffi.Void>,
+              size_t)>> get ma_resource_manager_register_encoded_data =>
+      _library._ma_resource_manager_register_encoded_dataPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager>,
+              ffi.Pointer<wchar_t>,
+              ffi.Pointer<ffi.Void>,
+              size_t)>> get ma_resource_manager_register_encoded_data_w =>
+      _library._ma_resource_manager_register_encoded_data_wPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>, ffi.Pointer<ffi.Int8>)>>
+      get ma_resource_manager_unregister_file =>
+          _library._ma_resource_manager_unregister_filePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>, ffi.Pointer<wchar_t>)>>
+      get ma_resource_manager_unregister_file_w =>
+          _library._ma_resource_manager_unregister_file_wPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>, ffi.Pointer<ffi.Int8>)>>
+      get ma_resource_manager_unregister_data =>
+          _library._ma_resource_manager_unregister_dataPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>, ffi.Pointer<wchar_t>)>>
+      get ma_resource_manager_unregister_data_w =>
+          _library._ma_resource_manager_unregister_data_wPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ma_resource_manager_data_source_config>,
+                  ffi.Pointer<ma_resource_manager_data_buffer>)>>
+      get ma_resource_manager_data_buffer_init_ex =>
+          _library._ma_resource_manager_data_buffer_init_exPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ffi.Int8>,
+                  ma_uint32,
+                  ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+                  ffi.Pointer<ma_resource_manager_data_buffer>)>>
+      get ma_resource_manager_data_buffer_init =>
+          _library._ma_resource_manager_data_buffer_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<wchar_t>,
+                  ma_uint32,
+                  ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+                  ffi.Pointer<ma_resource_manager_data_buffer>)>>
+      get ma_resource_manager_data_buffer_init_w =>
+          _library._ma_resource_manager_data_buffer_init_wPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ma_resource_manager_data_buffer>,
+                  ffi.Pointer<ma_resource_manager_data_buffer>)>>
+      get ma_resource_manager_data_buffer_init_copy =>
+          _library._ma_resource_manager_data_buffer_init_copyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_buffer>)>>
+      get ma_resource_manager_data_buffer_uninit =>
+          _library._ma_resource_manager_data_buffer_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_buffer>,
+                  ffi.Pointer<ffi.Void>, ma_uint64, ffi.Pointer<ma_uint64>)>>
+      get ma_resource_manager_data_buffer_read_pcm_frames =>
+          _library._ma_resource_manager_data_buffer_read_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager_data_buffer>, ma_uint64)>>
+      get ma_resource_manager_data_buffer_seek_to_pcm_frame =>
+          _library._ma_resource_manager_data_buffer_seek_to_pcm_framePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager_data_buffer>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>> get ma_resource_manager_data_buffer_get_data_format =>
+      _library._ma_resource_manager_data_buffer_get_data_formatPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_buffer>,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_resource_manager_data_buffer_get_cursor_in_pcm_frames =>
+          _library._ma_resource_manager_data_buffer_get_cursor_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_buffer>,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_resource_manager_data_buffer_get_length_in_pcm_frames =>
+          _library._ma_resource_manager_data_buffer_get_length_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_buffer>)>>
+      get ma_resource_manager_data_buffer_result =>
+          _library._ma_resource_manager_data_buffer_resultPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager_data_buffer>, ma_bool32)>>
+      get ma_resource_manager_data_buffer_set_looping =>
+          _library._ma_resource_manager_data_buffer_set_loopingPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_resource_manager_data_buffer>)>>
+      get ma_resource_manager_data_buffer_is_looping =>
+          _library._ma_resource_manager_data_buffer_is_loopingPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_buffer>,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_resource_manager_data_buffer_get_available_frames =>
+          _library._ma_resource_manager_data_buffer_get_available_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ma_resource_manager_data_source_config>,
+                  ffi.Pointer<ma_resource_manager_data_stream>)>>
+      get ma_resource_manager_data_stream_init_ex =>
+          _library._ma_resource_manager_data_stream_init_exPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ffi.Int8>,
+                  ma_uint32,
+                  ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+                  ffi.Pointer<ma_resource_manager_data_stream>)>>
+      get ma_resource_manager_data_stream_init =>
+          _library._ma_resource_manager_data_stream_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<wchar_t>,
+                  ma_uint32,
+                  ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+                  ffi.Pointer<ma_resource_manager_data_stream>)>>
+      get ma_resource_manager_data_stream_init_w =>
+          _library._ma_resource_manager_data_stream_init_wPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_stream>)>>
+      get ma_resource_manager_data_stream_uninit =>
+          _library._ma_resource_manager_data_stream_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_stream>,
+                  ffi.Pointer<ffi.Void>, ma_uint64, ffi.Pointer<ma_uint64>)>>
+      get ma_resource_manager_data_stream_read_pcm_frames =>
+          _library._ma_resource_manager_data_stream_read_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager_data_stream>, ma_uint64)>>
+      get ma_resource_manager_data_stream_seek_to_pcm_frame =>
+          _library._ma_resource_manager_data_stream_seek_to_pcm_framePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager_data_stream>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>> get ma_resource_manager_data_stream_get_data_format =>
+      _library._ma_resource_manager_data_stream_get_data_formatPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_stream>,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_resource_manager_data_stream_get_cursor_in_pcm_frames =>
+          _library._ma_resource_manager_data_stream_get_cursor_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_stream>,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_resource_manager_data_stream_get_length_in_pcm_frames =>
+          _library._ma_resource_manager_data_stream_get_length_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_stream>)>>
+      get ma_resource_manager_data_stream_result =>
+          _library._ma_resource_manager_data_stream_resultPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager_data_stream>, ma_bool32)>>
+      get ma_resource_manager_data_stream_set_looping =>
+          _library._ma_resource_manager_data_stream_set_loopingPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_resource_manager_data_stream>)>>
+      get ma_resource_manager_data_stream_is_looping =>
+          _library._ma_resource_manager_data_stream_is_loopingPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_stream>,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_resource_manager_data_stream_get_available_frames =>
+          _library._ma_resource_manager_data_stream_get_available_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ma_resource_manager_data_source_config>,
+                  ffi.Pointer<ma_resource_manager_data_source>)>>
+      get ma_resource_manager_data_source_init_ex =>
+          _library._ma_resource_manager_data_source_init_exPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ffi.Int8>,
+                  ma_uint32,
+                  ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+                  ffi.Pointer<ma_resource_manager_data_source>)>>
+      get ma_resource_manager_data_source_init =>
+          _library._ma_resource_manager_data_source_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<wchar_t>,
+                  ma_uint32,
+                  ffi.Pointer<ma_resource_manager_pipeline_notifications>,
+                  ffi.Pointer<ma_resource_manager_data_source>)>>
+      get ma_resource_manager_data_source_init_w =>
+          _library._ma_resource_manager_data_source_init_wPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>,
+                  ffi.Pointer<ma_resource_manager_data_source>,
+                  ffi.Pointer<ma_resource_manager_data_source>)>>
+      get ma_resource_manager_data_source_init_copy =>
+          _library._ma_resource_manager_data_source_init_copyPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_source>)>>
+      get ma_resource_manager_data_source_uninit =>
+          _library._ma_resource_manager_data_source_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_source>,
+                  ffi.Pointer<ffi.Void>, ma_uint64, ffi.Pointer<ma_uint64>)>>
+      get ma_resource_manager_data_source_read_pcm_frames =>
+          _library._ma_resource_manager_data_source_read_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager_data_source>, ma_uint64)>>
+      get ma_resource_manager_data_source_seek_to_pcm_frame =>
+          _library._ma_resource_manager_data_source_seek_to_pcm_framePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_resource_manager_data_source>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>> get ma_resource_manager_data_source_get_data_format =>
+      _library._ma_resource_manager_data_source_get_data_formatPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_source>,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_resource_manager_data_source_get_cursor_in_pcm_frames =>
+          _library._ma_resource_manager_data_source_get_cursor_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_source>,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_resource_manager_data_source_get_length_in_pcm_frames =>
+          _library._ma_resource_manager_data_source_get_length_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_source>)>>
+      get ma_resource_manager_data_source_result =>
+          _library._ma_resource_manager_data_source_resultPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager_data_source>, ma_bool32)>>
+      get ma_resource_manager_data_source_set_looping =>
+          _library._ma_resource_manager_data_source_set_loopingPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_resource_manager_data_source>)>>
+      get ma_resource_manager_data_source_is_looping =>
+          _library._ma_resource_manager_data_source_is_loopingPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager_data_source>,
+                  ffi.Pointer<ma_uint64>)>>
+      get ma_resource_manager_data_source_get_available_frames =>
+          _library._ma_resource_manager_data_source_get_available_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>, ffi.Pointer<ma_job>)>>
+      get ma_resource_manager_post_job =>
+          _library._ma_resource_manager_post_jobPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager>)>>
+      get ma_resource_manager_post_job_quit =>
+          _library._ma_resource_manager_post_job_quitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>, ffi.Pointer<ma_job>)>>
+      get ma_resource_manager_next_job =>
+          _library._ma_resource_manager_next_jobPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_resource_manager>, ffi.Pointer<ma_job>)>>
+      get ma_resource_manager_process_job =>
+          _library._ma_resource_manager_process_jobPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_resource_manager>)>>
+      get ma_resource_manager_process_next_job =>
+          _library._ma_resource_manager_process_next_jobPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_node_config Function()>>
+      get ma_node_config_init => _library._ma_node_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_node_config>,
+              ffi.Pointer<size_t>)>> get ma_node_get_heap_size =>
+      _library._ma_node_get_heap_sizePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_node_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_node>)>> get ma_node_init_preallocated =>
+      _library._ma_node_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_node>)>> get ma_node_init =>
+      _library._ma_node_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_node>, ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_node_uninit => _library._ma_node_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_node_graph> Function(ffi.Pointer<ma_node>)>>
+      get ma_node_get_node_graph => _library._ma_node_get_node_graphPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_node>)>>
+      get ma_node_get_input_bus_count =>
+          _library._ma_node_get_input_bus_countPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_node>)>>
+      get ma_node_get_output_bus_count =>
+          _library._ma_node_get_output_bus_countPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint32 Function(ffi.Pointer<ma_node>, ma_uint32)>>
+      get ma_node_get_input_channels => _library._ma_node_get_input_channelsPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint32 Function(ffi.Pointer<ma_node>, ma_uint32)>>
+      get ma_node_get_output_channels =>
+          _library._ma_node_get_output_channelsPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node>,
+              ma_uint32,
+              ffi.Pointer<ma_node>,
+              ma_uint32)>> get ma_node_attach_output_bus =>
+      _library._ma_node_attach_output_busPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_node>, ma_uint32)>>
+      get ma_node_detach_output_bus => _library._ma_node_detach_output_busPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_node>)>>
+      get ma_node_detach_all_output_buses =>
+          _library._ma_node_detach_all_output_busesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_node>, ma_uint32, ffi.Float)>>
+      get ma_node_set_output_bus_volume =>
+          _library._ma_node_set_output_bus_volumePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Float Function(ffi.Pointer<ma_node>, ma_uint32)>>
+      get ma_node_get_output_bus_volume =>
+          _library._ma_node_get_output_bus_volumePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_node>, ffi.Int32)>>
+      get ma_node_set_state => _library._ma_node_set_statePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_node>)>>
+      get ma_node_get_state => _library._ma_node_get_statePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_node>, ffi.Int32, ma_uint64)>>
+      get ma_node_set_state_time => _library._ma_node_set_state_timePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint64 Function(ffi.Pointer<ma_node>, ffi.Int32)>>
+      get ma_node_get_state_time => _library._ma_node_get_state_timePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_node>, ma_uint64)>>
+      get ma_node_get_state_by_time => _library._ma_node_get_state_by_timePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_node>, ma_uint64, ma_uint64)>>
+      get ma_node_get_state_by_time_range =>
+          _library._ma_node_get_state_by_time_rangePtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_node>)>>
+      get ma_node_get_time => _library._ma_node_get_timePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_node>, ma_uint64)>>
+      get ma_node_set_time => _library._ma_node_set_timePtr;
+  ffi.Pointer<ffi.NativeFunction<ma_node_graph_config Function(ma_uint32)>>
+      get ma_node_graph_config_init => _library._ma_node_graph_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_node_graph>)>> get ma_node_graph_init =>
+      _library._ma_node_graph_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_node_graph>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_node_graph_uninit => _library._ma_node_graph_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_node> Function(ffi.Pointer<ma_node_graph>)>>
+      get ma_node_graph_get_endpoint => _library._ma_node_graph_get_endpointPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>> get ma_node_graph_read_pcm_frames =>
+      _library._ma_node_graph_read_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_node_graph>)>>
+      get ma_node_graph_get_channels => _library._ma_node_graph_get_channelsPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_node_graph>)>>
+      get ma_node_graph_get_time => _library._ma_node_graph_get_timePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_node_graph>, ma_uint64)>>
+      get ma_node_graph_set_time => _library._ma_node_graph_set_timePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_data_source_node_config Function(ffi.Pointer<ma_data_source>)>>
+      get ma_data_source_node_config_init =>
+          _library._ma_data_source_node_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_node_graph>,
+                  ffi.Pointer<ma_data_source_node_config>,
+                  ffi.Pointer<ma_allocation_callbacks>,
+                  ffi.Pointer<ma_data_source_node>)>>
+      get ma_data_source_node_init => _library._ma_data_source_node_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_data_source_node>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_data_source_node_uninit => _library._ma_data_source_node_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_data_source_node>, ma_bool32)>>
+      get ma_data_source_node_set_looping =>
+          _library._ma_data_source_node_set_loopingPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_data_source_node>)>>
+      get ma_data_source_node_is_looping =>
+          _library._ma_data_source_node_is_loopingPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_splitter_node_config Function(ma_uint32)>>
+      get ma_splitter_node_config_init =>
+          _library._ma_splitter_node_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_splitter_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_splitter_node>)>> get ma_splitter_node_init =>
+      _library._ma_splitter_node_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_splitter_node>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_splitter_node_uninit => _library._ma_splitter_node_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ma_biquad_node_config Function(
+              ma_uint32,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float)>> get ma_biquad_node_config_init =>
+      _library._ma_biquad_node_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_biquad_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_biquad_node>)>> get ma_biquad_node_init =>
+      _library._ma_biquad_node_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_biquad_config>, ffi.Pointer<ma_biquad_node>)>>
+      get ma_biquad_node_reinit => _library._ma_biquad_node_reinitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_biquad_node>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_biquad_node_uninit => _library._ma_biquad_node_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_lpf_node_config Function(
+                  ma_uint32, ma_uint32, ffi.Double, ma_uint32)>>
+      get ma_lpf_node_config_init => _library._ma_lpf_node_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_lpf_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_lpf_node>)>> get ma_lpf_node_init =>
+      _library._ma_lpf_node_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_lpf_config>, ffi.Pointer<ma_lpf_node>)>>
+      get ma_lpf_node_reinit => _library._ma_lpf_node_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_lpf_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_lpf_node_uninit =>
+      _library._ma_lpf_node_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_hpf_node_config Function(
+                  ma_uint32, ma_uint32, ffi.Double, ma_uint32)>>
+      get ma_hpf_node_config_init => _library._ma_hpf_node_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_hpf_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_hpf_node>)>> get ma_hpf_node_init =>
+      _library._ma_hpf_node_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_hpf_config>, ffi.Pointer<ma_hpf_node>)>>
+      get ma_hpf_node_reinit => _library._ma_hpf_node_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_hpf_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_hpf_node_uninit =>
+      _library._ma_hpf_node_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bpf_node_config Function(
+                  ma_uint32, ma_uint32, ffi.Double, ma_uint32)>>
+      get ma_bpf_node_config_init => _library._ma_bpf_node_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_bpf_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_bpf_node>)>> get ma_bpf_node_init =>
+      _library._ma_bpf_node_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_bpf_config>, ffi.Pointer<ma_bpf_node>)>>
+      get ma_bpf_node_reinit => _library._ma_bpf_node_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_bpf_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_bpf_node_uninit =>
+      _library._ma_bpf_node_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_notch_node_config Function(
+                  ma_uint32, ma_uint32, ffi.Double, ffi.Double)>>
+      get ma_notch_node_config_init => _library._ma_notch_node_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_notch_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_notch_node>)>> get ma_notch_node_init =>
+      _library._ma_notch_node_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_notch_config>, ffi.Pointer<ma_notch_node>)>>
+      get ma_notch_node_reinit => _library._ma_notch_node_reinitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_notch_node>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_notch_node_uninit => _library._ma_notch_node_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_peak_node_config Function(
+                  ma_uint32, ma_uint32, ffi.Double, ffi.Double, ffi.Double)>>
+      get ma_peak_node_config_init => _library._ma_peak_node_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_peak_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_peak_node>)>> get ma_peak_node_init =>
+      _library._ma_peak_node_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_peak_config>, ffi.Pointer<ma_peak_node>)>>
+      get ma_peak_node_reinit => _library._ma_peak_node_reinitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_peak_node>,
+              ffi.Pointer<ma_allocation_callbacks>)>> get ma_peak_node_uninit =>
+      _library._ma_peak_node_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_loshelf_node_config Function(
+                  ma_uint32, ma_uint32, ffi.Double, ffi.Double, ffi.Double)>>
+      get ma_loshelf_node_config_init =>
+          _library._ma_loshelf_node_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_loshelf_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_loshelf_node>)>> get ma_loshelf_node_init =>
+      _library._ma_loshelf_node_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_loshelf_config>,
+              ffi.Pointer<ma_loshelf_node>)>> get ma_loshelf_node_reinit =>
+      _library._ma_loshelf_node_reinitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_loshelf_node>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_loshelf_node_uninit => _library._ma_loshelf_node_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_hishelf_node_config Function(
+                  ma_uint32, ma_uint32, ffi.Double, ffi.Double, ffi.Double)>>
+      get ma_hishelf_node_config_init =>
+          _library._ma_hishelf_node_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_hishelf_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_hishelf_node>)>> get ma_hishelf_node_init =>
+      _library._ma_hishelf_node_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_hishelf_config>,
+              ffi.Pointer<ma_hishelf_node>)>> get ma_hishelf_node_reinit =>
+      _library._ma_hishelf_node_reinitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_hishelf_node>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_hishelf_node_uninit => _library._ma_hishelf_node_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_delay_node_config Function(
+                  ma_uint32, ma_uint32, ma_uint32, ffi.Float)>>
+      get ma_delay_node_config_init => _library._ma_delay_node_config_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_node_graph>,
+              ffi.Pointer<ma_delay_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_delay_node>)>> get ma_delay_node_init =>
+      _library._ma_delay_node_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_delay_node>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_delay_node_uninit => _library._ma_delay_node_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_delay_node>, ffi.Float)>>
+      get ma_delay_node_set_wet => _library._ma_delay_node_set_wetPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_delay_node>)>>
+      get ma_delay_node_get_wet => _library._ma_delay_node_get_wetPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_delay_node>, ffi.Float)>>
+      get ma_delay_node_set_dry => _library._ma_delay_node_set_dryPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_delay_node>)>>
+      get ma_delay_node_get_dry => _library._ma_delay_node_get_dryPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_delay_node>, ffi.Float)>>
+      get ma_delay_node_set_decay => _library._ma_delay_node_set_decayPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_delay_node>)>>
+      get ma_delay_node_get_decay => _library._ma_delay_node_get_decayPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_engine_node_config Function(
+                  ffi.Pointer<ma_engine>, ffi.Int32, ma_uint32)>>
+      get ma_engine_node_config_init => _library._ma_engine_node_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_engine_node_config>, ffi.Pointer<size_t>)>>
+      get ma_engine_node_get_heap_size =>
+          _library._ma_engine_node_get_heap_sizePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_engine_node_config>,
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_engine_node>)>>
+      get ma_engine_node_init_preallocated =>
+          _library._ma_engine_node_init_preallocatedPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine_node_config>,
+              ffi.Pointer<ma_allocation_callbacks>,
+              ffi.Pointer<ma_engine_node>)>> get ma_engine_node_init =>
+      _library._ma_engine_node_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_engine_node>,
+                  ffi.Pointer<ma_allocation_callbacks>)>>
+      get ma_engine_node_uninit => _library._ma_engine_node_uninitPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_sound_config Function()>>
+      get ma_sound_config_init => _library._ma_sound_config_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_sound_group_config Function()>>
+      get ma_sound_group_config_init => _library._ma_sound_group_config_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_engine_config Function()>>
+      get ma_engine_config_init => _library._ma_engine_config_initPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_engine_config>, ffi.Pointer<ma_engine>)>>
+      get ma_engine_init => _library._ma_engine_initPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_engine>)>>
+      get ma_engine_uninit => _library._ma_engine_uninitPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<ffi.Void>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>> get ma_engine_read_pcm_frames =>
+      _library._ma_engine_read_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_node_graph> Function(ffi.Pointer<ma_engine>)>>
+      get ma_engine_get_node_graph => _library._ma_engine_get_node_graphPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ma_resource_manager> Function(
+              ffi.Pointer<ma_engine>)>> get ma_engine_get_resource_manager =>
+      _library._ma_engine_get_resource_managerPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_device> Function(ffi.Pointer<ma_engine>)>>
+      get ma_engine_get_device => _library._ma_engine_get_devicePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_log> Function(ffi.Pointer<ma_engine>)>>
+      get ma_engine_get_log => _library._ma_engine_get_logPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_node> Function(ffi.Pointer<ma_engine>)>>
+      get ma_engine_get_endpoint => _library._ma_engine_get_endpointPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_engine>)>>
+      get ma_engine_get_time => _library._ma_engine_get_timePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_engine>, ma_uint64)>>
+      get ma_engine_set_time => _library._ma_engine_set_timePtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_engine>)>>
+      get ma_engine_get_channels => _library._ma_engine_get_channelsPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_engine>)>>
+      get ma_engine_get_sample_rate => _library._ma_engine_get_sample_ratePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_engine>)>>
+      get ma_engine_start => _library._ma_engine_startPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_engine>)>>
+      get ma_engine_stop => _library._ma_engine_stopPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_engine>, ffi.Float)>>
+      get ma_engine_set_volume => _library._ma_engine_set_volumePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_engine>, ffi.Float)>>
+      get ma_engine_set_gain_db => _library._ma_engine_set_gain_dbPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_engine>)>>
+      get ma_engine_get_listener_count =>
+          _library._ma_engine_get_listener_countPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint32 Function(
+                  ffi.Pointer<ma_engine>, ffi.Float, ffi.Float, ffi.Float)>>
+      get ma_engine_find_closest_listener =>
+          _library._ma_engine_find_closest_listenerPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_engine>,
+              ma_uint32,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float)>> get ma_engine_listener_set_position =>
+      _library._ma_engine_listener_set_positionPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_vec3f Function(ffi.Pointer<ma_engine>, ma_uint32)>>
+      get ma_engine_listener_get_position =>
+          _library._ma_engine_listener_get_positionPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_engine>,
+              ma_uint32,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float)>> get ma_engine_listener_set_direction =>
+      _library._ma_engine_listener_set_directionPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_vec3f Function(ffi.Pointer<ma_engine>, ma_uint32)>>
+      get ma_engine_listener_get_direction =>
+          _library._ma_engine_listener_get_directionPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_engine>,
+              ma_uint32,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float)>> get ma_engine_listener_set_velocity =>
+      _library._ma_engine_listener_set_velocityPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_vec3f Function(ffi.Pointer<ma_engine>, ma_uint32)>>
+      get ma_engine_listener_get_velocity =>
+          _library._ma_engine_listener_get_velocityPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_engine>,
+              ma_uint32,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float)>> get ma_engine_listener_set_cone =>
+      _library._ma_engine_listener_set_conePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_engine>,
+              ma_uint32,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>> get ma_engine_listener_get_cone =>
+      _library._ma_engine_listener_get_conePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_engine>,
+              ma_uint32,
+              ffi.Float,
+              ffi.Float,
+              ffi.Float)>> get ma_engine_listener_set_world_up =>
+      _library._ma_engine_listener_set_world_upPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_vec3f Function(ffi.Pointer<ma_engine>, ma_uint32)>>
+      get ma_engine_listener_get_world_up =>
+          _library._ma_engine_listener_get_world_upPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_engine>, ma_uint32, ma_bool32)>>
+      get ma_engine_listener_set_enabled =>
+          _library._ma_engine_listener_set_enabledPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ma_bool32 Function(ffi.Pointer<ma_engine>, ma_uint32)>>
+      get ma_engine_listener_is_enabled =>
+          _library._ma_engine_listener_is_enabledPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ma_node>,
+              ma_uint32)>> get ma_engine_play_sound_ex =>
+      _library._ma_engine_play_sound_exPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_engine>, ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ma_sound_group>)>> get ma_engine_play_sound =>
+      _library._ma_engine_play_soundPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<ffi.Int8>,
+              ma_uint32,
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ma_fence>,
+              ffi.Pointer<ma_sound>)>> get ma_sound_init_from_file =>
+      _library._ma_sound_init_from_filePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<wchar_t>,
+              ma_uint32,
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ma_fence>,
+              ffi.Pointer<ma_sound>)>> get ma_sound_init_from_file_w =>
+      _library._ma_sound_init_from_file_wPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<ma_sound>,
+              ma_uint32,
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ma_sound>)>> get ma_sound_init_copy =>
+      _library._ma_sound_init_copyPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<ma_data_source>,
+              ma_uint32,
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ma_sound>)>> get ma_sound_init_from_data_source =>
+      _library._ma_sound_init_from_data_sourcePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<ma_sound_config>,
+              ffi.Pointer<ma_sound>)>> get ma_sound_init_ex =>
+      _library._ma_sound_init_exPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_uninit => _library._ma_sound_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_engine> Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_engine => _library._ma_sound_get_enginePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_data_source> Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_data_source => _library._ma_sound_get_data_sourcePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_start => _library._ma_sound_startPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_stop => _library._ma_sound_stopPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float)>>
+      get ma_sound_set_volume => _library._ma_sound_set_volumePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_volume => _library._ma_sound_get_volumePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float)>>
+      get ma_sound_set_pan => _library._ma_sound_set_panPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_pan => _library._ma_sound_get_panPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Int32)>>
+      get ma_sound_set_pan_mode => _library._ma_sound_set_pan_modePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_pan_mode => _library._ma_sound_get_pan_modePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float)>>
+      get ma_sound_set_pitch => _library._ma_sound_set_pitchPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_pitch => _library._ma_sound_get_pitchPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ma_bool32)>>
+      get ma_sound_set_spatialization_enabled =>
+          _library._ma_sound_set_spatialization_enabledPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_is_spatialization_enabled =>
+          _library._ma_sound_is_spatialization_enabledPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ma_uint32)>>
+      get ma_sound_set_pinned_listener_index =>
+          _library._ma_sound_set_pinned_listener_indexPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_pinned_listener_index =>
+          _library._ma_sound_get_pinned_listener_indexPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_listener_index =>
+          _library._ma_sound_get_listener_indexPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_direction_to_listener =>
+          _library._ma_sound_get_direction_to_listenerPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_sound>, ffi.Float, ffi.Float, ffi.Float)>>
+      get ma_sound_set_position => _library._ma_sound_set_positionPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_position => _library._ma_sound_get_positionPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_sound>, ffi.Float, ffi.Float, ffi.Float)>>
+      get ma_sound_set_direction => _library._ma_sound_set_directionPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_direction => _library._ma_sound_get_directionPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_sound>, ffi.Float, ffi.Float, ffi.Float)>>
+      get ma_sound_set_velocity => _library._ma_sound_set_velocityPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_velocity => _library._ma_sound_get_velocityPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Int32)>>
+      get ma_sound_set_attenuation_model =>
+          _library._ma_sound_set_attenuation_modelPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_attenuation_model =>
+          _library._ma_sound_get_attenuation_modelPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Int32)>>
+      get ma_sound_set_positioning => _library._ma_sound_set_positioningPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_positioning => _library._ma_sound_get_positioningPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float)>>
+      get ma_sound_set_rolloff => _library._ma_sound_set_rolloffPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_rolloff => _library._ma_sound_get_rolloffPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float)>>
+      get ma_sound_set_min_gain => _library._ma_sound_set_min_gainPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_min_gain => _library._ma_sound_get_min_gainPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float)>>
+      get ma_sound_set_max_gain => _library._ma_sound_set_max_gainPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_max_gain => _library._ma_sound_get_max_gainPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float)>>
+      get ma_sound_set_min_distance => _library._ma_sound_set_min_distancePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_min_distance => _library._ma_sound_get_min_distancePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float)>>
+      get ma_sound_set_max_distance => _library._ma_sound_set_max_distancePtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_max_distance => _library._ma_sound_get_max_distancePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_sound>, ffi.Float, ffi.Float, ffi.Float)>>
+      get ma_sound_set_cone => _library._ma_sound_set_conePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>> get ma_sound_get_cone =>
+      _library._ma_sound_get_conePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float)>>
+      get ma_sound_set_doppler_factor =>
+          _library._ma_sound_set_doppler_factorPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_doppler_factor =>
+          _library._ma_sound_get_doppler_factorPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ffi.Float)>>
+      get ma_sound_set_directional_attenuation_factor =>
+          _library._ma_sound_set_directional_attenuation_factorPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_directional_attenuation_factor =>
+          _library._ma_sound_get_directional_attenuation_factorPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_sound>, ffi.Float, ffi.Float, ma_uint64)>>
+      get ma_sound_set_fade_in_pcm_frames =>
+          _library._ma_sound_set_fade_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(
+                  ffi.Pointer<ma_sound>, ffi.Float, ffi.Float, ma_uint64)>>
+      get ma_sound_set_fade_in_milliseconds =>
+          _library._ma_sound_set_fade_in_millisecondsPtr;
+  ffi.Pointer<ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_current_fade_volume =>
+          _library._ma_sound_get_current_fade_volumePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ma_uint64)>>
+      get ma_sound_set_start_time_in_pcm_frames =>
+          _library._ma_sound_set_start_time_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ma_uint64)>>
+      get ma_sound_set_start_time_in_milliseconds =>
+          _library._ma_sound_set_start_time_in_millisecondsPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ma_uint64)>>
+      get ma_sound_set_stop_time_in_pcm_frames =>
+          _library._ma_sound_set_stop_time_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ma_uint64)>>
+      get ma_sound_set_stop_time_in_milliseconds =>
+          _library._ma_sound_set_stop_time_in_millisecondsPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_is_playing => _library._ma_sound_is_playingPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_get_time_in_pcm_frames =>
+          _library._ma_sound_get_time_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound>, ma_bool32)>>
+      get ma_sound_set_looping => _library._ma_sound_set_loopingPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_is_looping => _library._ma_sound_is_loopingPtr;
+  ffi.Pointer<ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_sound>)>>
+      get ma_sound_at_end => _library._ma_sound_at_endPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_sound>, ma_uint64)>>
+      get ma_sound_seek_to_pcm_frame => _library._ma_sound_seek_to_pcm_framePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_sound>,
+              ffi.Pointer<ffi.Int32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>> get ma_sound_get_data_format =>
+      _library._ma_sound_get_data_formatPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_sound>, ffi.Pointer<ma_uint64>)>>
+      get ma_sound_get_cursor_in_pcm_frames =>
+          _library._ma_sound_get_cursor_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_sound>, ffi.Pointer<ma_uint64>)>>
+      get ma_sound_get_length_in_pcm_frames =>
+          _library._ma_sound_get_length_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_sound>, ffi.Pointer<ffi.Float>)>>
+      get ma_sound_get_cursor_in_seconds =>
+          _library._ma_sound_get_cursor_in_secondsPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_sound>, ffi.Pointer<ffi.Float>)>>
+      get ma_sound_get_length_in_seconds =>
+          _library._ma_sound_get_length_in_secondsPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ma_uint32,
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ma_sound_group>)>> get ma_sound_group_init =>
+      _library._ma_sound_group_initPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ma_engine>,
+              ffi.Pointer<ma_sound_group_config>,
+              ffi.Pointer<ma_sound_group>)>> get ma_sound_group_init_ex =>
+      _library._ma_sound_group_init_exPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_uninit => _library._ma_sound_group_uninitPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ma_engine> Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_engine => _library._ma_sound_group_get_enginePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_start => _library._ma_sound_group_startPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_stop => _library._ma_sound_group_stopPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float)>>
+      get ma_sound_group_set_volume => _library._ma_sound_group_set_volumePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_volume => _library._ma_sound_group_get_volumePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float)>>
+      get ma_sound_group_set_pan => _library._ma_sound_group_set_panPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_pan => _library._ma_sound_group_get_panPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Int32)>>
+      get ma_sound_group_set_pan_mode =>
+          _library._ma_sound_group_set_pan_modePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_pan_mode =>
+          _library._ma_sound_group_get_pan_modePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float)>>
+      get ma_sound_group_set_pitch => _library._ma_sound_group_set_pitchPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_pitch => _library._ma_sound_group_get_pitchPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ma_bool32)>>
+      get ma_sound_group_set_spatialization_enabled =>
+          _library._ma_sound_group_set_spatialization_enabledPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_is_spatialization_enabled =>
+          _library._ma_sound_group_is_spatialization_enabledPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ma_uint32)>>
+      get ma_sound_group_set_pinned_listener_index =>
+          _library._ma_sound_group_set_pinned_listener_indexPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_pinned_listener_index =>
+          _library._ma_sound_group_get_pinned_listener_indexPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_uint32 Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_listener_index =>
+          _library._ma_sound_group_get_listener_indexPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_direction_to_listener =>
+          _library._ma_sound_group_get_direction_to_listenerPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float, ffi.Float,
+              ffi.Float)>> get ma_sound_group_set_position =>
+      _library._ma_sound_group_set_positionPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_position =>
+          _library._ma_sound_group_get_positionPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float, ffi.Float,
+              ffi.Float)>> get ma_sound_group_set_direction =>
+      _library._ma_sound_group_set_directionPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_direction =>
+          _library._ma_sound_group_get_directionPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float, ffi.Float,
+              ffi.Float)>> get ma_sound_group_set_velocity =>
+      _library._ma_sound_group_set_velocityPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_vec3f Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_velocity =>
+          _library._ma_sound_group_get_velocityPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Int32)>>
+      get ma_sound_group_set_attenuation_model =>
+          _library._ma_sound_group_set_attenuation_modelPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_attenuation_model =>
+          _library._ma_sound_group_get_attenuation_modelPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Int32)>>
+      get ma_sound_group_set_positioning =>
+          _library._ma_sound_group_set_positioningPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_positioning =>
+          _library._ma_sound_group_get_positioningPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float)>>
+      get ma_sound_group_set_rolloff => _library._ma_sound_group_set_rolloffPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_rolloff => _library._ma_sound_group_get_rolloffPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float)>>
+      get ma_sound_group_set_min_gain =>
+          _library._ma_sound_group_set_min_gainPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_min_gain =>
+          _library._ma_sound_group_get_min_gainPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float)>>
+      get ma_sound_group_set_max_gain =>
+          _library._ma_sound_group_set_max_gainPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_max_gain =>
+          _library._ma_sound_group_get_max_gainPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float)>>
+      get ma_sound_group_set_min_distance =>
+          _library._ma_sound_group_set_min_distancePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_min_distance =>
+          _library._ma_sound_group_get_min_distancePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float)>>
+      get ma_sound_group_set_max_distance =>
+          _library._ma_sound_group_set_max_distancePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_max_distance =>
+          _library._ma_sound_group_get_max_distancePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float, ffi.Float,
+              ffi.Float)>> get ma_sound_group_set_cone =>
+      _library._ma_sound_group_set_conePtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_sound_group>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>> get ma_sound_group_get_cone =>
+      _library._ma_sound_group_get_conePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float)>>
+      get ma_sound_group_set_doppler_factor =>
+          _library._ma_sound_group_set_doppler_factorPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_doppler_factor =>
+          _library._ma_sound_group_get_doppler_factorPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float)>>
+      get ma_sound_group_set_directional_attenuation_factor =>
+          _library._ma_sound_group_set_directional_attenuation_factorPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_directional_attenuation_factor =>
+          _library._ma_sound_group_get_directional_attenuation_factorPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float, ffi.Float,
+              ma_uint64)>> get ma_sound_group_set_fade_in_pcm_frames =>
+      _library._ma_sound_group_set_fade_in_pcm_framesPtr;
+  ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_sound_group>, ffi.Float, ffi.Float,
+              ma_uint64)>> get ma_sound_group_set_fade_in_milliseconds =>
+      _library._ma_sound_group_set_fade_in_millisecondsPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ffi.Float Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_current_fade_volume =>
+          _library._ma_sound_group_get_current_fade_volumePtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ma_uint64)>>
+      get ma_sound_group_set_start_time_in_pcm_frames =>
+          _library._ma_sound_group_set_start_time_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ma_uint64)>>
+      get ma_sound_group_set_start_time_in_milliseconds =>
+          _library._ma_sound_group_set_start_time_in_millisecondsPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ma_uint64)>>
+      get ma_sound_group_set_stop_time_in_pcm_frames =>
+          _library._ma_sound_group_set_stop_time_in_pcm_framesPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ma_sound_group>, ma_uint64)>>
+      get ma_sound_group_set_stop_time_in_milliseconds =>
+          _library._ma_sound_group_set_stop_time_in_millisecondsPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_bool32 Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_is_playing => _library._ma_sound_group_is_playingPtr;
+  ffi.Pointer<
+          ffi.NativeFunction<ma_uint64 Function(ffi.Pointer<ma_sound_group>)>>
+      get ma_sound_group_get_time_in_pcm_frames =>
+          _library._ma_sound_group_get_time_in_pcm_framesPtr;
+}
+
+abstract class ma_log_level {
+  static const int MA_LOG_LEVEL_DEBUG = 4;
+  static const int MA_LOG_LEVEL_INFO = 3;
+  static const int MA_LOG_LEVEL_WARNING = 2;
+  static const int MA_LOG_LEVEL_ERROR = 1;
 }
 
 class ma_context extends ffi.Struct {
@@ -7529,8 +21894,6 @@ class ma_context extends ffi.Struct {
   external ffi.Pointer<ma_log> pLog;
 
   external ma_log log;
-
-  external ma_log_proc logCallback;
 
   @ffi.Int32()
   external int threadPriority;
@@ -7561,25 +21924,25 @@ class ma_context extends ffi.Struct {
 class ma_backend_callbacks extends ffi.Struct {
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_context>,
               ffi.Pointer<ma_context_config>,
               ffi.Pointer<ma_backend_callbacks>)>> onContextInit;
 
   external ffi.Pointer<
-          ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_context>)>>
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_context>)>>
       onContextUninit;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_context>,
               ma_enum_devices_callback_proc,
               ffi.Pointer<ffi.Void>)>> onContextEnumerateDevices;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_context>,
               ffi.Int32,
               ffi.Pointer<ma_device_id>,
@@ -7587,48 +21950,121 @@ class ma_backend_callbacks extends ffi.Struct {
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_device>,
               ffi.Pointer<ma_device_config>,
               ffi.Pointer<ma_device_descriptor>,
               ffi.Pointer<ma_device_descriptor>)>> onDeviceInit;
 
   external ffi.Pointer<
-          ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_device>)>>
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_device>)>>
       onDeviceUninit;
 
   external ffi.Pointer<
-          ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_device>)>>
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_device>)>>
       onDeviceStart;
 
   external ffi.Pointer<
-          ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_device>)>>
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_device>)>>
       onDeviceStop;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_device>, ffi.Pointer<ffi.Void>,
+          ffi.Int32 Function(ffi.Pointer<ma_device>, ffi.Pointer<ffi.Void>,
               ma_uint32, ffi.Pointer<ma_uint32>)>> onDeviceRead;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_device>, ffi.Pointer<ffi.Void>,
+          ffi.Int32 Function(ffi.Pointer<ma_device>, ffi.Pointer<ffi.Void>,
               ma_uint32, ffi.Pointer<ma_uint32>)>> onDeviceWrite;
 
   external ffi.Pointer<
-          ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_device>)>>
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_device>)>>
       onDeviceDataLoop;
 
   external ffi.Pointer<
-          ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_device>)>>
+          ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_device>)>>
       onDeviceDataLoopWakeup;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<ma_device>, ffi.Int32,
+              ffi.Pointer<ma_device_info>)>> onDeviceGetInfo;
 }
 
-typedef ma_result = ffi.Int32;
+abstract class ma_result {
+  static const int MA_SUCCESS = 0;
+  static const int MA_ERROR = -1;
+  static const int MA_INVALID_ARGS = -2;
+  static const int MA_INVALID_OPERATION = -3;
+  static const int MA_OUT_OF_MEMORY = -4;
+  static const int MA_OUT_OF_RANGE = -5;
+  static const int MA_ACCESS_DENIED = -6;
+  static const int MA_DOES_NOT_EXIST = -7;
+  static const int MA_ALREADY_EXISTS = -8;
+  static const int MA_TOO_MANY_OPEN_FILES = -9;
+  static const int MA_INVALID_FILE = -10;
+  static const int MA_TOO_BIG = -11;
+  static const int MA_PATH_TOO_LONG = -12;
+  static const int MA_NAME_TOO_LONG = -13;
+  static const int MA_NOT_DIRECTORY = -14;
+  static const int MA_IS_DIRECTORY = -15;
+  static const int MA_DIRECTORY_NOT_EMPTY = -16;
+  static const int MA_AT_END = -17;
+  static const int MA_NO_SPACE = -18;
+  static const int MA_BUSY = -19;
+  static const int MA_IO_ERROR = -20;
+  static const int MA_INTERRUPT = -21;
+  static const int MA_UNAVAILABLE = -22;
+  static const int MA_ALREADY_IN_USE = -23;
+  static const int MA_BAD_ADDRESS = -24;
+  static const int MA_BAD_SEEK = -25;
+  static const int MA_BAD_PIPE = -26;
+  static const int MA_DEADLOCK = -27;
+  static const int MA_TOO_MANY_LINKS = -28;
+  static const int MA_NOT_IMPLEMENTED = -29;
+  static const int MA_NO_MESSAGE = -30;
+  static const int MA_BAD_MESSAGE = -31;
+  static const int MA_NO_DATA_AVAILABLE = -32;
+  static const int MA_INVALID_DATA = -33;
+  static const int MA_TIMEOUT = -34;
+  static const int MA_NO_NETWORK = -35;
+  static const int MA_NOT_UNIQUE = -36;
+  static const int MA_NOT_SOCKET = -37;
+  static const int MA_NO_ADDRESS = -38;
+  static const int MA_BAD_PROTOCOL = -39;
+  static const int MA_PROTOCOL_UNAVAILABLE = -40;
+  static const int MA_PROTOCOL_NOT_SUPPORTED = -41;
+  static const int MA_PROTOCOL_FAMILY_NOT_SUPPORTED = -42;
+  static const int MA_ADDRESS_FAMILY_NOT_SUPPORTED = -43;
+  static const int MA_SOCKET_NOT_SUPPORTED = -44;
+  static const int MA_CONNECTION_RESET = -45;
+  static const int MA_ALREADY_CONNECTED = -46;
+  static const int MA_NOT_CONNECTED = -47;
+  static const int MA_CONNECTION_REFUSED = -48;
+  static const int MA_NO_HOST = -49;
+  static const int MA_IN_PROGRESS = -50;
+  static const int MA_CANCELLED = -51;
+  static const int MA_MEMORY_ALREADY_MAPPED = -52;
+  static const int MA_FORMAT_NOT_SUPPORTED = -100;
+  static const int MA_DEVICE_TYPE_NOT_SUPPORTED = -101;
+  static const int MA_SHARE_MODE_NOT_SUPPORTED = -102;
+  static const int MA_NO_BACKEND = -103;
+  static const int MA_NO_DEVICE = -104;
+  static const int MA_API_NOT_FOUND = -105;
+  static const int MA_INVALID_DEVICE_CONFIG = -106;
+  static const int MA_LOOP = -107;
+  static const int MA_DEVICE_NOT_INITIALIZED = -200;
+  static const int MA_DEVICE_ALREADY_INITIALIZED = -201;
+  static const int MA_DEVICE_NOT_STARTED = -202;
+  static const int MA_DEVICE_NOT_STOPPED = -203;
+  static const int MA_FAILED_TO_INIT_BACKEND = -300;
+  static const int MA_FAILED_TO_OPEN_BACKEND_DEVICE = -301;
+  static const int MA_FAILED_TO_START_BACKEND_DEVICE = -302;
+  static const int MA_FAILED_TO_STOP_BACKEND_DEVICE = -303;
+}
 
 class ma_context_config extends ffi.Struct {
-  external ma_log_proc logCallback;
-
   external ffi.Pointer<ma_log> pLog;
 
   @ffi.Int32()
@@ -7641,136 +22077,40 @@ class ma_context_config extends ffi.Struct {
 
   external ma_allocation_callbacks allocationCallbacks;
 
-  external UnnamedStruct12 alsa;
+  external UnnamedStruct1 alsa;
 
-  external UnnamedStruct13 pulse;
+  external UnnamedStruct2 pulse;
 
-  external UnnamedStruct14 coreaudio;
+  external UnnamedStruct3 coreaudio;
 
-  external UnnamedStruct15 jack;
+  external UnnamedStruct4 jack;
 
   external ma_backend_callbacks custom;
 }
 
-typedef ma_log_proc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Void Function(ffi.Pointer<ma_context>, ffi.Pointer<ma_device>,
-            ma_uint32, ffi.Pointer<ffi.Int8>)>>;
-
-class ma_device extends ffi.Struct {
-  external ffi.Pointer<ma_context> pContext;
-
-  @ffi.Int32()
-  external int type;
+class ma_log extends ffi.Struct {
+  @ffi.Array.multi([4])
+  external ffi.Array<ma_log_callback> callbacks;
 
   @ma_uint32()
-  external int sampleRate;
-
-  @ma_uint32()
-  external int state;
-
-  external ma_device_callback_proc onData;
-
-  external ma_stop_proc onStop;
-
-  external ffi.Pointer<ffi.Void> pUserData;
-
-  external ma_mutex startStopLock;
-
-  external ma_event wakeupEvent;
-
-  external ma_event startEvent;
-
-  external ma_event stopEvent;
-
-  external ma_thread thread;
-
-  @ma_result()
-  external int workResult;
-
-  @ma_bool8()
-  external int isOwnerOfContext;
-
-  @ma_bool8()
-  external int noPreZeroedOutputBuffer;
-
-  @ma_bool8()
-  external int noClip;
-
-  @ffi.Float()
-  external double masterVolumeFactor;
-
-  external ma_duplex_rb duplexRB;
-
-  external UnnamedStruct1 resampling;
-
-  external UnnamedStruct4 playback;
-
-  external UnnamedStruct11 capture;
-}
-
-abstract class ma_device_type {
-  static const int ma_device_type_playback = 1;
-  static const int ma_device_type_capture = 2;
-  static const int ma_device_type_duplex = 3;
-  static const int ma_device_type_loopback = 4;
-}
-
-typedef ma_uint32 = ffi.Uint32;
-typedef ma_device_callback_proc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Void Function(ffi.Pointer<ma_device>, ffi.Pointer<ffi.Void>,
-            ffi.Pointer<ffi.Void>, ma_uint32)>>;
-typedef ma_stop_proc = ffi
-    .Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_device>)>>;
-typedef ma_mutex = ma_handle;
-typedef ma_handle = ffi.Pointer<ffi.Void>;
-typedef ma_event = ma_handle;
-typedef ma_thread = ma_handle;
-typedef ma_bool8 = ma_uint8;
-typedef ma_uint8 = ffi.Uint8;
-
-class ma_duplex_rb extends ffi.Struct {
-  external ma_pcm_rb rb;
-}
-
-class ma_pcm_rb extends ffi.Struct {
-  external ma_rb rb;
-
-  @ffi.Int32()
-  external int format;
-
-  @ma_uint32()
-  external int channels;
-}
-
-/// Ring Buffer
-class ma_rb extends ffi.Struct {
-  external ffi.Pointer<ffi.Void> pBuffer;
-
-  @ma_uint32()
-  external int subbufferSizeInBytes;
-
-  @ma_uint32()
-  external int subbufferCount;
-
-  @ma_uint32()
-  external int subbufferStrideInBytes;
-
-  @ma_uint32()
-  external int encodedReadOffset;
-
-  @ma_uint32()
-  external int encodedWriteOffset;
-
-  @ma_bool8()
-  external int ownsBuffer;
-
-  @ma_bool8()
-  external int clearOnWriteAcquire;
+  external int callbackCount;
 
   external ma_allocation_callbacks allocationCallbacks;
+
+  external ma_mutex lock;
 }
+
+class ma_log_callback extends ffi.Struct {
+  external ma_log_callback_proc onLog;
+
+  external ffi.Pointer<ffi.Void> pUserData;
+}
+
+typedef ma_log_callback_proc = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(
+            ffi.Pointer<ffi.Void>, ma_uint32, ffi.Pointer<ffi.Int8>)>>;
+typedef ma_uint32 = ffi.Uint32;
 
 class ma_allocation_callbacks extends ffi.Struct {
   external ffi.Pointer<ffi.Void> pUserData;
@@ -7791,82 +22131,106 @@ class ma_allocation_callbacks extends ffi.Struct {
       onFree;
 }
 
-typedef size_t = ffi.Uint64;
+typedef size_t = __darwin_size_t;
+typedef __darwin_size_t = ffi.Uint64;
+typedef ma_mutex = ma_pthread_mutex_t;
+typedef ma_pthread_mutex_t = pthread_mutex_t;
+typedef pthread_mutex_t = __darwin_pthread_mutex_t;
+typedef __darwin_pthread_mutex_t = _opaque_pthread_mutex_t;
 
-abstract class ma_format {
-  static const int ma_format_unknown = 0;
-  static const int ma_format_u8 = 1;
-  static const int ma_format_s16 = 2;
-  static const int ma_format_s24 = 3;
-  static const int ma_format_s32 = 4;
-  static const int ma_format_f32 = 5;
-  static const int ma_format_count = 6;
+class _opaque_pthread_mutex_t extends ffi.Struct {
+  @ffi.Int64()
+  external int __sig;
+
+  @ffi.Array.multi([56])
+  external ffi.Array<ffi.Int8> __opaque;
+}
+
+abstract class ma_thread_priority {
+  static const int ma_thread_priority_idle = -5;
+  static const int ma_thread_priority_lowest = -4;
+  static const int ma_thread_priority_low = -3;
+  static const int ma_thread_priority_normal = -2;
+  static const int ma_thread_priority_high = -1;
+  static const int ma_thread_priority_highest = 0;
+  static const int ma_thread_priority_realtime = 1;
+  static const int ma_thread_priority_default = 0;
 }
 
 class UnnamedStruct1 extends ffi.Struct {
-  @ffi.Int32()
-  external int algorithm;
-
-  external UnnamedStruct2 linear;
-
-  external UnnamedStruct3 speex;
+  @ma_bool32()
+  external int useVerboseDeviceEnumeration;
 }
 
-abstract class ma_resample_algorithm {
-  static const int ma_resample_algorithm_linear = 0;
-  static const int ma_resample_algorithm_speex = 1;
-}
+typedef ma_bool32 = ma_uint32;
 
 class UnnamedStruct2 extends ffi.Struct {
-  @ma_uint32()
-  external int lpfOrder;
+  external ffi.Pointer<ffi.Int8> pApplicationName;
+
+  external ffi.Pointer<ffi.Int8> pServerName;
+
+  @ma_bool32()
+  external int tryAutoSpawn;
 }
 
 class UnnamedStruct3 extends ffi.Struct {
   @ffi.Int32()
-  external int quality;
+  external int sessionCategory;
+
+  @ma_uint32()
+  external int sessionCategoryOptions;
+
+  @ma_bool32()
+  external int noAudioSessionActivate;
+
+  @ma_bool32()
+  external int noAudioSessionDeactivate;
+}
+
+abstract class ma_ios_session_category {
+  static const int ma_ios_session_category_default = 0;
+  static const int ma_ios_session_category_none = 1;
+  static const int ma_ios_session_category_ambient = 2;
+  static const int ma_ios_session_category_solo_ambient = 3;
+  static const int ma_ios_session_category_playback = 4;
+  static const int ma_ios_session_category_record = 5;
+  static const int ma_ios_session_category_play_and_record = 6;
+  static const int ma_ios_session_category_multi_route = 7;
 }
 
 class UnnamedStruct4 extends ffi.Struct {
+  external ffi.Pointer<ffi.Int8> pClientName;
+
+  @ma_bool32()
+  external int tryStartServer;
+}
+
+typedef ma_enum_devices_callback_proc = ffi.Pointer<
+    ffi.NativeFunction<
+        ma_bool32 Function(ffi.Pointer<ma_context>, ffi.Int32,
+            ffi.Pointer<ma_device_info>, ffi.Pointer<ffi.Void>)>>;
+
+abstract class ma_device_type {
+  static const int ma_device_type_playback = 1;
+  static const int ma_device_type_capture = 2;
+  static const int ma_device_type_duplex = 3;
+  static const int ma_device_type_loopback = 4;
+}
+
+class ma_device_info extends ffi.Struct {
   external ma_device_id id;
 
   @ffi.Array.multi([256])
   external ffi.Array<ffi.Int8> name;
 
-  @ffi.Int32()
-  external int shareMode;
-
-  @ffi.Int32()
-  external int format;
+  @ma_bool32()
+  external int isDefault;
 
   @ma_uint32()
-  external int channels;
+  external int nativeDataFormatCount;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_channel> channelMap;
-
-  @ffi.Int32()
-  external int internalFormat;
-
-  @ma_uint32()
-  external int internalChannels;
-
-  @ma_uint32()
-  external int internalSampleRate;
-
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_channel> internalChannelMap;
-
-  @ma_uint32()
-  external int internalPeriodSizeInFrames;
-
-  @ma_uint32()
-  external int internalPeriods;
-
-  @ffi.Int32()
-  external int channelMixMode;
-
-  external ma_data_converter converter;
+  @ffi.Array.multi([64])
+  external ffi.Array<UnnamedStruct5> nativeDataFormats;
 }
 
 class ma_device_id extends ffi.Union {
@@ -7915,7 +22279,9 @@ class ma_device_id extends ffi.Union {
   external int nullbackend;
 }
 
-typedef wchar_t = ffi.Uint16;
+typedef wchar_t = __darwin_wchar_t;
+typedef __darwin_wchar_t = ffi.Int32;
+typedef ma_uint8 = ffi.Uint8;
 typedef ma_int32 = ffi.Int32;
 
 class UnnamedUnion1 extends ffi.Union {
@@ -7926,6 +22292,436 @@ class UnnamedUnion1 extends ffi.Union {
   external ffi.Array<ffi.Int8> s;
 
   external ffi.Pointer<ffi.Void> p;
+}
+
+class UnnamedStruct5 extends ffi.Struct {
+  @ffi.Int32()
+  external int format;
+
+  @ma_uint32()
+  external int channels;
+
+  @ma_uint32()
+  external int sampleRate;
+
+  @ma_uint32()
+  external int flags;
+}
+
+abstract class ma_format {
+  static const int ma_format_unknown = 0;
+  static const int ma_format_u8 = 1;
+  static const int ma_format_s16 = 2;
+  static const int ma_format_s24 = 3;
+  static const int ma_format_s32 = 4;
+  static const int ma_format_f32 = 5;
+  static const int ma_format_count = 6;
+}
+
+class ma_device extends ffi.Struct {
+  external ffi.Pointer<ma_context> pContext;
+
+  @ffi.Int32()
+  external int type;
+
+  @ma_uint32()
+  external int sampleRate;
+
+  @ffi.Int32()
+  external int state;
+
+  external ma_device_data_proc onData;
+
+  external ma_device_notification_proc onNotification;
+
+  external ma_stop_proc onStop;
+
+  external ffi.Pointer<ffi.Void> pUserData;
+
+  external ma_mutex startStopLock;
+
+  external ma_event wakeupEvent;
+
+  external ma_event startEvent;
+
+  external ma_event stopEvent;
+
+  external ma_thread thread;
+
+  @ffi.Int32()
+  external int workResult;
+
+  @ma_bool8()
+  external int isOwnerOfContext;
+
+  @ma_bool8()
+  external int noPreSilencedOutputBuffer;
+
+  @ma_bool8()
+  external int noClip;
+
+  @ma_bool8()
+  external int noDisableDenormals;
+
+  @ma_bool8()
+  external int noFixedSizedCallback;
+
+  @ffi.Float()
+  external double masterVolumeFactor;
+
+  external ma_duplex_rb duplexRB;
+
+  external UnnamedStruct10 resampling;
+
+  external UnnamedStruct13 playback;
+
+  external UnnamedStruct14 capture;
+}
+
+abstract class ma_device_state {
+  static const int ma_device_state_uninitialized = 0;
+  static const int ma_device_state_stopped = 1;
+  static const int ma_device_state_started = 2;
+  static const int ma_device_state_starting = 3;
+  static const int ma_device_state_stopping = 4;
+}
+
+typedef ma_device_data_proc = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(ffi.Pointer<ma_device>, ffi.Pointer<ffi.Void>,
+            ffi.Pointer<ffi.Void>, ma_uint32)>>;
+typedef ma_device_notification_proc = ffi.Pointer<
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_device_notification>)>>;
+
+class ma_device_notification extends ffi.Struct {
+  external ffi.Pointer<ma_device> pDevice;
+
+  @ffi.Int32()
+  external int type;
+
+  external UnnamedUnion2 data;
+}
+
+abstract class ma_device_notification_type {
+  static const int ma_device_notification_type_started = 0;
+  static const int ma_device_notification_type_stopped = 1;
+  static const int ma_device_notification_type_rerouted = 2;
+  static const int ma_device_notification_type_interruption_began = 3;
+  static const int ma_device_notification_type_interruption_ended = 4;
+}
+
+class UnnamedUnion2 extends ffi.Union {
+  external UnnamedStruct6 started;
+
+  external UnnamedStruct7 stopped;
+
+  external UnnamedStruct8 rerouted;
+
+  external UnnamedStruct9 interruption;
+}
+
+class UnnamedStruct6 extends ffi.Struct {
+  @ffi.Int32()
+  external int _unused;
+}
+
+class UnnamedStruct7 extends ffi.Struct {
+  @ffi.Int32()
+  external int _unused;
+}
+
+class UnnamedStruct8 extends ffi.Struct {
+  @ffi.Int32()
+  external int _unused;
+}
+
+class UnnamedStruct9 extends ffi.Struct {
+  @ffi.Int32()
+  external int _unused;
+}
+
+typedef ma_stop_proc = ffi
+    .Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_device>)>>;
+
+class ma_event extends ffi.Struct {
+  @ma_uint32()
+  external int value;
+
+  external ma_pthread_mutex_t lock;
+
+  external ma_pthread_cond_t cond;
+}
+
+typedef ma_pthread_cond_t = pthread_cond_t;
+typedef pthread_cond_t = __darwin_pthread_cond_t;
+typedef __darwin_pthread_cond_t = _opaque_pthread_cond_t;
+
+class _opaque_pthread_cond_t extends ffi.Struct {
+  @ffi.Int64()
+  external int __sig;
+
+  @ffi.Array.multi([40])
+  external ffi.Array<ffi.Int8> __opaque;
+}
+
+typedef ma_thread = ma_pthread_t;
+typedef ma_pthread_t = pthread_t;
+typedef pthread_t = __darwin_pthread_t;
+typedef __darwin_pthread_t = ffi.Pointer<_opaque_pthread_t>;
+
+class _opaque_pthread_t extends ffi.Struct {
+  @ffi.Int64()
+  external int __sig;
+
+  external ffi.Pointer<__darwin_pthread_handler_rec> __cleanup_stack;
+
+  @ffi.Array.multi([8176])
+  external ffi.Array<ffi.Int8> __opaque;
+}
+
+class __darwin_pthread_handler_rec extends ffi.Struct {
+  external ffi
+          .Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>
+      __routine;
+
+  external ffi.Pointer<ffi.Void> __arg;
+
+  external ffi.Pointer<__darwin_pthread_handler_rec> __next;
+}
+
+typedef ma_bool8 = ma_uint8;
+
+class ma_duplex_rb extends ffi.Struct {
+  external ma_pcm_rb rb;
+}
+
+class ma_pcm_rb extends ffi.Struct {
+  external ma_rb rb;
+
+  @ffi.Int32()
+  external int format;
+
+  @ma_uint32()
+  external int channels;
+}
+
+/// Ring Buffer
+class ma_rb extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pBuffer;
+
+  @ma_uint32()
+  external int subbufferSizeInBytes;
+
+  @ma_uint32()
+  external int subbufferCount;
+
+  @ma_uint32()
+  external int subbufferStrideInBytes;
+
+  @ma_uint32()
+  external int encodedReadOffset;
+
+  @ma_uint32()
+  external int encodedWriteOffset;
+
+  @ma_bool8()
+  external int ownsBuffer;
+
+  @ma_bool8()
+  external int clearOnWriteAcquire;
+
+  external ma_allocation_callbacks allocationCallbacks;
+}
+
+class UnnamedStruct10 extends ffi.Struct {
+  @ffi.Int32()
+  external int algorithm;
+
+  external ffi.Pointer<ma_resampling_backend_vtable> pBackendVTable;
+
+  external ffi.Pointer<ffi.Void> pBackendUserData;
+
+  external UnnamedStruct12 linear;
+}
+
+abstract class ma_resample_algorithm {
+  static const int ma_resample_algorithm_linear = 0;
+  static const int ma_resample_algorithm_custom = 1;
+}
+
+class ma_resampling_backend_vtable extends ffi.Struct {
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_resampler_config>,
+              ffi.Pointer<size_t>)>> onGetHeapSize;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_resampler_config>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Pointer<ma_resampling_backend>>)>> onInit;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_resampling_backend>,
+              ffi.Pointer<ma_allocation_callbacks>)>> onUninit;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_resampling_backend>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_uint64>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_uint64>)>> onProcess;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_resampling_backend>,
+              ma_uint32,
+              ma_uint32)>> onSetRate;
+
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint64 Function(
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_resampling_backend>)>>
+      onGetInputLatency;
+
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ma_uint64 Function(
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_resampling_backend>)>>
+      onGetOutputLatency;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_resampling_backend>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>> onGetRequiredInputFrameCount;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ma_resampling_backend>,
+              ma_uint64,
+              ffi.Pointer<ma_uint64>)>> onGetExpectedOutputFrameCount;
+
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ma_resampling_backend>)>>
+      onReset;
+}
+
+class ma_resampler_config extends ffi.Struct {
+  @ffi.Int32()
+  external int format;
+
+  @ma_uint32()
+  external int channels;
+
+  @ma_uint32()
+  external int sampleRateIn;
+
+  @ma_uint32()
+  external int sampleRateOut;
+
+  @ffi.Int32()
+  external int algorithm;
+
+  external ffi.Pointer<ma_resampling_backend_vtable> pBackendVTable;
+
+  external ffi.Pointer<ffi.Void> pBackendUserData;
+
+  external UnnamedStruct11 linear;
+}
+
+class UnnamedStruct11 extends ffi.Struct {
+  @ma_uint32()
+  external int lpfOrder;
+}
+
+typedef ma_resampling_backend = ffi.Void;
+typedef ma_uint64 = ffi.Uint64;
+
+class UnnamedStruct12 extends ffi.Struct {
+  @ma_uint32()
+  external int lpfOrder;
+}
+
+class UnnamedStruct13 extends ffi.Struct {
+  external ffi.Pointer<ma_device_id> pID;
+
+  external ma_device_id id;
+
+  @ffi.Array.multi([256])
+  external ffi.Array<ffi.Int8> name;
+
+  @ffi.Int32()
+  external int shareMode;
+
+  @ffi.Int32()
+  external int format;
+
+  @ma_uint32()
+  external int channels;
+
+  @ffi.Array.multi([254])
+  external ffi.Array<ma_channel> channelMap;
+
+  @ffi.Int32()
+  external int internalFormat;
+
+  @ma_uint32()
+  external int internalChannels;
+
+  @ma_uint32()
+  external int internalSampleRate;
+
+  @ffi.Array.multi([254])
+  external ffi.Array<ma_channel> internalChannelMap;
+
+  @ma_uint32()
+  external int internalPeriodSizeInFrames;
+
+  @ma_uint32()
+  external int internalPeriods;
+
+  @ffi.Int32()
+  external int channelMixMode;
+
+  external ma_data_converter converter;
+
+  external ffi.Pointer<ffi.Void> pIntermediaryBuffer;
+
+  @ma_uint32()
+  external int intermediaryBufferCap;
+
+  @ma_uint32()
+  external int intermediaryBufferLen;
+
+  external ffi.Pointer<ffi.Void> pInputCache;
+
+  @ma_uint64()
+  external int inputCacheCap;
+
+  @ma_uint64()
+  external int inputCacheConsumed;
+
+  @ma_uint64()
+  external int inputCacheRemaining;
 }
 
 abstract class ma_share_mode {
@@ -7939,12 +22735,33 @@ abstract class ma_channel_mix_mode {
   static const int ma_channel_mix_mode_rectangular = 0;
   static const int ma_channel_mix_mode_simple = 1;
   static const int ma_channel_mix_mode_custom_weights = 2;
-  static const int ma_channel_mix_mode_planar_blend = 0;
   static const int ma_channel_mix_mode_default = 0;
 }
 
 class ma_data_converter extends ffi.Struct {
-  external ma_data_converter_config config;
+  @ffi.Int32()
+  external int formatIn;
+
+  @ffi.Int32()
+  external int formatOut;
+
+  @ma_uint32()
+  external int channelsIn;
+
+  @ma_uint32()
+  external int channelsOut;
+
+  @ma_uint32()
+  external int sampleRateIn;
+
+  @ma_uint32()
+  external int sampleRateOut;
+
+  @ffi.Int32()
+  external int ditherMode;
+
+  @ffi.Int32()
+  external int executionPath;
 
   external ma_channel_converter channelConverter;
 
@@ -7964,44 +22781,11 @@ class ma_data_converter extends ffi.Struct {
 
   @ma_bool8()
   external int isPassthrough;
-}
 
-/// Data Conversion
-class ma_data_converter_config extends ffi.Struct {
-  @ffi.Int32()
-  external int formatIn;
+  @ma_bool8()
+  external int _ownsHeap;
 
-  @ffi.Int32()
-  external int formatOut;
-
-  @ma_uint32()
-  external int channelsIn;
-
-  @ma_uint32()
-  external int channelsOut;
-
-  @ma_uint32()
-  external int sampleRateIn;
-
-  @ma_uint32()
-  external int sampleRateOut;
-
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_channel> channelMapIn;
-
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_channel> channelMapOut;
-
-  @ffi.Int32()
-  external int ditherMode;
-
-  @ffi.Int32()
-  external int channelMixMode;
-
-  @ffi.Array.multi([32, 32])
-  external ffi.Array<ffi.Array<ffi.Float>> channelWeights;
-
-  external UnnamedStruct5 resampling;
+  external ffi.Pointer<ffi.Void> _pHeap;
 }
 
 abstract class ma_dither_mode {
@@ -8010,31 +22794,13 @@ abstract class ma_dither_mode {
   static const int ma_dither_mode_triangle = 2;
 }
 
-class UnnamedStruct5 extends ffi.Struct {
-  @ffi.Int32()
-  external int algorithm;
-
-  @ma_bool32()
-  external int allowDynamicSampleRate;
-
-  external UnnamedStruct6 linear;
-
-  external UnnamedStruct7 speex;
-}
-
-typedef ma_bool32 = ma_uint32;
-
-class UnnamedStruct6 extends ffi.Struct {
-  @ma_uint32()
-  external int lpfOrder;
-
-  @ffi.Double()
-  external double lpfNyquistFactor;
-}
-
-class UnnamedStruct7 extends ffi.Struct {
-  @ffi.Int32()
-  external int quality;
+abstract class ma_data_converter_execution_path {
+  static const int ma_data_converter_execution_path_passthrough = 0;
+  static const int ma_data_converter_execution_path_format_only = 1;
+  static const int ma_data_converter_execution_path_channels_only = 2;
+  static const int ma_data_converter_execution_path_resample_only = 3;
+  static const int ma_data_converter_execution_path_resample_first = 4;
+  static const int ma_data_converter_execution_path_channels_first = 5;
 }
 
 class ma_channel_converter extends ffi.Struct {
@@ -8047,48 +22813,49 @@ class ma_channel_converter extends ffi.Struct {
   @ma_uint32()
   external int channelsOut;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_channel> channelMapIn;
-
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_channel> channelMapOut;
-
   @ffi.Int32()
   external int mixingMode;
 
-  external UnnamedUnion2 weights;
+  @ffi.Int32()
+  external int conversionPath;
 
-  @ma_bool8()
-  external int isPassthrough;
+  external ffi.Pointer<ma_channel> pChannelMapIn;
 
-  @ma_bool8()
-  external int isSimpleShuffle;
+  external ffi.Pointer<ma_channel> pChannelMapOut;
 
-  @ma_bool8()
-  external int isSimpleMonoExpansion;
+  external ffi.Pointer<ma_uint8> pShuffleTable;
 
-  @ma_bool8()
-  external int isStereoToMono;
+  external UnnamedUnion3 weights;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_uint8> shuffleTable;
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
 }
 
-class UnnamedUnion2 extends ffi.Union {
-  @ffi.Array.multi([32, 32])
-  external ffi.Array<ffi.Array<ffi.Float>> f32;
+/// Channel Conversion
+abstract class ma_channel_conversion_path {
+  static const int ma_channel_conversion_path_unknown = 0;
+  static const int ma_channel_conversion_path_passthrough = 1;
+  static const int ma_channel_conversion_path_mono_out = 2;
+  static const int ma_channel_conversion_path_mono_in = 3;
+  static const int ma_channel_conversion_path_shuffle = 4;
+  static const int ma_channel_conversion_path_weights = 5;
+}
 
-  @ffi.Array.multi([32, 32])
-  external ffi.Array<ffi.Array<ma_int32>> s16;
+class UnnamedUnion3 extends ffi.Union {
+  external ffi.Pointer<ffi.Pointer<ffi.Float>> f32;
+
+  external ffi.Pointer<ffi.Pointer<ma_int32>> s16;
 }
 
 class ma_resampler extends ffi.Struct {
-  external ma_resampler_config config;
+  external ffi.Pointer<ma_resampling_backend> pBackend;
 
-  external UnnamedUnion3 state;
-}
+  external ffi.Pointer<ma_resampling_backend_vtable> pBackendVTable;
 
-class ma_resampler_config extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pBackendUserData;
+
   @ffi.Int32()
   external int format;
 
@@ -8101,31 +22868,16 @@ class ma_resampler_config extends ffi.Struct {
   @ma_uint32()
   external int sampleRateOut;
 
-  @ffi.Int32()
-  external int algorithm;
+  external UnnamedUnion4 state;
 
-  external UnnamedStruct8 linear;
+  external ffi.Pointer<ffi.Void> _pHeap;
 
-  external UnnamedStruct9 speex;
+  @ma_bool32()
+  external int _ownsHeap;
 }
 
-class UnnamedStruct8 extends ffi.Struct {
-  @ma_uint32()
-  external int lpfOrder;
-
-  @ffi.Double()
-  external double lpfNyquistFactor;
-}
-
-class UnnamedStruct9 extends ffi.Struct {
-  @ffi.Int32()
-  external int quality;
-}
-
-class UnnamedUnion3 extends ffi.Union {
+class UnnamedUnion4 extends ffi.Union {
   external ma_linear_resampler linear;
-
-  external UnnamedStruct10 speex;
 }
 
 class ma_linear_resampler extends ffi.Struct {
@@ -8143,11 +22895,16 @@ class ma_linear_resampler extends ffi.Struct {
   @ma_uint32()
   external int inTimeFrac;
 
-  external UnnamedUnion4 x0;
+  external UnnamedUnion5 x0;
 
-  external UnnamedUnion5 x1;
+  external UnnamedUnion6 x1;
 
   external ma_lpf lpf;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
 }
 
 /// Resampling
@@ -8171,22 +22928,18 @@ class ma_linear_resampler_config extends ffi.Struct {
   external double lpfNyquistFactor;
 }
 
-class UnnamedUnion4 extends ffi.Union {
-  @ffi.Array.multi([32])
-  external ffi.Array<ffi.Float> f32;
+class UnnamedUnion5 extends ffi.Union {
+  external ffi.Pointer<ffi.Float> f32;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_int16> s16;
+  external ffi.Pointer<ma_int16> s16;
 }
 
 typedef ma_int16 = ffi.Int16;
 
-class UnnamedUnion5 extends ffi.Union {
-  @ffi.Array.multi([32])
-  external ffi.Array<ffi.Float> f32;
+class UnnamedUnion6 extends ffi.Union {
+  external ffi.Pointer<ffi.Float> f32;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_int16> s16;
+  external ffi.Pointer<ma_int16> s16;
 }
 
 class ma_lpf extends ffi.Struct {
@@ -8205,11 +22958,14 @@ class ma_lpf extends ffi.Struct {
   @ma_uint32()
   external int lpf2Count;
 
-  @ffi.Array.multi([1])
-  external ffi.Array<ma_lpf1> lpf1;
+  external ffi.Pointer<ma_lpf1> pLPF1;
 
-  @ffi.Array.multi([4])
-  external ffi.Array<ma_lpf2> lpf2;
+  external ffi.Pointer<ma_lpf2> pLPF2;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
 }
 
 class ma_lpf1 extends ffi.Struct {
@@ -8221,8 +22977,12 @@ class ma_lpf1 extends ffi.Struct {
 
   external ma_biquad_coefficient a;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_biquad_coefficient> r1;
+  external ffi.Pointer<ma_biquad_coefficient> pR1;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
 }
 
 /// Biquad Filtering
@@ -8255,18 +23015,19 @@ class ma_biquad extends ffi.Struct {
 
   external ma_biquad_coefficient a2;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_biquad_coefficient> r1;
+  external ffi.Pointer<ma_biquad_coefficient> pR1;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_biquad_coefficient> r2;
+  external ffi.Pointer<ma_biquad_coefficient> pR2;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
 }
 
-class UnnamedStruct10 extends ffi.Struct {
-  external ffi.Pointer<ffi.Void> pSpeexResamplerState;
-}
+class UnnamedStruct14 extends ffi.Struct {
+  external ffi.Pointer<ma_device_id> pID;
 
-class UnnamedStruct11 extends ffi.Struct {
   external ma_device_id id;
 
   @ffi.Array.multi([256])
@@ -8281,7 +23042,7 @@ class UnnamedStruct11 extends ffi.Struct {
   @ma_uint32()
   external int channels;
 
-  @ffi.Array.multi([32])
+  @ffi.Array.multi([254])
   external ffi.Array<ma_channel> channelMap;
 
   @ffi.Int32()
@@ -8293,7 +23054,7 @@ class UnnamedStruct11 extends ffi.Struct {
   @ma_uint32()
   external int internalSampleRate;
 
-  @ffi.Array.multi([32])
+  @ffi.Array.multi([254])
   external ffi.Array<ma_channel> internalChannelMap;
 
   @ma_uint32()
@@ -8306,139 +23067,14 @@ class UnnamedStruct11 extends ffi.Struct {
   external int channelMixMode;
 
   external ma_data_converter converter;
-}
 
-class ma_log extends ffi.Struct {
-  @ffi.Array.multi([4])
-  external ffi.Array<ma_log_callback> callbacks;
+  external ffi.Pointer<ffi.Void> pIntermediaryBuffer;
 
   @ma_uint32()
-  external int callbackCount;
-
-  external ma_allocation_callbacks allocationCallbacks;
-
-  external ma_mutex lock;
-}
-
-class ma_log_callback extends ffi.Struct {
-  external ma_log_callback_proc onLog;
-
-  external ffi.Pointer<ffi.Void> pUserData;
-}
-
-typedef ma_log_callback_proc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Void Function(
-            ffi.Pointer<ffi.Void>, ma_uint32, ffi.Pointer<ffi.Int8>)>>;
-
-abstract class ma_thread_priority {
-  static const int ma_thread_priority_idle = -5;
-  static const int ma_thread_priority_lowest = -4;
-  static const int ma_thread_priority_low = -3;
-  static const int ma_thread_priority_normal = -2;
-  static const int ma_thread_priority_high = -1;
-  static const int ma_thread_priority_highest = 0;
-  static const int ma_thread_priority_realtime = 1;
-  static const int ma_thread_priority_default = 0;
-}
-
-class UnnamedStruct12 extends ffi.Struct {
-  @ma_bool32()
-  external int useVerboseDeviceEnumeration;
-}
-
-class UnnamedStruct13 extends ffi.Struct {
-  external ffi.Pointer<ffi.Int8> pApplicationName;
-
-  external ffi.Pointer<ffi.Int8> pServerName;
-
-  @ma_bool32()
-  external int tryAutoSpawn;
-}
-
-class UnnamedStruct14 extends ffi.Struct {
-  @ffi.Int32()
-  external int sessionCategory;
+  external int intermediaryBufferCap;
 
   @ma_uint32()
-  external int sessionCategoryOptions;
-
-  @ma_bool32()
-  external int noAudioSessionActivate;
-
-  @ma_bool32()
-  external int noAudioSessionDeactivate;
-}
-
-abstract class ma_ios_session_category {
-  static const int ma_ios_session_category_default = 0;
-  static const int ma_ios_session_category_none = 1;
-  static const int ma_ios_session_category_ambient = 2;
-  static const int ma_ios_session_category_solo_ambient = 3;
-  static const int ma_ios_session_category_playback = 4;
-  static const int ma_ios_session_category_record = 5;
-  static const int ma_ios_session_category_play_and_record = 6;
-  static const int ma_ios_session_category_multi_route = 7;
-}
-
-class UnnamedStruct15 extends ffi.Struct {
-  external ffi.Pointer<ffi.Int8> pClientName;
-
-  @ma_bool32()
-  external int tryStartServer;
-}
-
-typedef ma_enum_devices_callback_proc = ffi.Pointer<
-    ffi.NativeFunction<
-        ma_bool32 Function(ffi.Pointer<ma_context>, ffi.Int32,
-            ffi.Pointer<ma_device_info>, ffi.Pointer<ffi.Void>)>>;
-
-class ma_device_info extends ffi.Struct {
-  external ma_device_id id;
-
-  @ffi.Array.multi([256])
-  external ffi.Array<ffi.Int8> name;
-
-  @ma_bool32()
-  external int isDefault;
-
-  @ma_uint32()
-  external int formatCount;
-
-  @ffi.Array.multi([6])
-  external ffi.Array<ffi.Int32> formats;
-
-  @ma_uint32()
-  external int minChannels;
-
-  @ma_uint32()
-  external int maxChannels;
-
-  @ma_uint32()
-  external int minSampleRate;
-
-  @ma_uint32()
-  external int maxSampleRate;
-
-  @ma_uint32()
-  external int nativeDataFormatCount;
-
-  @ffi.Array.multi([64])
-  external ffi.Array<UnnamedStruct16> nativeDataFormats;
-}
-
-class UnnamedStruct16 extends ffi.Struct {
-  @ffi.Int32()
-  external int format;
-
-  @ma_uint32()
-  external int channels;
-
-  @ma_uint32()
-  external int sampleRate;
-
-  @ma_uint32()
-  external int flags;
+  external int intermediaryBufferLen;
 }
 
 class ma_device_config extends ffi.Struct {
@@ -8461,34 +23097,42 @@ class ma_device_config extends ffi.Struct {
   external int performanceProfile;
 
   @ma_bool8()
-  external int noPreZeroedOutputBuffer;
+  external int noPreSilencedOutputBuffer;
 
   @ma_bool8()
   external int noClip;
 
-  external ma_device_callback_proc dataCallback;
+  @ma_bool8()
+  external int noDisableDenormals;
+
+  @ma_bool8()
+  external int noFixedSizedCallback;
+
+  external ma_device_data_proc dataCallback;
+
+  external ma_device_notification_proc notificationCallback;
 
   external ma_stop_proc stopCallback;
 
   external ffi.Pointer<ffi.Void> pUserData;
 
-  external UnnamedStruct17 resampling;
+  external ma_resampler_config resampling;
 
-  external UnnamedStruct20 playback;
+  external UnnamedStruct15 playback;
 
-  external UnnamedStruct21 capture;
+  external UnnamedStruct16 capture;
 
-  external UnnamedStruct22 wasapi;
+  external UnnamedStruct17 wasapi;
 
-  external UnnamedStruct23 alsa;
+  external UnnamedStruct18 alsa;
 
-  external UnnamedStruct24 pulse;
+  external UnnamedStruct19 pulse;
 
-  external UnnamedStruct25 coreaudio;
+  external UnnamedStruct20 coreaudio;
 
-  external UnnamedStruct26 opensl;
+  external UnnamedStruct21 opensl;
 
-  external UnnamedStruct27 aaudio;
+  external UnnamedStruct22 aaudio;
 }
 
 abstract class ma_performance_profile {
@@ -8496,64 +23140,43 @@ abstract class ma_performance_profile {
   static const int ma_performance_profile_conservative = 1;
 }
 
+class UnnamedStruct15 extends ffi.Struct {
+  external ffi.Pointer<ma_device_id> pDeviceID;
+
+  @ffi.Int32()
+  external int format;
+
+  @ma_uint32()
+  external int channels;
+
+  external ffi.Pointer<ma_channel> pChannelMap;
+
+  @ffi.Int32()
+  external int channelMixMode;
+
+  @ffi.Int32()
+  external int shareMode;
+}
+
+class UnnamedStruct16 extends ffi.Struct {
+  external ffi.Pointer<ma_device_id> pDeviceID;
+
+  @ffi.Int32()
+  external int format;
+
+  @ma_uint32()
+  external int channels;
+
+  external ffi.Pointer<ma_channel> pChannelMap;
+
+  @ffi.Int32()
+  external int channelMixMode;
+
+  @ffi.Int32()
+  external int shareMode;
+}
+
 class UnnamedStruct17 extends ffi.Struct {
-  @ffi.Int32()
-  external int algorithm;
-
-  external UnnamedStruct18 linear;
-
-  external UnnamedStruct19 speex;
-}
-
-class UnnamedStruct18 extends ffi.Struct {
-  @ma_uint32()
-  external int lpfOrder;
-}
-
-class UnnamedStruct19 extends ffi.Struct {
-  @ffi.Int32()
-  external int quality;
-}
-
-class UnnamedStruct20 extends ffi.Struct {
-  external ffi.Pointer<ma_device_id> pDeviceID;
-
-  @ffi.Int32()
-  external int format;
-
-  @ma_uint32()
-  external int channels;
-
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_channel> channelMap;
-
-  @ffi.Int32()
-  external int channelMixMode;
-
-  @ffi.Int32()
-  external int shareMode;
-}
-
-class UnnamedStruct21 extends ffi.Struct {
-  external ffi.Pointer<ma_device_id> pDeviceID;
-
-  @ffi.Int32()
-  external int format;
-
-  @ma_uint32()
-  external int channels;
-
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_channel> channelMap;
-
-  @ffi.Int32()
-  external int channelMixMode;
-
-  @ffi.Int32()
-  external int shareMode;
-}
-
-class UnnamedStruct22 extends ffi.Struct {
   @ma_bool8()
   external int noAutoConvertSRC;
 
@@ -8567,7 +23190,7 @@ class UnnamedStruct22 extends ffi.Struct {
   external int noHardwareOffloading;
 }
 
-class UnnamedStruct23 extends ffi.Struct {
+class UnnamedStruct18 extends ffi.Struct {
   @ma_bool32()
   external int noMMap;
 
@@ -8581,18 +23204,18 @@ class UnnamedStruct23 extends ffi.Struct {
   external int noAutoResample;
 }
 
-class UnnamedStruct24 extends ffi.Struct {
+class UnnamedStruct19 extends ffi.Struct {
   external ffi.Pointer<ffi.Int8> pStreamNamePlayback;
 
   external ffi.Pointer<ffi.Int8> pStreamNameCapture;
 }
 
-class UnnamedStruct25 extends ffi.Struct {
+class UnnamedStruct20 extends ffi.Struct {
   @ma_bool32()
   external int allowNominalSampleRateChange;
 }
 
-class UnnamedStruct26 extends ffi.Struct {
+class UnnamedStruct21 extends ffi.Struct {
   @ffi.Int32()
   external int streamType;
 
@@ -8619,7 +23242,7 @@ abstract class ma_opensl_recording_preset {
   static const int ma_opensl_recording_preset_voice_unprocessed = 5;
 }
 
-class UnnamedStruct27 extends ffi.Struct {
+class UnnamedStruct22 extends ffi.Struct {
   @ffi.Int32()
   external int usage;
 
@@ -8628,6 +23251,9 @@ class UnnamedStruct27 extends ffi.Struct {
 
   @ffi.Int32()
   external int inputPreset;
+
+  @ma_bool32()
+  external int noAutoStartAfterReroute;
 }
 
 abstract class ma_aaudio_usage {
@@ -8683,7 +23309,7 @@ class ma_device_descriptor extends ffi.Struct {
   @ma_uint32()
   external int sampleRate;
 
-  @ffi.Array.multi([32])
+  @ffi.Array.multi([254])
   external ffi.Array<ma_channel> channelMap;
 
   @ma_uint32()
@@ -8712,6 +23338,64 @@ abstract class ma_backend {
   static const int ma_backend_webaudio = 12;
   static const int ma_backend_custom = 13;
   static const int ma_backend_null = 14;
+}
+
+abstract class _ma_channel_position {
+  static const int MA_CHANNEL_NONE = 0;
+  static const int MA_CHANNEL_MONO = 1;
+  static const int MA_CHANNEL_FRONT_LEFT = 2;
+  static const int MA_CHANNEL_FRONT_RIGHT = 3;
+  static const int MA_CHANNEL_FRONT_CENTER = 4;
+  static const int MA_CHANNEL_LFE = 5;
+  static const int MA_CHANNEL_BACK_LEFT = 6;
+  static const int MA_CHANNEL_BACK_RIGHT = 7;
+  static const int MA_CHANNEL_FRONT_LEFT_CENTER = 8;
+  static const int MA_CHANNEL_FRONT_RIGHT_CENTER = 9;
+  static const int MA_CHANNEL_BACK_CENTER = 10;
+  static const int MA_CHANNEL_SIDE_LEFT = 11;
+  static const int MA_CHANNEL_SIDE_RIGHT = 12;
+  static const int MA_CHANNEL_TOP_CENTER = 13;
+  static const int MA_CHANNEL_TOP_FRONT_LEFT = 14;
+  static const int MA_CHANNEL_TOP_FRONT_CENTER = 15;
+  static const int MA_CHANNEL_TOP_FRONT_RIGHT = 16;
+  static const int MA_CHANNEL_TOP_BACK_LEFT = 17;
+  static const int MA_CHANNEL_TOP_BACK_CENTER = 18;
+  static const int MA_CHANNEL_TOP_BACK_RIGHT = 19;
+  static const int MA_CHANNEL_AUX_0 = 20;
+  static const int MA_CHANNEL_AUX_1 = 21;
+  static const int MA_CHANNEL_AUX_2 = 22;
+  static const int MA_CHANNEL_AUX_3 = 23;
+  static const int MA_CHANNEL_AUX_4 = 24;
+  static const int MA_CHANNEL_AUX_5 = 25;
+  static const int MA_CHANNEL_AUX_6 = 26;
+  static const int MA_CHANNEL_AUX_7 = 27;
+  static const int MA_CHANNEL_AUX_8 = 28;
+  static const int MA_CHANNEL_AUX_9 = 29;
+  static const int MA_CHANNEL_AUX_10 = 30;
+  static const int MA_CHANNEL_AUX_11 = 31;
+  static const int MA_CHANNEL_AUX_12 = 32;
+  static const int MA_CHANNEL_AUX_13 = 33;
+  static const int MA_CHANNEL_AUX_14 = 34;
+  static const int MA_CHANNEL_AUX_15 = 35;
+  static const int MA_CHANNEL_AUX_16 = 36;
+  static const int MA_CHANNEL_AUX_17 = 37;
+  static const int MA_CHANNEL_AUX_18 = 38;
+  static const int MA_CHANNEL_AUX_19 = 39;
+  static const int MA_CHANNEL_AUX_20 = 40;
+  static const int MA_CHANNEL_AUX_21 = 41;
+  static const int MA_CHANNEL_AUX_22 = 42;
+  static const int MA_CHANNEL_AUX_23 = 43;
+  static const int MA_CHANNEL_AUX_24 = 44;
+  static const int MA_CHANNEL_AUX_25 = 45;
+  static const int MA_CHANNEL_AUX_26 = 46;
+  static const int MA_CHANNEL_AUX_27 = 47;
+  static const int MA_CHANNEL_AUX_28 = 48;
+  static const int MA_CHANNEL_AUX_29 = 49;
+  static const int MA_CHANNEL_AUX_30 = 50;
+  static const int MA_CHANNEL_AUX_31 = 51;
+  static const int MA_CHANNEL_LEFT = 2;
+  static const int MA_CHANNEL_RIGHT = 3;
+  static const int MA_CHANNEL_POSITION_COUNT = 52;
 }
 
 abstract class ma_stream_format {
@@ -8760,7 +23444,26 @@ class ma_lcg extends ffi.Struct {
   external int state;
 }
 
-typedef va_list = ffi.Pointer<ffi.Int8>;
+class ma_semaphore extends ffi.Struct {
+  @ffi.Int32()
+  external int value;
+
+  external ma_pthread_mutex_t lock;
+
+  external ma_pthread_cond_t cond;
+}
+
+class __va_list_tag extends ffi.Struct {
+  @ffi.Uint32()
+  external int gp_offset;
+
+  @ffi.Uint32()
+  external int fp_offset;
+
+  external ffi.Pointer<ffi.Void> overflow_arg_area;
+
+  external ffi.Pointer<ffi.Void> reg_save_area;
+}
 
 class ma_biquad_config extends ffi.Struct {
   @ffi.Int32()
@@ -8787,8 +23490,6 @@ class ma_biquad_config extends ffi.Struct {
   @ffi.Double()
   external double a2;
 }
-
-typedef ma_uint64 = ffi.Uint64;
 
 /// Low-Pass Filtering
 class ma_lpf1_config extends ffi.Struct {
@@ -8858,8 +23559,12 @@ class ma_hpf1 extends ffi.Struct {
 
   external ma_biquad_coefficient a;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_biquad_coefficient> r1;
+  external ffi.Pointer<ma_biquad_coefficient> pR1;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
 }
 
 class ma_hpf2 extends ffi.Struct {
@@ -8899,11 +23604,14 @@ class ma_hpf extends ffi.Struct {
   @ma_uint32()
   external int hpf2Count;
 
-  @ffi.Array.multi([1])
-  external ffi.Array<ma_hpf1> hpf1;
+  external ffi.Pointer<ma_hpf1> pHPF1;
 
-  @ffi.Array.multi([4])
-  external ffi.Array<ma_hpf2> hpf2;
+  external ffi.Pointer<ma_hpf2> pHPF2;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
 }
 
 /// Band-Pass Filtering
@@ -8955,8 +23663,12 @@ class ma_bpf extends ffi.Struct {
   @ma_uint32()
   external int bpf2Count;
 
-  @ffi.Array.multi([4])
-  external ffi.Array<ma_bpf2> bpf2;
+  external ffi.Pointer<ma_bpf2> pBPF2;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
 }
 
 /// Notching Filter
@@ -9056,7 +23768,324 @@ class ma_hishelf2 extends ffi.Struct {
   external ma_biquad bq;
 }
 
-/// Channel Conversion
+class ma_delay_config extends ffi.Struct {
+  @ma_uint32()
+  external int channels;
+
+  @ma_uint32()
+  external int sampleRate;
+
+  @ma_uint32()
+  external int delayInFrames;
+
+  @ma_bool32()
+  external int delayStart;
+
+  @ffi.Float()
+  external double wet;
+
+  @ffi.Float()
+  external double dry;
+
+  @ffi.Float()
+  external double decay;
+}
+
+class ma_delay extends ffi.Struct {
+  external ma_delay_config config;
+
+  @ma_uint32()
+  external int cursor;
+
+  @ma_uint32()
+  external int bufferSizeInFrames;
+
+  external ffi.Pointer<ffi.Float> pBuffer;
+}
+
+class ma_gainer_config extends ffi.Struct {
+  @ma_uint32()
+  external int channels;
+
+  @ma_uint32()
+  external int smoothTimeInFrames;
+}
+
+class ma_gainer extends ffi.Struct {
+  external ma_gainer_config config;
+
+  @ma_uint32()
+  external int t;
+
+  external ffi.Pointer<ffi.Float> pOldGains;
+
+  external ffi.Pointer<ffi.Float> pNewGains;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
+}
+
+abstract class ma_pan_mode {
+  static const int ma_pan_mode_balance = 0;
+  static const int ma_pan_mode_pan = 1;
+}
+
+class ma_panner_config extends ffi.Struct {
+  @ffi.Int32()
+  external int format;
+
+  @ma_uint32()
+  external int channels;
+
+  @ffi.Int32()
+  external int mode;
+
+  @ffi.Float()
+  external double pan;
+}
+
+class ma_panner extends ffi.Struct {
+  @ffi.Int32()
+  external int format;
+
+  @ma_uint32()
+  external int channels;
+
+  @ffi.Int32()
+  external int mode;
+
+  @ffi.Float()
+  external double pan;
+}
+
+class ma_fader_config extends ffi.Struct {
+  @ffi.Int32()
+  external int format;
+
+  @ma_uint32()
+  external int channels;
+
+  @ma_uint32()
+  external int sampleRate;
+}
+
+class ma_fader extends ffi.Struct {
+  external ma_fader_config config;
+
+  @ffi.Float()
+  external double volumeBeg;
+
+  @ffi.Float()
+  external double volumeEnd;
+
+  @ma_uint64()
+  external int lengthInFrames;
+
+  @ma_uint64()
+  external int cursorInFrames;
+}
+
+class ma_vec3f extends ffi.Struct {
+  @ffi.Float()
+  external double x;
+
+  @ffi.Float()
+  external double y;
+
+  @ffi.Float()
+  external double z;
+}
+
+abstract class ma_attenuation_model {
+  static const int ma_attenuation_model_none = 0;
+  static const int ma_attenuation_model_inverse = 1;
+  static const int ma_attenuation_model_linear = 2;
+  static const int ma_attenuation_model_exponential = 3;
+}
+
+abstract class ma_positioning {
+  static const int ma_positioning_absolute = 0;
+  static const int ma_positioning_relative = 1;
+}
+
+abstract class ma_handedness {
+  static const int ma_handedness_right = 0;
+  static const int ma_handedness_left = 1;
+}
+
+class ma_spatializer_listener_config extends ffi.Struct {
+  @ma_uint32()
+  external int channelsOut;
+
+  external ffi.Pointer<ma_channel> pChannelMapOut;
+
+  @ffi.Int32()
+  external int handedness;
+
+  @ffi.Float()
+  external double coneInnerAngleInRadians;
+
+  @ffi.Float()
+  external double coneOuterAngleInRadians;
+
+  @ffi.Float()
+  external double coneOuterGain;
+
+  @ffi.Float()
+  external double speedOfSound;
+
+  external ma_vec3f worldUp;
+}
+
+class ma_spatializer_listener extends ffi.Struct {
+  external ma_spatializer_listener_config config;
+
+  external ma_vec3f position;
+
+  external ma_vec3f direction;
+
+  external ma_vec3f velocity;
+
+  @ma_bool32()
+  external int isEnabled;
+
+  @ma_bool32()
+  external int _ownsHeap;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+}
+
+class ma_spatializer_config extends ffi.Struct {
+  @ma_uint32()
+  external int channelsIn;
+
+  @ma_uint32()
+  external int channelsOut;
+
+  external ffi.Pointer<ma_channel> pChannelMapIn;
+
+  @ffi.Int32()
+  external int attenuationModel;
+
+  @ffi.Int32()
+  external int positioning;
+
+  @ffi.Int32()
+  external int handedness;
+
+  @ffi.Float()
+  external double minGain;
+
+  @ffi.Float()
+  external double maxGain;
+
+  @ffi.Float()
+  external double minDistance;
+
+  @ffi.Float()
+  external double maxDistance;
+
+  @ffi.Float()
+  external double rolloff;
+
+  @ffi.Float()
+  external double coneInnerAngleInRadians;
+
+  @ffi.Float()
+  external double coneOuterAngleInRadians;
+
+  @ffi.Float()
+  external double coneOuterGain;
+
+  @ffi.Float()
+  external double dopplerFactor;
+
+  @ffi.Float()
+  external double directionalAttenuationFactor;
+
+  @ma_uint32()
+  external int gainSmoothTimeInFrames;
+}
+
+class ma_spatializer extends ffi.Struct {
+  @ma_uint32()
+  external int channelsIn;
+
+  @ma_uint32()
+  external int channelsOut;
+
+  external ffi.Pointer<ma_channel> pChannelMapIn;
+
+  @ffi.Int32()
+  external int attenuationModel;
+
+  @ffi.Int32()
+  external int positioning;
+
+  @ffi.Int32()
+  external int handedness;
+
+  @ffi.Float()
+  external double minGain;
+
+  @ffi.Float()
+  external double maxGain;
+
+  @ffi.Float()
+  external double minDistance;
+
+  @ffi.Float()
+  external double maxDistance;
+
+  @ffi.Float()
+  external double rolloff;
+
+  @ffi.Float()
+  external double coneInnerAngleInRadians;
+
+  @ffi.Float()
+  external double coneOuterAngleInRadians;
+
+  @ffi.Float()
+  external double coneOuterGain;
+
+  @ffi.Float()
+  external double dopplerFactor;
+
+  @ffi.Float()
+  external double directionalAttenuationFactor;
+
+  @ma_uint32()
+  external int gainSmoothTimeInFrames;
+
+  external ma_vec3f position;
+
+  external ma_vec3f direction;
+
+  external ma_vec3f velocity;
+
+  @ffi.Float()
+  external double dopplerPitch;
+
+  external ma_gainer gainer;
+
+  external ffi.Pointer<ffi.Float> pNewChannelGainsOut;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
+}
+
+abstract class ma_mono_expansion_mode {
+  static const int ma_mono_expansion_mode_duplicate = 0;
+  static const int ma_mono_expansion_mode_average = 1;
+  static const int ma_mono_expansion_mode_stereo_only = 2;
+  static const int ma_mono_expansion_mode_default = 0;
+}
+
 class ma_channel_converter_config extends ffi.Struct {
   @ffi.Int32()
   external int format;
@@ -9067,26 +24096,390 @@ class ma_channel_converter_config extends ffi.Struct {
   @ma_uint32()
   external int channelsOut;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_channel> channelMapIn;
+  external ffi.Pointer<ma_channel> pChannelMapIn;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_channel> channelMapOut;
+  external ffi.Pointer<ma_channel> pChannelMapOut;
 
   @ffi.Int32()
   external int mixingMode;
 
-  @ffi.Array.multi([32, 32])
-  external ffi.Array<ffi.Array<ffi.Float>> weights;
+  external ffi.Pointer<ffi.Pointer<ffi.Float>> ppWeights;
 }
 
-class ma_IMMNotificationClient extends ffi.Struct {
-  external ffi.Pointer<ffi.Void> lpVtbl;
+/// Data Conversion
+class ma_data_converter_config extends ffi.Struct {
+  @ffi.Int32()
+  external int formatIn;
+
+  @ffi.Int32()
+  external int formatOut;
+
+  @ma_uint32()
+  external int channelsIn;
+
+  @ma_uint32()
+  external int channelsOut;
+
+  @ma_uint32()
+  external int sampleRateIn;
+
+  @ma_uint32()
+  external int sampleRateOut;
+
+  external ffi.Pointer<ma_channel> pChannelMapIn;
+
+  external ffi.Pointer<ma_channel> pChannelMapOut;
+
+  @ffi.Int32()
+  external int ditherMode;
+
+  @ffi.Int32()
+  external int channelMixMode;
+
+  external ffi.Pointer<ffi.Pointer<ffi.Float>> ppChannelWeights;
+
+  @ma_bool32()
+  external int allowDynamicSampleRate;
+
+  external ma_resampler_config resampling;
+}
+
+typedef ma_spinlock = ma_uint32;
+
+class ma_fence extends ffi.Struct {
+  external ma_event e;
 
   @ma_uint32()
   external int counter;
+}
 
-  external ffi.Pointer<ma_device> pDevice;
+class ma_async_notification_callbacks extends ffi.Struct {
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ma_async_notification>)>> onSignal;
+}
+
+typedef ma_async_notification = ffi.Void;
+
+class ma_async_notification_poll extends ffi.Struct {
+  external ma_async_notification_callbacks cb;
+
+  @ma_bool32()
+  external int signalled;
+}
+
+class ma_async_notification_event extends ffi.Struct {
+  external ma_async_notification_callbacks cb;
+
+  external ma_event e;
+}
+
+/// Job Queue
+class ma_slot_allocator_config extends ffi.Struct {
+  @ma_uint32()
+  external int capacity;
+}
+
+class ma_slot_allocator_group extends ffi.Struct {
+  @ma_uint32()
+  external int bitfield;
+}
+
+class ma_slot_allocator extends ffi.Struct {
+  external ffi.Pointer<ma_slot_allocator_group> pGroups;
+
+  external ffi.Pointer<ma_uint32> pSlots;
+
+  @ma_uint32()
+  external int count;
+
+  @ma_uint32()
+  external int capacity;
+
+  @ma_bool32()
+  external int _ownsHeap;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+}
+
+class ma_job extends ffi.Struct {
+  external UnnamedUnion7 toc;
+
+  @ma_uint64()
+  external int next;
+
+  @ma_uint32()
+  external int order;
+
+  external UnnamedUnion8 data;
+}
+
+class UnnamedUnion7 extends ffi.Union {
+  external UnnamedStruct23 breakup;
+
+  @ma_uint64()
+  external int allocation;
+}
+
+class UnnamedStruct23 extends ffi.Struct {
+  @ma_uint16()
+  external int code;
+
+  @ma_uint16()
+  external int slot;
+
+  @ma_uint32()
+  external int refcount;
+}
+
+typedef ma_uint16 = ffi.Uint16;
+
+class UnnamedUnion8 extends ffi.Union {
+  external UnnamedStruct24 custom;
+
+  external UnnamedUnion9 resourceManager;
+
+  external UnnamedUnion10 device;
+}
+
+class UnnamedStruct24 extends ffi.Struct {
+  external ma_job_proc proc;
+
+  @ma_uintptr()
+  external int data0;
+
+  @ma_uintptr()
+  external int data1;
+}
+
+typedef ma_job_proc
+    = ffi.Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_job>)>>;
+typedef ma_uintptr = ma_uint64;
+
+class UnnamedUnion9 extends ffi.Union {
+  external UnnamedStruct25 loadDataBufferNode;
+
+  external UnnamedStruct26 freeDataBufferNode;
+
+  external UnnamedStruct27 pageDataBufferNode;
+
+  external UnnamedStruct28 loadDataBuffer;
+
+  external UnnamedStruct29 freeDataBuffer;
+
+  external UnnamedStruct30 loadDataStream;
+
+  external UnnamedStruct31 freeDataStream;
+
+  external UnnamedStruct32 pageDataStream;
+
+  external UnnamedStruct33 seekDataStream;
+}
+
+class UnnamedStruct25 extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pResourceManager;
+
+  external ffi.Pointer<ffi.Void> pDataBufferNode;
+
+  external ffi.Pointer<ffi.Int8> pFilePath;
+
+  external ffi.Pointer<wchar_t> pFilePathW;
+
+  @ma_uint32()
+  external int flags;
+
+  external ffi.Pointer<ma_async_notification> pInitNotification;
+
+  external ffi.Pointer<ma_async_notification> pDoneNotification;
+
+  external ffi.Pointer<ma_fence> pInitFence;
+
+  external ffi.Pointer<ma_fence> pDoneFence;
+}
+
+class UnnamedStruct26 extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pResourceManager;
+
+  external ffi.Pointer<ffi.Void> pDataBufferNode;
+
+  external ffi.Pointer<ma_async_notification> pDoneNotification;
+
+  external ffi.Pointer<ma_fence> pDoneFence;
+}
+
+class UnnamedStruct27 extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pResourceManager;
+
+  external ffi.Pointer<ffi.Void> pDataBufferNode;
+
+  external ffi.Pointer<ffi.Void> pDecoder;
+
+  external ffi.Pointer<ma_async_notification> pDoneNotification;
+
+  external ffi.Pointer<ma_fence> pDoneFence;
+}
+
+class UnnamedStruct28 extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pDataBuffer;
+
+  external ffi.Pointer<ma_async_notification> pInitNotification;
+
+  external ffi.Pointer<ma_async_notification> pDoneNotification;
+
+  external ffi.Pointer<ma_fence> pInitFence;
+
+  external ffi.Pointer<ma_fence> pDoneFence;
+
+  @ma_uint64()
+  external int rangeBegInPCMFrames;
+
+  @ma_uint64()
+  external int rangeEndInPCMFrames;
+
+  @ma_uint64()
+  external int loopPointBegInPCMFrames;
+
+  @ma_uint64()
+  external int loopPointEndInPCMFrames;
+
+  @ma_uint32()
+  external int isLooping;
+}
+
+class UnnamedStruct29 extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pDataBuffer;
+
+  external ffi.Pointer<ma_async_notification> pDoneNotification;
+
+  external ffi.Pointer<ma_fence> pDoneFence;
+}
+
+class UnnamedStruct30 extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pDataStream;
+
+  external ffi.Pointer<ffi.Int8> pFilePath;
+
+  external ffi.Pointer<wchar_t> pFilePathW;
+
+  @ma_uint64()
+  external int initialSeekPoint;
+
+  external ffi.Pointer<ma_async_notification> pInitNotification;
+
+  external ffi.Pointer<ma_fence> pInitFence;
+}
+
+class UnnamedStruct31 extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pDataStream;
+
+  external ffi.Pointer<ma_async_notification> pDoneNotification;
+
+  external ffi.Pointer<ma_fence> pDoneFence;
+}
+
+class UnnamedStruct32 extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pDataStream;
+
+  @ma_uint32()
+  external int pageIndex;
+}
+
+class UnnamedStruct33 extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pDataStream;
+
+  @ma_uint64()
+  external int frameIndex;
+}
+
+class UnnamedUnion10 extends ffi.Union {
+  external UnnamedUnion11 aaudio;
+}
+
+class UnnamedUnion11 extends ffi.Union {
+  external UnnamedStruct34 reroute;
+}
+
+class UnnamedStruct34 extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pDevice;
+
+  @ma_uint32()
+  external int deviceType;
+}
+
+abstract class ma_job_type {
+  static const int MA_JOB_TYPE_QUIT = 0;
+  static const int MA_JOB_TYPE_CUSTOM = 1;
+  static const int MA_JOB_TYPE_RESOURCE_MANAGER_LOAD_DATA_BUFFER_NODE = 2;
+  static const int MA_JOB_TYPE_RESOURCE_MANAGER_FREE_DATA_BUFFER_NODE = 3;
+  static const int MA_JOB_TYPE_RESOURCE_MANAGER_PAGE_DATA_BUFFER_NODE = 4;
+  static const int MA_JOB_TYPE_RESOURCE_MANAGER_LOAD_DATA_BUFFER = 5;
+  static const int MA_JOB_TYPE_RESOURCE_MANAGER_FREE_DATA_BUFFER = 6;
+  static const int MA_JOB_TYPE_RESOURCE_MANAGER_LOAD_DATA_STREAM = 7;
+  static const int MA_JOB_TYPE_RESOURCE_MANAGER_FREE_DATA_STREAM = 8;
+  static const int MA_JOB_TYPE_RESOURCE_MANAGER_PAGE_DATA_STREAM = 9;
+  static const int MA_JOB_TYPE_RESOURCE_MANAGER_SEEK_DATA_STREAM = 10;
+  static const int MA_JOB_TYPE_DEVICE_AAUDIO_REROUTE = 11;
+  static const int MA_JOB_TYPE_COUNT = 12;
+}
+
+abstract class ma_job_queue_flags {
+  static const int MA_JOB_QUEUE_FLAG_NON_BLOCKING = 1;
+}
+
+class ma_job_queue_config extends ffi.Struct {
+  @ma_uint32()
+  external int flags;
+
+  @ma_uint32()
+  external int capacity;
+}
+
+class ma_job_queue extends ffi.Struct {
+  @ma_uint32()
+  external int flags;
+
+  @ma_uint32()
+  external int capacity;
+
+  @ma_uint64()
+  external int head;
+
+  @ma_uint64()
+  external int tail;
+
+  external ma_semaphore sem;
+
+  external ma_slot_allocator allocator;
+
+  external ffi.Pointer<ma_job> pJobs;
+
+  @ma_spinlock()
+  external int lock;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
+}
+
+class ma_device_job_thread_config extends ffi.Struct {
+  @ma_bool32()
+  external int noThread;
+
+  @ma_uint32()
+  external int jobQueueCapacity;
+
+  @ma_uint32()
+  external int jobQueueFlags;
+}
+
+class ma_device_job_thread extends ffi.Struct {
+  external ma_thread thread;
+
+  external ma_job_queue jobQueue;
+
+  @ma_bool32()
+  external int _hasThread;
 }
 
 abstract class ma_ios_session_category_option {
@@ -9117,23 +24510,23 @@ class ma_context_command__wasapi extends ffi.Struct {
 
   external ffi.Pointer<ma_event> pEvent;
 
-  external UnnamedUnion6 data;
+  external UnnamedUnion12 data;
 }
 
-class UnnamedUnion6 extends ffi.Union {
-  external UnnamedStruct28 quit;
+class UnnamedUnion12 extends ffi.Union {
+  external UnnamedStruct35 quit;
 
-  external UnnamedStruct29 createAudioClient;
+  external UnnamedStruct36 createAudioClient;
 
-  external UnnamedStruct30 releaseAudioClient;
+  external UnnamedStruct37 releaseAudioClient;
 }
 
-class UnnamedStruct28 extends ffi.Struct {
+class UnnamedStruct35 extends ffi.Struct {
   @ffi.Int32()
   external int _unused;
 }
 
-class UnnamedStruct29 extends ffi.Struct {
+class UnnamedStruct36 extends ffi.Struct {
   @ffi.Int32()
   external int deviceType;
 
@@ -9141,60 +24534,58 @@ class UnnamedStruct29 extends ffi.Struct {
 
   external ffi.Pointer<ffi.Pointer<ffi.Void>> ppAudioClientService;
 
-  external ffi.Pointer<ma_result> pResult;
+  external ffi.Pointer<ffi.Int32> pResult;
 }
 
-class UnnamedStruct30 extends ffi.Struct {
+class UnnamedStruct37 extends ffi.Struct {
   external ffi.Pointer<ma_device> pDevice;
 
   @ffi.Int32()
   external int deviceType;
 }
 
-typedef ma_spinlock = ma_uint32;
-
 class ma_data_source_vtable extends ffi.Struct {
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_data_source>, ffi.Pointer<ffi.Void>,
+          ffi.Int32 Function(ffi.Pointer<ma_data_source>, ffi.Pointer<ffi.Void>,
               ma_uint64, ffi.Pointer<ma_uint64>)>> onRead;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_data_source>, ma_uint64)>> onSeek;
+          ffi.Int32 Function(ffi.Pointer<ma_data_source>, ma_uint64)>> onSeek;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(
-              ffi.Pointer<ma_data_source>,
-              ffi.Pointer<ffi.Pointer<ffi.Void>>,
-              ffi.Pointer<ma_uint64>)>> onMap;
-
-  external ffi.Pointer<
-      ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_data_source>, ma_uint64)>> onUnmap;
-
-  external ffi.Pointer<
-      ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_data_source>,
               ffi.Pointer<ffi.Int32>,
               ffi.Pointer<ma_uint32>,
-              ffi.Pointer<ma_uint32>)>> onGetDataFormat;
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ma_channel>,
+              size_t)>> onGetDataFormat;
 
   external ffi.Pointer<
           ffi.NativeFunction<
-              ma_result Function(
+              ffi.Int32 Function(
                   ffi.Pointer<ma_data_source>, ffi.Pointer<ma_uint64>)>>
       onGetCursor;
 
   external ffi.Pointer<
           ffi.NativeFunction<
-              ma_result Function(
+              ffi.Int32 Function(
                   ffi.Pointer<ma_data_source>, ffi.Pointer<ma_uint64>)>>
       onGetLength;
+
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(ffi.Pointer<ma_data_source>, ma_bool32)>>
+      onSetLooping;
+
+  @ma_uint32()
+  external int flags;
 }
 
+/// Data Source
 typedef ma_data_source = ffi.Void;
 
 class ma_data_source_config extends ffi.Struct {
@@ -9202,8 +24593,6 @@ class ma_data_source_config extends ffi.Struct {
 }
 
 class ma_data_source_base extends ffi.Struct {
-  external ma_data_source_callbacks cb;
-
   external ffi.Pointer<ma_data_source_vtable> vtable;
 
   @ma_uint64()
@@ -9223,9 +24612,11 @@ class ma_data_source_base extends ffi.Struct {
   external ffi.Pointer<ma_data_source> pNext;
 
   external ma_data_source_get_next_proc onGetNext;
+
+  @ma_bool32()
+  external int isLooping;
 }
 
-typedef ma_data_source_callbacks = ma_data_source_vtable;
 typedef ma_data_source_get_next_proc = ffi.Pointer<
     ffi.NativeFunction<
         ffi.Pointer<ma_data_source> Function(ffi.Pointer<ma_data_source>)>>;
@@ -9238,6 +24629,9 @@ class ma_audio_buffer_ref extends ffi.Struct {
 
   @ma_uint32()
   external int channels;
+
+  @ma_uint32()
+  external int sampleRate;
 
   @ma_uint64()
   external int cursor;
@@ -9254,6 +24648,9 @@ class ma_audio_buffer_config extends ffi.Struct {
 
   @ma_uint32()
   external int channels;
+
+  @ma_uint32()
+  external int sampleRate;
 
   @ma_uint64()
   external int sizeInFrames;
@@ -9275,6 +24672,51 @@ class ma_audio_buffer extends ffi.Struct {
   external ffi.Array<ma_uint8> _pExtraData;
 }
 
+class ma_paged_audio_buffer_page extends ffi.Struct {
+  external ffi.Pointer<ma_paged_audio_buffer_page> pNext;
+
+  @ma_uint64()
+  external int sizeInFrames;
+
+  @ffi.Array.multi([1])
+  external ffi.Array<ma_uint8> pAudioData;
+}
+
+class ma_paged_audio_buffer_data extends ffi.Struct {
+  @ffi.Int32()
+  external int format;
+
+  @ma_uint32()
+  external int channels;
+
+  external ma_paged_audio_buffer_page head;
+
+  external ffi.Pointer<ma_paged_audio_buffer_page> pTail;
+}
+
+class ma_paged_audio_buffer_config extends ffi.Struct {
+  external ffi.Pointer<ma_paged_audio_buffer_data> pData;
+}
+
+class ma_paged_audio_buffer extends ffi.Struct {
+  external ma_data_source_base ds;
+
+  external ffi.Pointer<ma_paged_audio_buffer_data> pData;
+
+  external ffi.Pointer<ma_paged_audio_buffer_page> pCurrent;
+
+  @ma_uint64()
+  external int relativeCursor;
+
+  @ma_uint64()
+  external int absoluteCursor;
+}
+
+abstract class ma_open_mode_flags {
+  static const int MA_OPEN_MODE_READ = 1;
+  static const int MA_OPEN_MODE_WRITE = 2;
+}
+
 abstract class ma_seek_origin {
   static const int ma_seek_origin_start = 0;
   static const int ma_seek_origin_current = 1;
@@ -9289,41 +24731,41 @@ class ma_file_info extends ffi.Struct {
 class ma_vfs_callbacks extends ffi.Struct {
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_vfs>, ffi.Pointer<ffi.Int8>,
+          ffi.Int32 Function(ffi.Pointer<ma_vfs>, ffi.Pointer<ffi.Int8>,
               ma_uint32, ffi.Pointer<ma_vfs_file>)>> onOpen;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_vfs>, ffi.Pointer<wchar_t>,
+          ffi.Int32 Function(ffi.Pointer<ma_vfs>, ffi.Pointer<wchar_t>,
               ma_uint32, ffi.Pointer<ma_vfs_file>)>> onOpenW;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_vfs>, ma_vfs_file)>> onClose;
+          ffi.Int32 Function(ffi.Pointer<ma_vfs>, ma_vfs_file)>> onClose;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_vfs>, ma_vfs_file,
+          ffi.Int32 Function(ffi.Pointer<ma_vfs>, ma_vfs_file,
               ffi.Pointer<ffi.Void>, size_t, ffi.Pointer<size_t>)>> onRead;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ma_vfs>, ma_vfs_file,
+          ffi.Int32 Function(ffi.Pointer<ma_vfs>, ma_vfs_file,
               ffi.Pointer<ffi.Void>, size_t, ffi.Pointer<size_t>)>> onWrite;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_vfs>, ma_vfs_file, ma_int64, ffi.Int32)>> onSeek;
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ma_vfs>, ma_vfs_file, ffi.Pointer<ma_int64>)>> onTell;
 
   external ffi.Pointer<
           ffi.NativeFunction<
-              ma_result Function(
+              ffi.Int32 Function(
                   ffi.Pointer<ma_vfs>, ma_vfs_file, ffi.Pointer<ma_file_info>)>>
       onInfo;
 }
@@ -9335,15 +24777,12 @@ class ma_vfs_callbacks extends ffi.Struct {
 /// appropriate for a given situation.
 typedef ma_vfs = ffi.Void;
 typedef ma_vfs_file = ma_handle;
+typedef ma_handle = ffi.Pointer<ffi.Void>;
 
 class ma_default_vfs extends ffi.Struct {
   external ma_vfs_callbacks cb;
 
   external ma_allocation_callbacks allocationCallbacks;
-}
-
-abstract class ma_resource_format {
-  static const int ma_resource_format_wav = 0;
 }
 
 abstract class ma_encoding_format {
@@ -9383,20 +24822,28 @@ class ma_decoder extends ffi.Struct {
   @ma_uint32()
   external int outputSampleRate;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_channel> outputChannelMap;
-
   external ma_data_converter converter;
+
+  external ffi.Pointer<ffi.Void> pInputCache;
+
+  @ma_uint64()
+  external int inputCacheCap;
+
+  @ma_uint64()
+  external int inputCacheConsumed;
+
+  @ma_uint64()
+  external int inputCacheRemaining;
 
   external ma_allocation_callbacks allocationCallbacks;
 
-  external UnnamedUnion7 data;
+  external UnnamedUnion13 data;
 }
 
 class ma_decoding_backend_vtable extends ffi.Struct {
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ffi.Void>,
               ma_read_proc,
               ma_seek_proc,
@@ -9408,7 +24855,7 @@ class ma_decoding_backend_vtable extends ffi.Struct {
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Int8>,
               ffi.Pointer<ma_decoding_backend_config>,
@@ -9417,7 +24864,7 @@ class ma_decoding_backend_vtable extends ffi.Struct {
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<wchar_t>,
               ffi.Pointer<ma_decoding_backend_config>,
@@ -9426,7 +24873,7 @@ class ma_decoding_backend_vtable extends ffi.Struct {
 
   external ffi.Pointer<
       ffi.NativeFunction<
-          ma_result Function(
+          ffi.Int32 Function(
               ffi.Pointer<ffi.Void>,
               ffi.Pointer<ffi.Void>,
               size_t,
@@ -9438,53 +24885,51 @@ class ma_decoding_backend_vtable extends ffi.Struct {
       ffi.NativeFunction<
           ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ma_data_source>,
               ffi.Pointer<ma_allocation_callbacks>)>> onUninit;
-
-  external ffi.Pointer<
-      ffi.NativeFunction<
-          ma_result Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ma_data_source>,
-              ffi.Pointer<ma_channel>, size_t)>> onGetChannelMap;
 }
 
 typedef ma_read_proc = ffi.Pointer<
     ffi.NativeFunction<
-        ma_result Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, size_t,
+        ffi.Int32 Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Void>, size_t,
             ffi.Pointer<size_t>)>>;
 typedef ma_seek_proc = ffi.Pointer<
     ffi.NativeFunction<
-        ma_result Function(ffi.Pointer<ffi.Void>, ma_int64, ffi.Int32)>>;
+        ffi.Int32 Function(ffi.Pointer<ffi.Void>, ma_int64, ffi.Int32)>>;
 typedef ma_tell_proc = ffi.Pointer<
     ffi.NativeFunction<
-        ma_result Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ma_int64>)>>;
+        ffi.Int32 Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ma_int64>)>>;
 
 class ma_decoding_backend_config extends ffi.Struct {
   @ffi.Int32()
   external int preferredFormat;
+
+  @ma_uint32()
+  external int seekPointCount;
 }
 
 typedef ma_decoder_read_proc = ffi.Pointer<
     ffi.NativeFunction<
-        size_t Function(
-            ffi.Pointer<ma_decoder>, ffi.Pointer<ffi.Void>, size_t)>>;
+        ffi.Int32 Function(ffi.Pointer<ma_decoder>, ffi.Pointer<ffi.Void>,
+            size_t, ffi.Pointer<size_t>)>>;
 typedef ma_decoder_seek_proc = ffi.Pointer<
     ffi.NativeFunction<
-        ma_bool32 Function(ffi.Pointer<ma_decoder>, ma_int64, ffi.Int32)>>;
+        ffi.Int32 Function(ffi.Pointer<ma_decoder>, ma_int64, ffi.Int32)>>;
 typedef ma_decoder_tell_proc = ffi.Pointer<
     ffi.NativeFunction<
-        ma_result Function(ffi.Pointer<ma_decoder>, ffi.Pointer<ma_int64>)>>;
+        ffi.Int32 Function(ffi.Pointer<ma_decoder>, ffi.Pointer<ma_int64>)>>;
 
-class UnnamedUnion7 extends ffi.Union {
-  external UnnamedStruct31 vfs;
+class UnnamedUnion13 extends ffi.Union {
+  external UnnamedStruct38 vfs;
 
-  external UnnamedStruct32 memory;
+  external UnnamedStruct39 memory;
 }
 
-class UnnamedStruct31 extends ffi.Struct {
+class UnnamedStruct38 extends ffi.Struct {
   external ffi.Pointer<ma_vfs> pVFS;
 
   external ma_vfs_file file;
 }
 
-class UnnamedStruct32 extends ffi.Struct {
+class UnnamedStruct39 extends ffi.Struct {
   external ffi.Pointer<ma_uint8> pData;
 
   @size_t()
@@ -9504,8 +24949,7 @@ class ma_decoder_config extends ffi.Struct {
   @ma_uint32()
   external int sampleRate;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_channel> channelMap;
+  external ffi.Pointer<ma_channel> pChannelMap;
 
   @ffi.Int32()
   external int channelMixMode;
@@ -9513,12 +24957,15 @@ class ma_decoder_config extends ffi.Struct {
   @ffi.Int32()
   external int ditherMode;
 
-  external UnnamedStruct33 resampling;
+  external ma_resampler_config resampling;
 
   external ma_allocation_callbacks allocationCallbacks;
 
   @ffi.Int32()
   external int encodingFormat;
+
+  @ma_uint32()
+  external int seekPointCount;
 
   external ffi.Pointer<ffi.Pointer<ma_decoding_backend_vtable>>
       ppCustomBackendVTables;
@@ -9527,25 +24974,6 @@ class ma_decoder_config extends ffi.Struct {
   external int customBackendCount;
 
   external ffi.Pointer<ffi.Void> pCustomBackendUserData;
-}
-
-class UnnamedStruct33 extends ffi.Struct {
-  @ffi.Int32()
-  external int algorithm;
-
-  external UnnamedStruct34 linear;
-
-  external UnnamedStruct35 speex;
-}
-
-class UnnamedStruct34 extends ffi.Struct {
-  @ma_uint32()
-  external int lpfOrder;
-}
-
-class UnnamedStruct35 extends ffi.Struct {
-  @ffi.Int32()
-  external int quality;
 }
 
 class ma_encoder extends ffi.Struct {
@@ -9565,12 +24993,12 @@ class ma_encoder extends ffi.Struct {
 
   external ffi.Pointer<ffi.Void> pInternalEncoder;
 
-  external ffi.Pointer<ffi.Void> pFile;
+  external UnnamedUnion14 data;
 }
 
 class ma_encoder_config extends ffi.Struct {
   @ffi.Int32()
-  external int resourceFormat;
+  external int encodingFormat;
 
   @ffi.Int32()
   external int format;
@@ -9586,19 +25014,29 @@ class ma_encoder_config extends ffi.Struct {
 
 typedef ma_encoder_write_proc = ffi.Pointer<
     ffi.NativeFunction<
-        size_t Function(
-            ffi.Pointer<ma_encoder>, ffi.Pointer<ffi.Void>, size_t)>>;
+        ffi.Int32 Function(ffi.Pointer<ma_encoder>, ffi.Pointer<ffi.Void>,
+            size_t, ffi.Pointer<size_t>)>>;
 typedef ma_encoder_seek_proc = ffi.Pointer<
     ffi.NativeFunction<
-        ma_bool32 Function(ffi.Pointer<ma_encoder>, ffi.Int32, ffi.Int32)>>;
+        ffi.Int32 Function(ffi.Pointer<ma_encoder>, ma_int64, ffi.Int32)>>;
 typedef ma_encoder_init_proc = ffi
-    .Pointer<ffi.NativeFunction<ma_result Function(ffi.Pointer<ma_encoder>)>>;
+    .Pointer<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ma_encoder>)>>;
 typedef ma_encoder_uninit_proc = ffi
     .Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ma_encoder>)>>;
 typedef ma_encoder_write_pcm_frames_proc = ffi.Pointer<
     ffi.NativeFunction<
-        ma_uint64 Function(
-            ffi.Pointer<ma_encoder>, ffi.Pointer<ffi.Void>, ma_uint64)>>;
+        ffi.Int32 Function(ffi.Pointer<ma_encoder>, ffi.Pointer<ffi.Void>,
+            ma_uint64, ffi.Pointer<ma_uint64>)>>;
+
+class UnnamedUnion14 extends ffi.Union {
+  external UnnamedStruct40 vfs;
+}
+
+class UnnamedStruct40 extends ffi.Struct {
+  external ffi.Pointer<ma_vfs> pVFS;
+
+  external ma_vfs_file file;
+}
 
 abstract class ma_waveform_type {
   static const int ma_waveform_type_sine = 0;
@@ -9672,38 +25110,904 @@ class ma_noise extends ffi.Struct {
 
   external ma_lcg lcg;
 
-  external UnnamedUnion8 state;
+  external UnnamedUnion15 state;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
 }
 
-class UnnamedUnion8 extends ffi.Union {
-  external UnnamedStruct36 pink;
+class UnnamedUnion15 extends ffi.Union {
+  external UnnamedStruct41 pink;
 
-  external UnnamedStruct37 brownian;
+  external UnnamedStruct42 brownian;
 }
 
-class UnnamedStruct36 extends ffi.Struct {
-  @ffi.Array.multi([32, 16])
-  external ffi.Array<ffi.Array<ffi.Double>> bin;
+class UnnamedStruct41 extends ffi.Struct {
+  external ffi.Pointer<ffi.Pointer<ffi.Double>> bin;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ffi.Double> accumulation;
+  external ffi.Pointer<ffi.Double> accumulation;
 
-  @ffi.Array.multi([32])
-  external ffi.Array<ma_uint32> counter;
+  external ffi.Pointer<ma_uint32> counter;
 }
 
-class UnnamedStruct37 extends ffi.Struct {
-  @ffi.Array.multi([32])
-  external ffi.Array<ffi.Double> accumulation;
+class UnnamedStruct42 extends ffi.Struct {
+  external ffi.Pointer<ffi.Double> accumulation;
 }
+
+class ma_resource_manager extends ffi.Struct {
+  external ma_resource_manager_config config;
+
+  external ffi.Pointer<ma_resource_manager_data_buffer_node>
+      pRootDataBufferNode;
+
+  external ma_mutex dataBufferBSTLock;
+
+  @ffi.Array.multi([64])
+  external ffi.Array<ma_thread> jobThreads;
+
+  external ma_job_queue jobQueue;
+
+  external ma_default_vfs defaultVFS;
+
+  external ma_log log;
+}
+
+class ma_resource_manager_config extends ffi.Struct {
+  external ma_allocation_callbacks allocationCallbacks;
+
+  external ffi.Pointer<ma_log> pLog;
+
+  @ffi.Int32()
+  external int decodedFormat;
+
+  @ma_uint32()
+  external int decodedChannels;
+
+  @ma_uint32()
+  external int decodedSampleRate;
+
+  @ma_uint32()
+  external int jobThreadCount;
+
+  @ma_uint32()
+  external int jobQueueCapacity;
+
+  @ma_uint32()
+  external int flags;
+
+  external ffi.Pointer<ma_vfs> pVFS;
+
+  external ffi.Pointer<ffi.Pointer<ma_decoding_backend_vtable>>
+      ppCustomDecodingBackendVTables;
+
+  @ma_uint32()
+  external int customDecodingBackendCount;
+
+  external ffi.Pointer<ffi.Void> pCustomDecodingBackendUserData;
+}
+
+class ma_resource_manager_data_buffer_node extends ffi.Struct {
+  @ma_uint32()
+  external int hashedName32;
+
+  @ma_uint32()
+  external int refCount;
+
+  @ffi.Int32()
+  external int result;
+
+  @ma_uint32()
+  external int executionCounter;
+
+  @ma_uint32()
+  external int executionPointer;
+
+  @ma_bool32()
+  external int isDataOwnedByResourceManager;
+
+  external ma_resource_manager_data_supply data;
+
+  external ffi.Pointer<ma_resource_manager_data_buffer_node> pParent;
+
+  external ffi.Pointer<ma_resource_manager_data_buffer_node> pChildLo;
+
+  external ffi.Pointer<ma_resource_manager_data_buffer_node> pChildHi;
+}
+
+class ma_resource_manager_data_supply extends ffi.Struct {
+  @ffi.Int32()
+  external int type;
+
+  external UnnamedUnion16 backend;
+}
+
+abstract class ma_resource_manager_data_supply_type {
+  static const int ma_resource_manager_data_supply_type_unknown = 0;
+  static const int ma_resource_manager_data_supply_type_encoded = 1;
+  static const int ma_resource_manager_data_supply_type_decoded = 2;
+  static const int ma_resource_manager_data_supply_type_decoded_paged = 3;
+}
+
+class UnnamedUnion16 extends ffi.Union {
+  external UnnamedStruct43 encoded;
+
+  external UnnamedStruct44 decoded;
+
+  external UnnamedStruct45 decodedPaged;
+}
+
+class UnnamedStruct43 extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pData;
+
+  @size_t()
+  external int sizeInBytes;
+}
+
+class UnnamedStruct44 extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> pData;
+
+  @ma_uint64()
+  external int totalFrameCount;
+
+  @ma_uint64()
+  external int decodedFrameCount;
+
+  @ffi.Int32()
+  external int format;
+
+  @ma_uint32()
+  external int channels;
+
+  @ma_uint32()
+  external int sampleRate;
+}
+
+class UnnamedStruct45 extends ffi.Struct {
+  external ma_paged_audio_buffer_data data;
+
+  @ma_uint64()
+  external int decodedFrameCount;
+
+  @ma_uint32()
+  external int sampleRate;
+}
+
+class ma_resource_manager_data_buffer extends ffi.Struct {
+  external ma_data_source_base ds;
+
+  external ffi.Pointer<ma_resource_manager> pResourceManager;
+
+  external ffi.Pointer<ma_resource_manager_data_buffer_node> pNode;
+
+  @ma_uint32()
+  external int flags;
+
+  @ma_uint32()
+  external int executionCounter;
+
+  @ma_uint32()
+  external int executionPointer;
+
+  @ma_uint64()
+  external int seekTargetInPCMFrames;
+
+  @ma_bool32()
+  external int seekToCursorOnNextRead;
+
+  @ffi.Int32()
+  external int result;
+
+  @ma_bool32()
+  external int isLooping;
+
+  @ma_bool32()
+  external int isConnectorInitialized;
+
+  external UnnamedUnion17 connector;
+}
+
+class UnnamedUnion17 extends ffi.Union {
+  external ma_decoder decoder;
+
+  external ma_audio_buffer buffer;
+
+  external ma_paged_audio_buffer pagedBuffer;
+}
+
+class ma_resource_manager_data_stream extends ffi.Struct {
+  external ma_data_source_base ds;
+
+  external ffi.Pointer<ma_resource_manager> pResourceManager;
+
+  @ma_uint32()
+  external int flags;
+
+  external ma_decoder decoder;
+
+  @ma_bool32()
+  external int isDecoderInitialized;
+
+  @ma_uint64()
+  external int totalLengthInPCMFrames;
+
+  @ma_uint32()
+  external int relativeCursor;
+
+  @ma_uint64()
+  external int absoluteCursor;
+
+  @ma_uint32()
+  external int currentPageIndex;
+
+  @ma_uint32()
+  external int executionCounter;
+
+  @ma_uint32()
+  external int executionPointer;
+
+  @ma_bool32()
+  external int isLooping;
+
+  external ffi.Pointer<ffi.Void> pPageData;
+
+  @ffi.Array.multi([2])
+  external ffi.Array<ma_uint32> pageFrameCount;
+
+  @ffi.Int32()
+  external int result;
+
+  @ma_bool32()
+  external int isDecoderAtEnd;
+
+  @ffi.Array.multi([2])
+  external ffi.Array<ma_bool32> isPageValid;
+
+  @ma_bool32()
+  external int seekCounter;
+}
+
+class ma_resource_manager_data_source extends ffi.Struct {
+  external UnnamedUnion18 backend;
+
+  @ma_uint32()
+  external int flags;
+
+  @ma_uint32()
+  external int executionCounter;
+
+  @ma_uint32()
+  external int executionPointer;
+}
+
+class UnnamedUnion18 extends ffi.Union {
+  external ma_resource_manager_data_buffer buffer;
+
+  external ma_resource_manager_data_stream stream;
+}
+
+abstract class ma_resource_manager_data_source_flags {
+  static const int MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_STREAM = 1;
+  static const int MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_DECODE = 2;
+  static const int MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_ASYNC = 4;
+  static const int MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_WAIT_INIT = 8;
+  static const int MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_UNKNOWN_LENGTH = 16;
+}
+
+class ma_resource_manager_pipeline_stage_notification extends ffi.Struct {
+  external ffi.Pointer<ma_async_notification> pNotification;
+
+  external ffi.Pointer<ma_fence> pFence;
+}
+
+class ma_resource_manager_pipeline_notifications extends ffi.Struct {
+  external ma_resource_manager_pipeline_stage_notification init;
+
+  external ma_resource_manager_pipeline_stage_notification done;
+}
+
+abstract class ma_resource_manager_flags {
+  static const int MA_RESOURCE_MANAGER_FLAG_NON_BLOCKING = 1;
+  static const int MA_RESOURCE_MANAGER_FLAG_NO_THREADING = 2;
+}
+
+class ma_resource_manager_data_source_config extends ffi.Struct {
+  external ffi.Pointer<ffi.Int8> pFilePath;
+
+  external ffi.Pointer<wchar_t> pFilePathW;
+
+  external ffi.Pointer<ma_resource_manager_pipeline_notifications>
+      pNotifications;
+
+  @ma_uint64()
+  external int initialSeekPointInPCMFrames;
+
+  @ma_uint64()
+  external int rangeBegInPCMFrames;
+
+  @ma_uint64()
+  external int rangeEndInPCMFrames;
+
+  @ma_uint64()
+  external int loopPointBegInPCMFrames;
+
+  @ma_uint64()
+  external int loopPointEndInPCMFrames;
+
+  @ma_bool32()
+  external int isLooping;
+
+  @ma_uint32()
+  external int flags;
+}
+
+class ma_node_graph extends ffi.Struct {
+  external ma_node_base base;
+
+  external ma_node_base endpoint;
+
+  @ma_uint16()
+  external int nodeCacheCapInFrames;
+
+  @ma_bool32()
+  external int isReading;
+}
+
+class ma_node_base extends ffi.Struct {
+  external ffi.Pointer<ma_node_graph> pNodeGraph;
+
+  external ffi.Pointer<ma_node_vtable> vtable;
+
+  external ffi.Pointer<ffi.Float> pCachedData;
+
+  @ma_uint16()
+  external int cachedDataCapInFramesPerBus;
+
+  @ma_uint16()
+  external int cachedFrameCountOut;
+
+  @ma_uint16()
+  external int cachedFrameCountIn;
+
+  @ma_uint16()
+  external int consumedFrameCountIn;
+
+  @ffi.Int32()
+  external int state;
+
+  @ffi.Array.multi([2])
+  external ffi.Array<ma_uint64> stateTimes;
+
+  @ma_uint64()
+  external int localTime;
+
+  @ma_uint32()
+  external int inputBusCount;
+
+  @ma_uint32()
+  external int outputBusCount;
+
+  external ffi.Pointer<ma_node_input_bus> pInputBuses;
+
+  external ffi.Pointer<ma_node_output_bus> pOutputBuses;
+
+  @ffi.Array.multi([2])
+  external ffi.Array<ma_node_input_bus> _inputBuses;
+
+  @ffi.Array.multi([2])
+  external ffi.Array<ma_node_output_bus> _outputBuses;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+
+  @ma_bool32()
+  external int _ownsHeap;
+}
+
+class ma_node_vtable extends ffi.Struct {
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ma_node>,
+              ffi.Pointer<ffi.Pointer<ffi.Float>>,
+              ffi.Pointer<ma_uint32>,
+              ffi.Pointer<ffi.Pointer<ffi.Float>>,
+              ffi.Pointer<ma_uint32>)>> onProcess;
+
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int32 Function(
+                  ffi.Pointer<ma_node>, ma_uint32, ffi.Pointer<ma_uint32>)>>
+      onGetRequiredInputFrameCount;
+
+  @ma_uint8()
+  external int inputBusCount;
+
+  @ma_uint8()
+  external int outputBusCount;
+
+  @ma_uint32()
+  external int flags;
+}
+
+typedef ma_node = ffi.Void;
+
+abstract class ma_node_state {
+  static const int ma_node_state_started = 0;
+  static const int ma_node_state_stopped = 1;
+}
+
+class ma_node_input_bus extends ffi.Struct {
+  external ma_node_output_bus head;
+
+  @ma_uint32()
+  external int nextCounter;
+
+  @ma_spinlock()
+  external int lock;
+
+  @ma_uint8()
+  external int channels;
+}
+
+class ma_node_output_bus extends ffi.Struct {
+  external ffi.Pointer<ma_node> pNode;
+
+  @ma_uint8()
+  external int outputBusIndex;
+
+  @ma_uint8()
+  external int channels;
+
+  @ma_uint8()
+  external int inputNodeInputBusIndex;
+
+  @ma_uint32()
+  external int flags;
+
+  @ma_uint32()
+  external int refCount;
+
+  @ma_bool32()
+  external int isAttached;
+
+  @ma_spinlock()
+  external int lock;
+
+  @ffi.Float()
+  external double volume;
+
+  external ffi.Pointer<ma_node_output_bus> pNext;
+
+  external ffi.Pointer<ma_node_output_bus> pPrev;
+
+  external ffi.Pointer<ma_node> pInputNode;
+}
+
+abstract class ma_node_flags {
+  static const int MA_NODE_FLAG_PASSTHROUGH = 1;
+  static const int MA_NODE_FLAG_CONTINUOUS_PROCESSING = 2;
+  static const int MA_NODE_FLAG_ALLOW_NULL_INPUT = 4;
+  static const int MA_NODE_FLAG_DIFFERENT_PROCESSING_RATES = 8;
+  static const int MA_NODE_FLAG_SILENT_OUTPUT = 16;
+}
+
+class ma_node_config extends ffi.Struct {
+  external ffi.Pointer<ma_node_vtable> vtable;
+
+  @ffi.Int32()
+  external int initialState;
+
+  @ma_uint32()
+  external int inputBusCount;
+
+  @ma_uint32()
+  external int outputBusCount;
+
+  external ffi.Pointer<ma_uint32> pInputChannels;
+
+  external ffi.Pointer<ma_uint32> pOutputChannels;
+}
+
+class ma_node_graph_config extends ffi.Struct {
+  @ma_uint32()
+  external int channels;
+
+  @ma_uint16()
+  external int nodeCacheCapInFrames;
+}
+
+class ma_data_source_node_config extends ffi.Struct {
+  external ma_node_config nodeConfig;
+
+  external ffi.Pointer<ma_data_source> pDataSource;
+}
+
+class ma_data_source_node extends ffi.Struct {
+  external ma_node_base base;
+
+  external ffi.Pointer<ma_data_source> pDataSource;
+}
+
+class ma_splitter_node_config extends ffi.Struct {
+  external ma_node_config nodeConfig;
+
+  @ma_uint32()
+  external int channels;
+}
+
+class ma_splitter_node extends ffi.Struct {
+  external ma_node_base base;
+}
+
+class ma_biquad_node_config extends ffi.Struct {
+  external ma_node_config nodeConfig;
+
+  external ma_biquad_config biquad;
+}
+
+class ma_biquad_node extends ffi.Struct {
+  external ma_node_base baseNode;
+
+  external ma_biquad biquad;
+}
+
+class ma_lpf_node_config extends ffi.Struct {
+  external ma_node_config nodeConfig;
+
+  external ma_lpf_config lpf;
+}
+
+class ma_lpf_node extends ffi.Struct {
+  external ma_node_base baseNode;
+
+  external ma_lpf lpf;
+}
+
+class ma_hpf_node_config extends ffi.Struct {
+  external ma_node_config nodeConfig;
+
+  external ma_hpf_config hpf;
+}
+
+class ma_hpf_node extends ffi.Struct {
+  external ma_node_base baseNode;
+
+  external ma_hpf hpf;
+}
+
+class ma_bpf_node_config extends ffi.Struct {
+  external ma_node_config nodeConfig;
+
+  external ma_bpf_config bpf;
+}
+
+class ma_bpf_node extends ffi.Struct {
+  external ma_node_base baseNode;
+
+  external ma_bpf bpf;
+}
+
+class ma_notch_node_config extends ffi.Struct {
+  external ma_node_config nodeConfig;
+
+  external ma_notch_config notch;
+}
+
+/// Notching Filter
+typedef ma_notch_config = ma_notch2_config;
+
+class ma_notch_node extends ffi.Struct {
+  external ma_node_base baseNode;
+
+  external ma_notch2 notch;
+}
+
+class ma_peak_node_config extends ffi.Struct {
+  external ma_node_config nodeConfig;
+
+  external ma_peak_config peak;
+}
+
+/// Peaking EQ Filter
+typedef ma_peak_config = ma_peak2_config;
+
+class ma_peak_node extends ffi.Struct {
+  external ma_node_base baseNode;
+
+  external ma_peak2 peak;
+}
+
+class ma_loshelf_node_config extends ffi.Struct {
+  external ma_node_config nodeConfig;
+
+  external ma_loshelf_config loshelf;
+}
+
+/// Low Shelf Filter
+typedef ma_loshelf_config = ma_loshelf2_config;
+
+class ma_loshelf_node extends ffi.Struct {
+  external ma_node_base baseNode;
+
+  external ma_loshelf2 loshelf;
+}
+
+class ma_hishelf_node_config extends ffi.Struct {
+  external ma_node_config nodeConfig;
+
+  external ma_hishelf_config hishelf;
+}
+
+/// High Shelf Filter
+typedef ma_hishelf_config = ma_hishelf2_config;
+
+class ma_hishelf_node extends ffi.Struct {
+  external ma_node_base baseNode;
+
+  external ma_hishelf2 hishelf;
+}
+
+class ma_delay_node_config extends ffi.Struct {
+  external ma_node_config nodeConfig;
+
+  external ma_delay_config delay;
+}
+
+class ma_delay_node extends ffi.Struct {
+  external ma_node_base baseNode;
+
+  external ma_delay delay;
+}
+
+class ma_engine extends ffi.Struct {
+  external ma_node_graph nodeGraph;
+
+  external ffi.Pointer<ma_resource_manager> pResourceManager;
+
+  external ffi.Pointer<ma_device> pDevice;
+
+  external ffi.Pointer<ma_log> pLog;
+
+  @ma_uint32()
+  external int sampleRate;
+
+  @ma_uint32()
+  external int listenerCount;
+
+  @ffi.Array.multi([4])
+  external ffi.Array<ma_spatializer_listener> listeners;
+
+  external ma_allocation_callbacks allocationCallbacks;
+
+  @ma_bool8()
+  external int ownsResourceManager;
+
+  @ma_bool8()
+  external int ownsDevice;
+
+  @ma_spinlock()
+  external int inlinedSoundLock;
+
+  external ffi.Pointer<ma_sound_inlined> pInlinedSoundHead;
+
+  @ma_uint32()
+  external int inlinedSoundCount;
+
+  @ma_uint32()
+  external int gainSmoothTimeInFrames;
+
+  @ffi.Int32()
+  external int monoExpansionMode;
+}
+
+class ma_sound_inlined extends ffi.Struct {
+  external ma_sound sound;
+
+  external ffi.Pointer<ma_sound_inlined> pNext;
+
+  external ffi.Pointer<ma_sound_inlined> pPrev;
+}
+
+class ma_sound extends ffi.Struct {
+  external ma_engine_node engineNode;
+
+  external ffi.Pointer<ma_data_source> pDataSource;
+
+  @ma_uint64()
+  external int seekTarget;
+
+  @ma_bool32()
+  external int atEnd;
+
+  @ma_bool8()
+  external int ownsDataSource;
+
+  external ffi.Pointer<ma_resource_manager_data_source>
+      pResourceManagerDataSource;
+}
+
+class ma_engine_node extends ffi.Struct {
+  external ma_node_base baseNode;
+
+  external ffi.Pointer<ma_engine> pEngine;
+
+  @ma_uint32()
+  external int sampleRate;
+
+  external ma_fader fader;
+
+  external ma_linear_resampler resampler;
+
+  external ma_spatializer spatializer;
+
+  external ma_panner panner;
+
+  @ffi.Float()
+  external double pitch;
+
+  @ffi.Float()
+  external double oldPitch;
+
+  @ffi.Float()
+  external double oldDopplerPitch;
+
+  @ma_bool32()
+  external int isPitchDisabled;
+
+  @ma_bool32()
+  external int isSpatializationDisabled;
+
+  @ma_uint32()
+  external int pinnedListenerIndex;
+
+  @ma_bool8()
+  external int _ownsHeap;
+
+  external ffi.Pointer<ffi.Void> _pHeap;
+}
+
+abstract class ma_sound_flags {
+  static const int MA_SOUND_FLAG_STREAM = 1;
+  static const int MA_SOUND_FLAG_DECODE = 2;
+  static const int MA_SOUND_FLAG_ASYNC = 4;
+  static const int MA_SOUND_FLAG_WAIT_INIT = 8;
+  static const int MA_SOUND_FLAG_NO_DEFAULT_ATTACHMENT = 16;
+  static const int MA_SOUND_FLAG_NO_PITCH = 32;
+  static const int MA_SOUND_FLAG_NO_SPATIALIZATION = 64;
+}
+
+abstract class ma_engine_node_type {
+  static const int ma_engine_node_type_sound = 0;
+  static const int ma_engine_node_type_group = 1;
+}
+
+class ma_engine_node_config extends ffi.Struct {
+  external ffi.Pointer<ma_engine> pEngine;
+
+  @ffi.Int32()
+  external int type;
+
+  @ma_uint32()
+  external int channelsIn;
+
+  @ma_uint32()
+  external int channelsOut;
+
+  @ma_uint32()
+  external int sampleRate;
+
+  @ma_bool8()
+  external int isPitchDisabled;
+
+  @ma_bool8()
+  external int isSpatializationDisabled;
+
+  @ma_uint8()
+  external int pinnedListenerIndex;
+}
+
+class ma_sound_config extends ffi.Struct {
+  external ffi.Pointer<ffi.Int8> pFilePath;
+
+  external ffi.Pointer<wchar_t> pFilePathW;
+
+  external ffi.Pointer<ma_data_source> pDataSource;
+
+  external ffi.Pointer<ma_node> pInitialAttachment;
+
+  @ma_uint32()
+  external int initialAttachmentInputBusIndex;
+
+  @ma_uint32()
+  external int channelsIn;
+
+  @ma_uint32()
+  external int channelsOut;
+
+  @ma_uint32()
+  external int flags;
+
+  @ma_uint64()
+  external int initialSeekPointInPCMFrames;
+
+  @ma_uint64()
+  external int rangeBegInPCMFrames;
+
+  @ma_uint64()
+  external int rangeEndInPCMFrames;
+
+  @ma_uint64()
+  external int loopPointBegInPCMFrames;
+
+  @ma_uint64()
+  external int loopPointEndInPCMFrames;
+
+  @ma_bool32()
+  external int isLooping;
+
+  external ffi.Pointer<ma_fence> pDoneFence;
+}
+
+typedef ma_sound_group_config = ma_sound_config;
+
+class ma_engine_config extends ffi.Struct {
+  external ffi.Pointer<ma_resource_manager> pResourceManager;
+
+  external ffi.Pointer<ma_context> pContext;
+
+  external ffi.Pointer<ma_device> pDevice;
+
+  external ffi.Pointer<ma_device_id> pPlaybackDeviceID;
+
+  external ffi.Pointer<ma_log> pLog;
+
+  @ma_uint32()
+  external int listenerCount;
+
+  @ma_uint32()
+  external int channels;
+
+  @ma_uint32()
+  external int sampleRate;
+
+  @ma_uint32()
+  external int periodSizeInFrames;
+
+  @ma_uint32()
+  external int periodSizeInMilliseconds;
+
+  @ma_uint32()
+  external int gainSmoothTimeInFrames;
+
+  @ma_uint32()
+  external int gainSmoothTimeInMilliseconds;
+
+  external ma_allocation_callbacks allocationCallbacks;
+
+  @ma_bool32()
+  external int noAutoStart;
+
+  @ma_bool32()
+  external int noDevice;
+
+  @ffi.Int32()
+  external int monoExpansionMode;
+
+  external ffi.Pointer<ma_vfs> pResourceManagerVFS;
+}
+
+typedef ma_sound_group = ma_sound;
 
 const int MA_VERSION_MAJOR = 0;
 
-const int MA_VERSION_MINOR = 10;
+const int MA_VERSION_MINOR = 11;
 
-const int MA_VERSION_REVISION = 37;
+const int MA_VERSION_REVISION = 9;
 
-const String MA_VERSION_STRING = '0.10.37';
+const String MA_VERSION_STRING = '0.11.9';
+
+const int MA_SIZEOF_PTR = 8;
 
 const int MA_TRUE = 1;
 
@@ -9711,296 +26015,38 @@ const int MA_FALSE = 0;
 
 const int MA_SIZE_MAX = 4294967295;
 
-const int MA_SIMD_ALIGNMENT = 64;
-
-const int MA_LOG_LEVEL_DEBUG = 4;
-
-const int MA_LOG_LEVEL_INFO = 3;
-
-const int MA_LOG_LEVEL_WARNING = 2;
-
-const int MA_LOG_LEVEL_ERROR = 1;
-
-const int MA_LOG_LEVEL_VERBOSE = 4;
-
-const int MA_LOG_LEVEL = 1;
-
-const int MA_CHANNEL_NONE = 0;
-
-const int MA_CHANNEL_MONO = 1;
-
-const int MA_CHANNEL_FRONT_LEFT = 2;
-
-const int MA_CHANNEL_FRONT_RIGHT = 3;
-
-const int MA_CHANNEL_FRONT_CENTER = 4;
-
-const int MA_CHANNEL_LFE = 5;
-
-const int MA_CHANNEL_BACK_LEFT = 6;
-
-const int MA_CHANNEL_BACK_RIGHT = 7;
-
-const int MA_CHANNEL_FRONT_LEFT_CENTER = 8;
-
-const int MA_CHANNEL_FRONT_RIGHT_CENTER = 9;
-
-const int MA_CHANNEL_BACK_CENTER = 10;
-
-const int MA_CHANNEL_SIDE_LEFT = 11;
-
-const int MA_CHANNEL_SIDE_RIGHT = 12;
-
-const int MA_CHANNEL_TOP_CENTER = 13;
-
-const int MA_CHANNEL_TOP_FRONT_LEFT = 14;
-
-const int MA_CHANNEL_TOP_FRONT_CENTER = 15;
-
-const int MA_CHANNEL_TOP_FRONT_RIGHT = 16;
-
-const int MA_CHANNEL_TOP_BACK_LEFT = 17;
-
-const int MA_CHANNEL_TOP_BACK_CENTER = 18;
-
-const int MA_CHANNEL_TOP_BACK_RIGHT = 19;
-
-const int MA_CHANNEL_AUX_0 = 20;
-
-const int MA_CHANNEL_AUX_1 = 21;
-
-const int MA_CHANNEL_AUX_2 = 22;
-
-const int MA_CHANNEL_AUX_3 = 23;
-
-const int MA_CHANNEL_AUX_4 = 24;
-
-const int MA_CHANNEL_AUX_5 = 25;
-
-const int MA_CHANNEL_AUX_6 = 26;
-
-const int MA_CHANNEL_AUX_7 = 27;
-
-const int MA_CHANNEL_AUX_8 = 28;
-
-const int MA_CHANNEL_AUX_9 = 29;
-
-const int MA_CHANNEL_AUX_10 = 30;
-
-const int MA_CHANNEL_AUX_11 = 31;
-
-const int MA_CHANNEL_AUX_12 = 32;
-
-const int MA_CHANNEL_AUX_13 = 33;
-
-const int MA_CHANNEL_AUX_14 = 34;
-
-const int MA_CHANNEL_AUX_15 = 35;
-
-const int MA_CHANNEL_AUX_16 = 36;
-
-const int MA_CHANNEL_AUX_17 = 37;
-
-const int MA_CHANNEL_AUX_18 = 38;
-
-const int MA_CHANNEL_AUX_19 = 39;
-
-const int MA_CHANNEL_AUX_20 = 40;
-
-const int MA_CHANNEL_AUX_21 = 41;
-
-const int MA_CHANNEL_AUX_22 = 42;
-
-const int MA_CHANNEL_AUX_23 = 43;
-
-const int MA_CHANNEL_AUX_24 = 44;
-
-const int MA_CHANNEL_AUX_25 = 45;
-
-const int MA_CHANNEL_AUX_26 = 46;
-
-const int MA_CHANNEL_AUX_27 = 47;
-
-const int MA_CHANNEL_AUX_28 = 48;
-
-const int MA_CHANNEL_AUX_29 = 49;
-
-const int MA_CHANNEL_AUX_30 = 50;
-
-const int MA_CHANNEL_AUX_31 = 51;
-
-const int MA_CHANNEL_LEFT = 2;
-
-const int MA_CHANNEL_RIGHT = 3;
-
-const int MA_CHANNEL_POSITION_COUNT = 52;
-
-const int MA_SUCCESS = 0;
-
-const int MA_ERROR = -1;
-
-const int MA_INVALID_ARGS = -2;
-
-const int MA_INVALID_OPERATION = -3;
-
-const int MA_OUT_OF_MEMORY = -4;
-
-const int MA_OUT_OF_RANGE = -5;
-
-const int MA_ACCESS_DENIED = -6;
-
-const int MA_DOES_NOT_EXIST = -7;
-
-const int MA_ALREADY_EXISTS = -8;
-
-const int MA_TOO_MANY_OPEN_FILES = -9;
-
-const int MA_INVALID_FILE = -10;
-
-const int MA_TOO_BIG = -11;
-
-const int MA_PATH_TOO_LONG = -12;
-
-const int MA_NAME_TOO_LONG = -13;
-
-const int MA_NOT_DIRECTORY = -14;
-
-const int MA_IS_DIRECTORY = -15;
-
-const int MA_DIRECTORY_NOT_EMPTY = -16;
-
-const int MA_AT_END = -17;
-
-const int MA_NO_SPACE = -18;
-
-const int MA_BUSY = -19;
-
-const int MA_IO_ERROR = -20;
-
-const int MA_INTERRUPT = -21;
-
-const int MA_UNAVAILABLE = -22;
-
-const int MA_ALREADY_IN_USE = -23;
-
-const int MA_BAD_ADDRESS = -24;
-
-const int MA_BAD_SEEK = -25;
-
-const int MA_BAD_PIPE = -26;
-
-const int MA_DEADLOCK = -27;
-
-const int MA_TOO_MANY_LINKS = -28;
-
-const int MA_NOT_IMPLEMENTED = -29;
-
-const int MA_NO_MESSAGE = -30;
-
-const int MA_BAD_MESSAGE = -31;
-
-const int MA_NO_DATA_AVAILABLE = -32;
-
-const int MA_INVALID_DATA = -33;
-
-const int MA_TIMEOUT = -34;
-
-const int MA_NO_NETWORK = -35;
-
-const int MA_NOT_UNIQUE = -36;
-
-const int MA_NOT_SOCKET = -37;
-
-const int MA_NO_ADDRESS = -38;
-
-const int MA_BAD_PROTOCOL = -39;
-
-const int MA_PROTOCOL_UNAVAILABLE = -40;
-
-const int MA_PROTOCOL_NOT_SUPPORTED = -41;
-
-const int MA_PROTOCOL_FAMILY_NOT_SUPPORTED = -42;
-
-const int MA_ADDRESS_FAMILY_NOT_SUPPORTED = -43;
-
-const int MA_SOCKET_NOT_SUPPORTED = -44;
-
-const int MA_CONNECTION_RESET = -45;
-
-const int MA_ALREADY_CONNECTED = -46;
-
-const int MA_NOT_CONNECTED = -47;
-
-const int MA_CONNECTION_REFUSED = -48;
-
-const int MA_NO_HOST = -49;
-
-const int MA_IN_PROGRESS = -50;
-
-const int MA_CANCELLED = -51;
-
-const int MA_MEMORY_ALREADY_MAPPED = -52;
-
-const int MA_FORMAT_NOT_SUPPORTED = -100;
-
-const int MA_DEVICE_TYPE_NOT_SUPPORTED = -101;
-
-const int MA_SHARE_MODE_NOT_SUPPORTED = -102;
-
-const int MA_NO_BACKEND = -103;
-
-const int MA_NO_DEVICE = -104;
-
-const int MA_API_NOT_FOUND = -105;
-
-const int MA_INVALID_DEVICE_CONFIG = -106;
-
-const int MA_LOOP = -107;
-
-const int MA_DEVICE_NOT_INITIALIZED = -200;
-
-const int MA_DEVICE_ALREADY_INITIALIZED = -201;
-
-const int MA_DEVICE_NOT_STARTED = -202;
-
-const int MA_DEVICE_NOT_STOPPED = -203;
-
-const int MA_FAILED_TO_INIT_BACKEND = -300;
-
-const int MA_FAILED_TO_OPEN_BACKEND_DEVICE = -301;
-
-const int MA_FAILED_TO_START_BACKEND_DEVICE = -302;
-
-const int MA_FAILED_TO_STOP_BACKEND_DEVICE = -303;
+const int MA_SIMD_ALIGNMENT = 32;
 
 const int MA_MIN_CHANNELS = 1;
 
-const int MA_MAX_CHANNELS = 32;
+const int MA_MAX_CHANNELS = 254;
 
 const int MA_MAX_FILTER_ORDER = 8;
-
-const int MA_MIN_SAMPLE_RATE = 8000;
-
-const int MA_MAX_SAMPLE_RATE = 384000;
 
 const int MA_MAX_LOG_CALLBACKS = 4;
 
 const int MA_CHANNEL_INDEX_NULL = 255;
 
-const int MA_STATE_UNINITIALIZED = 0;
-
-const int MA_STATE_STOPPED = 1;
-
-const int MA_STATE_STARTED = 2;
-
-const int MA_STATE_STARTING = 3;
-
-const int MA_STATE_STOPPING = 4;
-
 const int MA_BACKEND_COUNT = 15;
 
 const int MA_DATA_FORMAT_FLAG_EXCLUSIVE_MODE = 2;
 
-const int MA_OPEN_MODE_READ = 1;
+const int MA_MAX_DEVICE_NAME_LENGTH = 255;
 
-const int MA_OPEN_MODE_WRITE = 2;
+const int MA_DATA_SOURCE_SELF_MANAGED_RANGE_AND_LOOP_POINT = 1;
+
+const int MA_JOB_TYPE_RESOURCE_MANAGER_QUEUE_FLAG_NON_BLOCKING = 1;
+
+const int MA_RESOURCE_MANAGER_MAX_JOB_THREAD_COUNT = 64;
+
+const int MA_MAX_NODE_BUS_COUNT = 254;
+
+const int MA_MAX_NODE_LOCAL_BUS_COUNT = 2;
+
+const int MA_NODE_BUS_COUNT_UNKNOWN = 255;
+
+const int MA_ENGINE_MAX_LISTENERS = 4;
+
+const int MA_LISTENER_INDEX_CLOSEST = 255;
+
+const int MA_SOUND_SOURCE_CHANNEL_COUNT = 4294967295;
