@@ -18,6 +18,8 @@ class MiniAudio {
     } else if (Platform.isIOS) {
       var lib = DynamicLibrary.open('miniaudio.framework/miniaudio');
       return MiniAudioFfi(lib);
+    } else if (Platform.isWindows) {
+      return MiniAudioFfi(DynamicLibrary.open('miniaudio_plugin.dll'));
     }
     return MiniAudioFfi(DynamicLibrary.executable());
   }
