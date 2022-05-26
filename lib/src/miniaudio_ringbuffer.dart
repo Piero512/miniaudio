@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
+import 'package:miniaudio/src/utils.dart';
 
 import 'miniaudio_ffi.dart';
 
@@ -39,6 +40,7 @@ class MiniAudioPCMRingBuffer implements Finalizable {
   }
 
   void addSamples<T extends TypedData>(T samples) {
+    runtimeAssert(finalized != true);
     using((alloc) {
       final bytesPerSample = ffi.ma_get_bytes_per_sample(_ptr.ref.format);
       final frameSize = bytesPerSample * _ptr.ref.channels;
@@ -88,6 +90,7 @@ class MiniAudioPCMRingBuffer implements Finalizable {
   }
 
   T readSamples<T extends TypedData>(int framesToRead) {
+    runtimeAssert(finalized != true);
     return using((alloc) {
       final bytesPerSample = ffi.ma_get_bytes_per_sample(_ptr.ref.format);
       final frameSize = bytesPerSample * _ptr.ref.channels;

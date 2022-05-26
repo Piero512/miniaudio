@@ -18,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool playing = false;
   MiniAudioDecoder? decoder;
   MiniAudioDevice? device;
-  late ma_device_callback_proc cb = DynamicLibrary.open('miniaudio_plugin.dll')
+  late ma_device_data_proc cb = DynamicLibrary.open('miniaudio_plugin.dll')
       .lookup('MiniAudioReadDecoderDataCallback');
 
   void openFile(String path) {

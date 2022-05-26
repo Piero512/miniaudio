@@ -1,5 +1,6 @@
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
+import 'package:miniaudio/src/utils.dart';
 
 import 'miniaudio_ffi.dart';
 
@@ -56,18 +57,19 @@ class MiniAudioDevice implements Finalizable {
   }
 
   int startDevice() {
-    assert(disposed == false, "Can't stop playback on a disposed device");
+    runtimeAssert(!disposed, "Can't start playback on a disposed device");
     return ffi.ma_device_start(_ptr);
   }
 
   int stopDevice() {
-    assert(disposed == false, "Can't stop playback on a disposed device");
+    runtimeAssert(!disposed, "Can't stop playback on a disposed device");
     return ffi.ma_device_stop(_ptr);
   }
 
   void uninit() {
     if (!disposed) {
-      // TODO: Dispose of device config
+      _finalizer?.detach(this);
+      _allocFinalizer.detach(this);
       ffi.ma_device_uninit(_ptr);
       malloc.free(_ptr);
       disposed = true;

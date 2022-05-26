@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
+import 'package:miniaudio/src/utils.dart';
 
 import 'miniaudio_ffi.dart';
 
@@ -55,14 +56,14 @@ class MiniAudioDecoder implements Finalizable {
   }
 
   int get sampleSize {
-    assert(finalized != true, _finalizedMessage);
+    runtimeAssert(finalized != true, _finalizedMessage);
     return ffi.ma_get_bytes_per_sample(decoder.ref.outputFormat);
   }
 
   int get frameSize => sampleSize * channelCount;
 
   int get channelCount {
-    assert(finalized != true, _finalizedMessage);
+    runtimeAssert(finalized != true, _finalizedMessage);
     return decoder.ref.outputChannels;
   }
 
@@ -81,7 +82,7 @@ class MiniAudioDecoder implements Finalizable {
   /// Returns the amount of frames read or -1 if the buffer isn't big enough.
   int readFrames(
       Pointer<Uint8> frameBuffer, int frameBufferSize, int framesToRead) {
-    assert(finalized != true, _finalizedMessage);
+    runtimeAssert(finalized != true, _finalizedMessage);
     if (frameSize * framesToRead <= frameBufferSize) {
       return using((alloc) {
         final Pointer<Uint64> framesRead = alloc.call();
