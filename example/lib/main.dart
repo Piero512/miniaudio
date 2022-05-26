@@ -18,6 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool playing = false;
   MiniAudioDecoder? decoder;
   MiniAudioDevice? device;
+  // This callback is only implemented on Windows.
   late ma_device_data_proc cb = DynamicLibrary.open('miniaudio_plugin.dll')
       .lookup('MiniAudioReadDecoderDataCallback');
 
@@ -59,9 +60,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void pause() {}
+  void pause() {
+    device?.stopDevice();
+  }
 
-  void play() {}
+  void play() {
+    device?.startDevice();
+  }
 }
 
 class MyApp extends StatelessWidget {
