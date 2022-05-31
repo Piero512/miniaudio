@@ -16,10 +16,9 @@ A new flutter plugin project.
   s.source_files     = 'Classes/**/*'
   s.dependency 'FlutterMacOS'
 
-  s.vendored_libraries = 'libminiaudio.dylib'
-
   s.platform = :osx, '10.11'
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
+  s.frameworks = 'AudioUnit','CoreAudio','CoreFoundation'
+  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' ,'OTHER_CFLAGS' => "$(inherited) -DMA_NO_EXTERNAL_LINKING -DMA_API='extern __attribute__((visibility(\"default\"))) __attribute__((used))'"}
   s.swift_version = '5.0'
   s.libraries = 'c++'
 end

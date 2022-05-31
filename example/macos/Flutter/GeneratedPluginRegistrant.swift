@@ -5,7 +5,7 @@
 import FlutterMacOS
 import Foundation
 
-import miniaudio_decoder
+import miniaudio
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   MiniaudioPlugin.register(with: registry.registrar(forPlugin: "MiniaudioPlugin"))

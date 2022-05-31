@@ -8,6 +8,7 @@ set(PLUGIN_NAME "miniaudio_plugin")
 
 add_library(${PLUGIN_NAME} SHARED
   "miniaudio_plugin.cc"
+  "src/miniaudio.c"
 )
 apply_standard_settings(${PLUGIN_NAME})
 set_target_properties(${PLUGIN_NAME} PROPERTIES

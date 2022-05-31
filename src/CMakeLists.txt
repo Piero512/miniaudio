@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.4)
 
 project(miniaudio C)
-set(COMMON_DEFS MA_ENABLE_ONLY_SPECIFIC_BACKENDS MA_NO_ENCODING MA_NO_DEVICE_IO MA_NO_GENERATION MA_NO_THREADING)
+set(COMMON_DEFS MA_ENABLE_ONLY_SPECIFIC_BACKENDS)
 set(CMAKE_BUILD_TYPE "RELEASE")
 if(APPLE)
     add_library(miniaudio STATIC  miniaudio.c)
@@ -16,7 +16,8 @@ PUBLIC_HEADER miniaudio.h
 )
 target_compile_definitions(miniaudio PRIVATE ${COMMON_DEFS})
 if(APPLE)
-    target_compile_definitions(miniaudio_shared PRIVATE ${COMMON_DEFS})
+    target_compile_definitions(miniaudio_shared PRIVATE ${COMMON_DEFS} "-DMA_ENABLE_COREAUDIO -DMA_NO_RUNTIME_LINKING")
+    target_link_libraries(miniaudio_shared PRIVATE "-framework CoreFoundation" "-framework CoreAudio" "-framework AudioUnit")
 endif()
 set(PROJECT_ROOT ${CMAKE_SOURCE_DIR}/..)
 if(APPLE)
